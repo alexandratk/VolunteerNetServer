@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             this.userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult> Add([FromBody] UserModel value)
         {
             value.Password = HashHelper.ComputeSha256Hash(value.Password);
@@ -40,8 +40,25 @@ namespace WebAPI.Controllers
             }
         }
 
-        // PUT: api/user/1
-        [HttpPut("{id}")]
+        [HttpPost("addlist")]
+        public async Task<ActionResult> AddList([FromBody] List<UserModel> value)
+        {
+            for (int i = 0; i < value.Count; i++)
+            {
+                value[i].Password = HashHelper.ComputeSha256Hash(value[i].Password);
+                try
+                {
+                    await userService.AddAsync(value[i]);
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e);
+                }
+            }
+            return Ok();
+        }
+
+        [HttpPut("update/{id}")]
         public async Task<ActionResult> Update(Guid Id, [FromBody] UserModel value)
         {
             try
@@ -55,8 +72,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        // DELETE: api/user/1
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
             try
@@ -70,18 +86,16 @@ namespace WebAPI.Controllers
             }
         }
 
-        // GET: api/user
         [Authorize(Roles = "admin")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> Get()
+        [HttpGet("getlist")]
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetList()
         {
                 var customers = await userService.GetAllAsync();
                 return Ok(customers);
 
         }
 
-        //GET: api/user/1
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<ActionResult<UserModel>> GetById(Guid id)
         {
             try
