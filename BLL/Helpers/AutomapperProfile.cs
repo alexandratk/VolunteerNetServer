@@ -17,6 +17,7 @@ namespace BLL.Helpers
             CreateMap<User, UserModel>().ForMember(um => um.Id, u => u.MapFrom(x => x.Id))
                 .ForMember(um => um.Login, u => u.MapFrom(x => x.Login))
                 .ForMember(um => um.Password, u => u.MapFrom(x => x.Password))
+                .ForMember(um => um.Role, u => u.MapFrom(x => x.Role))
                 .ReverseMap();
            
         }

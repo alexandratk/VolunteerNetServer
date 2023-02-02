@@ -23,9 +23,9 @@ namespace DAL.Data
 
         //}
 
-        //public PhotoAlbumDbContext()
-        //{
-        //}
+        public VolunteerNetServerDBContext()
+        {
+        }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.Helpers;
 using BLL.Interfaces;
 using BLL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] UserModel value)
         {
+            value.Password = HashHelper.ComputeSha256Hash(value.Password);
             try
             {
                 await userService.AddAsync(value);
@@ -67,6 +71,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/user
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> Get()
         {

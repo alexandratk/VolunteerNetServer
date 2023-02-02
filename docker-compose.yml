@@ -3,10 +3,10 @@ services:
   sqldb:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      - SA_PASSWORD=2Secure*Password2
+      - SA_PASSWORD=MySecurePassword*19*5
       - ACCEPT_EULA=Y
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-Usa", "-P2Secure*Password2", "-Q", "select 1"]
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-Usa", "-PMySecurePassword*19*5", "-Q", "select 1"]
       interval: 20s
       retries: 20
     ports:

@@ -19,6 +19,7 @@ namespace BLL.Infrastructure
 
             DataAccessLayerConfiguratior.ConfigureServices(serviceCollection);
             serviceCollection.AddTransient<IUserService, UserService>();
+            serviceCollection.AddTransient<IAuthService, AuthService>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AutomapperProfile());

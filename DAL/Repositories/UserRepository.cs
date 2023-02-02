@@ -42,6 +42,12 @@ namespace DAL.Repositories
             return users;
         }
 
+        public Task<User> GetByLoginAndPass(string login, string password)
+        {
+            User? user = _context.Users.Where(r => r.Login == login && r.Password == password).FirstOrDefault();
+            return Task.FromResult(user);
+        }
+
         public Task<User?> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
