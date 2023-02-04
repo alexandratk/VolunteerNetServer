@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -16,6 +17,20 @@ namespace WebAPI.Controllers
         {
             this.authService = authService;
             this.mapper = mapper;
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult> Register([FromBody] UserModel value)
+        {
+            try
+            {
+                await authService.RegisterAsync(value);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
 
         [HttpPost("auth")]

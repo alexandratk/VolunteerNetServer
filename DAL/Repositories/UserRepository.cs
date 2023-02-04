@@ -26,9 +26,10 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(User entity)
+        public async Task DeleteAsync(User entity)
         {
-            throw new NotImplementedException();
+            _context.Users.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteByIdAsync(Guid id)
@@ -42,7 +43,7 @@ namespace DAL.Repositories
             return users;
         }
 
-        public Task<User> GetByLoginAndPass(string login, string password)
+        public Task<User?> GetByLoginAndPass(string login, string password)
         {
             User? user = _context.Users.Where(r => r.Login == login && r.Password == password).FirstOrDefault();
             return Task.FromResult(user);
@@ -50,12 +51,14 @@ namespace DAL.Repositories
 
         public Task<User?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            User? user = _context.Users.Where(r => r.Id == id).FirstOrDefault();
+            return Task.FromResult(user);
         }
 
-        public void Update(User entity)
+        public async Task Update(User entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

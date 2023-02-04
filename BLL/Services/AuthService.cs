@@ -31,6 +31,14 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
+        public async Task RegisterAsync(UserModel model)
+        {
+            model.Password = HashHelper.ComputeSha256Hash(model.Password);
+            var mapperUser = mapper.Map<UserModel, User>(model);
+            await unitOfWork.UserRepository.AddAsync(mapperUser);
+            await unitOfWork.SaveAsync();
+        }
+
         public async Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel)
         {
             var unmapperUser = await unitOfWork.UserRepository.GetByLoginAndPass(
@@ -48,7 +56,6 @@ namespace BLL.Services
             var token = generateJWTToken(mapperUser);
             return new AuthResponseModel()
             {
-                Id = mapperUser.Id,
                 Role = mapperUser.Role,
                 jwtToken = token
             };
@@ -62,7 +69,7 @@ namespace BLL.Services
 
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Id.ToString()),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)
                 };
             ClaimsIdentity claimsIdentity =

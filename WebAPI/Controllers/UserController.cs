@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using BLL.Helpers;
 using BLL.Interfaces;
 using BLL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +17,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private IUserService userService { get; set; }
@@ -28,7 +30,6 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public async Task<ActionResult> Add([FromBody] UserModel value)
         {
-            value.Password = HashHelper.ComputeSha256Hash(value.Password);
             try
             {
                 await userService.AddAsync(value);
@@ -45,7 +46,6 @@ namespace WebAPI.Controllers
         {
             for (int i = 0; i < value.Count; i++)
             {
-                value[i].Password = HashHelper.ComputeSha256Hash(value[i].Password);
                 try
                 {
                     await userService.AddAsync(value[i]);
@@ -90,9 +90,15 @@ namespace WebAPI.Controllers
         [HttpGet("getlist")]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetList()
         {
+            try
+            {
                 var customers = await userService.GetAllAsync();
                 return Ok(customers);
-
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
 
         [HttpGet("get/{id}")]
@@ -101,6 +107,22 @@ namespace WebAPI.Controllers
             try
             {
                 var customer = await userService.GetByIdAsync(id);
+                return Ok(customer);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [HttpGet("get")]
+        public async Task<ActionResult<UserModel>> GetByIdFromToken()
+        {
+            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+            Debug.WriteLine("id from token ==> " + id);
+            try
+            {
+                var customer = await userService.GetByIdAsync(Guid.Parse(id));
                 return Ok(customer);
             }
             catch (Exception e)
