@@ -49,12 +49,13 @@ namespace BLL.Services
             return mapperUsers;
         }
 
-        public async Task<UserModel> GetByIdAsync(Guid id)
+        public async Task<UserCreatingModel> GetByIdAsync(Guid id)
         {
             var unmapperUser = await unitOfWork.UserRepository.GetByIdAsync(id);
             if (unmapperUser != null)
             {
-                var mapperUser = mapper.Map<User, UserModel>(unmapperUser);
+                var mapperUser = mapper.Map<User, UserCreatingModel>(unmapperUser);
+                mapperUser.Image = Convert.ToBase64String(unmapperUser.Image);
                 return mapperUser;
             }
             return null;

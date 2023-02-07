@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace BLL.Models
 {
-    public class User : BaseEntity
+    public class UserCreatingModel : BaseModel
     {
         public string Login { get; set; }
 
@@ -14,10 +15,8 @@ namespace DAL.Entities
 
         public string Role { get; set; }
 
+        public string Image { get; set; }
+
         public string ImageFormat { get; set; }
-
-        public byte[] Image { get; set; }
-
-        public ProfilePicture ProfilePicture { get; set; }
     }
 }

@@ -41,6 +41,7 @@ namespace BLL.Services
             var memoryStream = new MemoryStream();
             model.Image.CopyTo(memoryStream);
             mapperUser.Image = memoryStream.ToArray();
+            mapperUser.ImageFormat = model.Image.ContentType;
 
             await unitOfWork.UserRepository.AddAsync(mapperUser);
         }
