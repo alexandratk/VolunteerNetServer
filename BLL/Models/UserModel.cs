@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace BLL.Models
         public string Password { get; set; }
 
         public string Role { get; set; }
+
+        public IFormFile Image { get; set; }
     }
 }

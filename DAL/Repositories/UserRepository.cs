@@ -21,7 +21,6 @@ namespace DAL.Repositories
 
         public async Task AddAsync(User entity)
         {
-            entity.Id = Guid.NewGuid();
             _context.Users.Add(entity);
             await _context.SaveChangesAsync();
         }

@@ -13,5 +13,9 @@ namespace DAL.Entities
         public string Password { get; set; }
 
         public string Role { get; set; }
+
+        public byte[] Image { get; set; }
+
+        public ProfilePicture ProfilePicture { get; set; }
     }
 }

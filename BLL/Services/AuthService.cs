@@ -33,10 +33,16 @@ namespace BLL.Services
 
         public async Task RegisterAsync(UserModel model)
         {
+            model.Id = Guid.NewGuid();
             model.Password = HashHelper.ComputeSha256Hash(model.Password);
+            
             var mapperUser = mapper.Map<UserModel, User>(model);
+
+            var memoryStream = new MemoryStream();
+            model.Image.CopyTo(memoryStream);
+            mapperUser.Image = memoryStream.ToArray();
+
             await unitOfWork.UserRepository.AddAsync(mapperUser);
-            await unitOfWork.SaveAsync();
         }
 
         public async Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel)

@@ -12,6 +12,7 @@ namespace DAL.Data
     public class VolunteerNetServerDBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<ProfilePicture> ProfilePictures { get; set; }
 
         public VolunteerNetServerDBContext(DbContextOptions<VolunteerNetServerDBContext> options) : base (options)
         {

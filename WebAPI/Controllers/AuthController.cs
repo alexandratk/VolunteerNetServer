@@ -3,6 +3,7 @@ using BLL.Interfaces;
 using BLL.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace WebAPI.Controllers
 {
@@ -20,11 +21,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] UserModel value)
+        public async Task<ActionResult> Register([FromForm] UserModel value)
         {
             try
             {
+                Debug.WriteLine("user login ==> " + value.Login);
                 await authService.RegisterAsync(value);
+                
                 return Ok();
             }
             catch (Exception e)
