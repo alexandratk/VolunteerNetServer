@@ -15,6 +15,6 @@ namespace BLL.Models
 
         public string Role { get; set; }
 
-        public IFormFile Image { get; set; }
+        public ProfilePictureModel ProfilePicture { get; set; }
     }
 }

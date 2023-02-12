@@ -13,6 +13,7 @@ namespace DAL.Data
         public VolunteerNetServerDBContext context { get; set; }
 
         private UserRepository userRepository;
+        private ProfilePictureRepository profilePictureRepository;
 
         public IUserRepository UserRepository
         {
@@ -23,6 +24,18 @@ namespace DAL.Data
                     userRepository = new UserRepository(context);
                 }
                 return userRepository;
+            }
+        }
+
+        public IProfilePictureRepository ProfilePictureRepository
+        {
+            get
+            {
+                if (profilePictureRepository == null)
+                {
+                    profilePictureRepository = new ProfilePictureRepository(context);
+                }
+                return profilePictureRepository;
             }
         }
 

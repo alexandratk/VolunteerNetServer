@@ -5,9 +5,11 @@ using BLL.Models;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +27,12 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task AddAsync(UserModel model)
-        {
-            model.Password = HashHelper.ComputeSha256Hash(model.Password);
-            var mapperUser = mapper.Map<UserModel, User>(model);
-            await unitOfWork.UserRepository.AddAsync(mapperUser);
-            await unitOfWork.SaveAsync();
-        }
+        //public string findDefaultProfilePictureFormat()
+        //{
+        //    var pathAfterSplit = DefaultProfilePicturePath.Split('.');
+        //    string format = "image/" + pathAfterSplit[pathAfterSplit.Length - 1];
+        //    return format;
+        //}
 
         public async Task DeleteAsync(Guid modelId)
         {
@@ -49,13 +50,23 @@ namespace BLL.Services
             return mapperUsers;
         }
 
-        public async Task<UserCreatingModel> GetByIdAsync(Guid id)
+        public async Task<UserViewModel> GetByIdAsync(Guid id)
         {
             var unmapperUser = await unitOfWork.UserRepository.GetByIdAsync(id);
             if (unmapperUser != null)
             {
-                var mapperUser = mapper.Map<User, UserCreatingModel>(unmapperUser);
-                mapperUser.Image = Convert.ToBase64String(unmapperUser.Image);
+                var mapperUser = mapper.Map<User, UserViewModel>(unmapperUser);
+                if (unmapperUser.ProfilePicture != null)
+                {
+                    mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
+                }
+                // else
+                //{
+                //    mapperUser.ProfilePicture = "";
+                //    //byte[] profilePictureBytes = File.ReadAllBytes(DefaultProfilePicturePath);
+                //    //mapperUser.ProfilePicture = Convert.ToBase64String(profilePictureBytes);
+                //    //mapperUser.ProfilePictureFormat = findDefaultProfilePictureFormat();
+                //}
                 return mapperUser;
             }
             return null;

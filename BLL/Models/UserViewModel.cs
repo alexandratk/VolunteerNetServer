@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserCreatingModel : BaseModel
+    public class UserViewModel : BaseModel
     {
         public string Login { get; set; }
 
@@ -15,6 +14,8 @@ namespace BLL.Models
 
         public string Role { get; set; }
 
-        public IFormFile? ProfilePicture { get; set; }
+        public string ProfilePicture { get; set; }
+
+        public string ProfilePictureFormat { get; set; }
     }
 }

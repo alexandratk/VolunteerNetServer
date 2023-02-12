@@ -16,7 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Mvc;
+using BLL.Exceptions;
 
 namespace BLL.Services
 {
@@ -25,25 +26,48 @@ namespace BLL.Services
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
 
+        private const int DefaultProfilePictureLength = 256000;
+
         public AuthService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        public async Task RegisterAsync(UserModel model)
+        public async Task RegisterAsync(UserCreatingModel model)
         {
+            if (unitOfWork.UserRepository.CheckLogin(model.Login))
+            {
+                throw new InvalidLoginException();
+            }
+             
+            if (model.ProfilePicture != null &&
+                model.ProfilePicture.Length > DefaultProfilePictureLength)
+            {
+                throw new InvalidProfilePictureException();
+            }
+
+
             model.Id = Guid.NewGuid();
             model.Password = HashHelper.ComputeSha256Hash(model.Password);
             
-            var mapperUser = mapper.Map<UserModel, User>(model);
-
-            var memoryStream = new MemoryStream();
-            model.Image.CopyTo(memoryStream);
-            mapperUser.Image = memoryStream.ToArray();
-            mapperUser.ImageFormat = model.Image.ContentType;
+            var mapperUser = mapper.Map<UserCreatingModel, User>(model);
 
             await unitOfWork.UserRepository.AddAsync(mapperUser);
+
+            if (model.ProfilePicture != null)
+            {
+                ProfilePicture profilePictureModel = new ProfilePicture();
+                profilePictureModel.Id = Guid.NewGuid();
+                profilePictureModel.UserId = model.Id;
+                profilePictureModel.Format = model.ProfilePicture.ContentType;
+
+                var memoryStream = new MemoryStream();
+                model.ProfilePicture.CopyTo(memoryStream);
+                profilePictureModel.Data = memoryStream.ToArray();
+
+                await unitOfWork.ProfilePictureRepository.AddAsync(profilePictureModel);
+            }
         }
 
         public async Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel)

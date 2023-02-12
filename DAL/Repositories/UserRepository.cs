@@ -50,7 +50,7 @@ namespace DAL.Repositories
 
         public Task<User?> GetByIdAsync(Guid id)
         {
-            User? user = _context.Users.Where(r => r.Id == id).FirstOrDefault();
+            User? user = _context.Users.Where(r => r.Id == id).Include("ProfilePicture").FirstOrDefault();
             return Task.FromResult(user);
         }
 
@@ -58,6 +58,12 @@ namespace DAL.Repositories
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
+        }
+
+        public bool CheckLogin(string login)
+        {
+            User? user = _context.Users.Where(r => r.Login.Equals(login)).FirstOrDefault();
+            return user != null;
         }
     }
 }

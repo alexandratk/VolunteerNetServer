@@ -21,13 +21,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromForm] UserModel value)
+        public async Task<ActionResult> Register([FromForm] UserCreatingModel value)
         {
             try
             {
                 Debug.WriteLine("user login ==> " + value.Login);
                 await authService.RegisterAsync(value);
-                
                 return Ok();
             }
             catch (Exception e)

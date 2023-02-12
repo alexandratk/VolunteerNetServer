@@ -11,5 +11,6 @@ namespace DAL.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         public Task<User?> GetByLoginAndPass(string login, string password);
+        public bool CheckLogin(string login);
     }
 }

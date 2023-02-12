@@ -11,6 +11,6 @@ namespace BLL.Interfaces
     {
         Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel);
 
-        Task RegisterAsync(UserModel model);
+        Task RegisterAsync(UserCreatingModel model);
     }
 }

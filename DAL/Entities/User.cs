@@ -14,10 +14,6 @@ namespace DAL.Entities
 
         public string Role { get; set; }
 
-        public string ImageFormat { get; set; }
-
-        public byte[] Image { get; set; }
-
-        public ProfilePicture ProfilePicture { get; set; }
+        public ProfilePicture? ProfilePicture { get; set; }
     }
 }

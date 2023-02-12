@@ -9,6 +9,6 @@ namespace BLL.Interfaces
 {
     public interface IUserService : IService<UserModel>
     {
-        Task<UserCreatingModel> GetByIdAsync(Guid id);
+        Task<UserViewModel> GetByIdAsync(Guid id);
     }
 }

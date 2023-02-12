@@ -27,36 +27,22 @@ namespace WebAPI.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("add")]
-        public async Task<ActionResult> Add([FromBody] UserModel value)
-        {
-            try
-            {
-                await userService.AddAsync(value);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return NotFound(e);
-            }
-        }
-
-        [HttpPost("addlist")]
-        public async Task<ActionResult> AddList([FromBody] List<UserModel> value)
-        {
-            for (int i = 0; i < value.Count; i++)
-            {
-                try
-                {
-                    await userService.AddAsync(value[i]);
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e);
-                }
-            }
-            return Ok();
-        }
+        //[HttpPost("addlist")]
+        //public async Task<ActionResult> AddList([FromBody] List<UserModel> value)
+        //{
+        //    for (int i = 0; i < value.Count; i++)
+        //    {
+        //        try
+        //        {
+        //            await userService.AddAsync(value[i]);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            return NotFound(e);
+        //        }
+        //    }
+        //    return Ok();
+        //}
 
         [HttpPut("update/{id}")]
         public async Task<ActionResult> Update(Guid Id, [FromBody] UserModel value)

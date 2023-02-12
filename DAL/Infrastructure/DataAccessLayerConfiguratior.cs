@@ -15,6 +15,7 @@ namespace DAL.Infrastructure
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IUserRepository, UserRepository>();
+            serviceCollection.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();
             serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
 
         }

@@ -10,6 +10,6 @@ namespace DAL.Interfaces
     {
         IUserRepository UserRepository { get; }
 
-        Task SaveAsync();
+        IProfilePictureRepository ProfilePictureRepository { get; }
     }
 }
