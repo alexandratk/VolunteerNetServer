@@ -38,19 +38,19 @@ namespace DAL.Repositories
 
         public async Task<List<User>> GetAllAsync()
         {
-            List<User> users = await _context.Users.ToListAsync();
+            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
             return users;
         }
 
         public Task<User?> GetByLoginAndPass(string login, string password)
         {
-            User? user = _context.Users.Where(r => r.Login == login && r.Password == password).FirstOrDefault();
+            User? user = _context.Users.AsNoTracking().Where(r => r.Login == login && r.Password == password).FirstOrDefault();
             return Task.FromResult(user);
         }
 
         public Task<User?> GetByIdAsync(Guid id)
         {
-            User? user = _context.Users.Where(r => r.Id == id).Include("ProfilePicture").FirstOrDefault();
+            User? user = _context.Users.AsNoTracking().Where(r => r.Id == id).Include("ProfilePicture").FirstOrDefault();
             return Task.FromResult(user);
         }
 
@@ -62,7 +62,7 @@ namespace DAL.Repositories
 
         public bool CheckLogin(string login)
         {
-            User? user = _context.Users.Where(r => r.Login.Equals(login)).FirstOrDefault();
+            User? user = _context.Users.AsNoTracking().Where(r => r.Login.Equals(login)).FirstOrDefault();
             return user != null;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Entities;
@@ -11,8 +12,9 @@ namespace DAL.Data
 {
     public class VolunteerNetServerDBContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public VolunteerNetServerDBContext(DbContextOptions<VolunteerNetServerDBContext> options) : base (options)
         {
@@ -30,7 +32,35 @@ namespace DAL.Data
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-        //    optionsBuilder.UseSqlServer(@"Server=host.docker.internal;Database=VolunteerNet;User Id=SA;Password=2Secure*Password2;");
+        //    optionsBuilder.UseSqlServer(@"Server=localhost;Database=VolunteerNet;Trusted_Connection=True;");
         //}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.Skills)
+                .WithMany(p => p.Users)
+                .UsingEntity<UserSkill>(
+                    j => j
+                        .HasOne(pt => pt.Skill)
+                        .WithMany(t => t.UserSkills)
+                        .HasForeignKey(pt => pt.SkillId),
+                    j => j
+                        .HasOne(pt => pt.User)
+                        .WithMany(p => p.UserSkills)
+                        .HasForeignKey(pt => pt.UserId),
+                    j =>
+                    {
+                        j.Property(pt => pt.DocumentFormat).HasDefaultValueSql("NULL");
+                        j.HasKey(t => new { t.UserId, t.SkillId });
+                    });
+
+            modelBuilder.Entity<Skill>().HasData(
+                new Skill[]
+                {
+                    new Skill() { Id = Guid.NewGuid(), Title = "medicine" },
+                    new Skill() { Id = Guid.NewGuid(), Title = "cook" }
+                });
+        }
     }
 }

@@ -7,14 +7,22 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserCreatingModel : BaseModel
+    public class UserCreatingModel
     {
         public string Login { get; set; }
 
         public string Password { get; set; }
 
-        public string Role { get; set; }
+        public string FirstName { get; set; }
 
-        public IFormFile? ProfilePicture { get; set; }
+        public string LastName { get; set; }
+
+        public string Country { get; set; }
+
+        public string City { get; set; }
+
+        public string Phone { get; set; }
+
+        //public IFormFile? ProfilePicture { get; set; }
     }
 }

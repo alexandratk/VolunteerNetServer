@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace BLL.Services
     {
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+
+        private const int DefaultProfilePictureLength = 256000;
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -70,6 +73,42 @@ namespace BLL.Services
                 return mapperUser;
             }
             return null;
+        }
+
+        public async Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid userId, ProfilePictureCreatingModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            if (model.ProfilePicture != null &&
+                model.ProfilePicture.Length > DefaultProfilePictureLength)
+            {
+                validationResults.Add(new ValidationResult("Invalid profile picture"));
+                return validationResults;
+            }
+
+            if (model.ProfilePicture != null)
+            {
+                ProfilePicture newProfilePicture = new ProfilePicture();
+
+                newProfilePicture.UserId = userId;
+                newProfilePicture.Format = model.ProfilePicture.ContentType;
+
+                var memoryStream = new MemoryStream();
+                model.ProfilePicture.CopyTo(memoryStream);
+                newProfilePicture.Data = memoryStream.ToArray();
+                
+                var currentProfilePicture = await unitOfWork.ProfilePictureRepository.GetByUserIdAsync(userId);
+                if (currentProfilePicture == null)
+                {
+                    newProfilePicture.Id = Guid.NewGuid();
+                    await unitOfWork.ProfilePictureRepository.AddAsync(newProfilePicture);
+                } else
+                {
+                    newProfilePicture.Id = currentProfilePicture.Id;
+                    await unitOfWork.ProfilePictureRepository.Update(newProfilePicture);
+                }
+                
+            }
+            return validationResults;
         }
 
         public async Task UpdateAsync(UserModel model)

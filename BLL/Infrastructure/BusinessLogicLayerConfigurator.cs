@@ -16,10 +16,10 @@ namespace BLL.Infrastructure
     {
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
-
             DataAccessLayerConfiguratior.ConfigureServices(serviceCollection);
             serviceCollection.AddTransient<IUserService, UserService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
+            serviceCollection.AddTransient<ISkillService, SkillService>();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AutomapperProfile());

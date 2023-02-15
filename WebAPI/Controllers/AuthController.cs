@@ -3,6 +3,7 @@ using BLL.Interfaces;
 using BLL.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace WebAPI.Controllers
@@ -25,9 +26,12 @@ namespace WebAPI.Controllers
         {
             try
             {
-                Debug.WriteLine("user login ==> " + value.Login);
-                await authService.RegisterAsync(value);
-                return Ok();
+                var validationResults = await authService.RegisterUserAsync(value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
             }
             catch (Exception e)
             {

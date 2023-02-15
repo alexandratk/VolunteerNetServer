@@ -12,8 +12,21 @@ namespace DAL.Entities
 
         public string Password { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Country { get; set; }
+
+        public string City { get; set; }
+
+        public string Phone { get; set; }
+
         public string Role { get; set; }
 
         public ProfilePicture? ProfilePicture { get; set; }
+
+        public List<Skill> Skills { get; set; } = new List<Skill>();
+        public List<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
     }
 }

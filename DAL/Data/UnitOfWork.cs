@@ -14,6 +14,7 @@ namespace DAL.Data
 
         private UserRepository userRepository;
         private ProfilePictureRepository profilePictureRepository;
+        private SkillRepository skillRepository;
 
         public IUserRepository UserRepository
         {
@@ -36,6 +37,18 @@ namespace DAL.Data
                     profilePictureRepository = new ProfilePictureRepository(context);
                 }
                 return profilePictureRepository;
+            }
+        }
+
+        public ISkillRepository SkillRepository
+        {
+            get
+            {
+                if (skillRepository == null)
+                {
+                    skillRepository = new SkillRepository(context);
+                }
+                return skillRepository;
             }
         }
 

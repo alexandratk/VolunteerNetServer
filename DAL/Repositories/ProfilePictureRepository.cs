@@ -1,6 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +45,16 @@ namespace DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(ProfilePicture entity)
+        public Task<ProfilePicture?> GetByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var profilePicture = _context.ProfilePictures.AsNoTracking().Where(x => x.UserId == userId).FirstOrDefault();
+            return Task.FromResult(profilePicture);
+        }
+
+        public async Task Update(ProfilePicture entity)
+        {
+            _context.ProfilePictures.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

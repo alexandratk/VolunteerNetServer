@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    public interface IProfilePictureRepository : IRepository<ProfilePicture>
+    public interface ISkillRepository : IRepository<Skill>
     {
-        Task<ProfilePicture?> GetByUserIdAsync(Guid id);
     }
 }

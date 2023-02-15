@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI.Controllers
 {
@@ -51,6 +52,28 @@ namespace WebAPI.Controllers
             {
                 await userService.UpdateAsync(value);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user, admin")]
+        [HttpPost("update/profilepicture")]
+        public async Task<ActionResult> UpdateProfilePictureByIdFromToken([FromForm] ProfilePictureCreatingModel value)
+        {
+            try
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+
+                var validationResults = await userService.UpdateProfilePictureAsync(Guid.Parse(userId), value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
             }
             catch (Exception e)
             {
@@ -101,14 +124,14 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "user, admin")]
         [HttpGet("get")]
         public async Task<ActionResult<UserModel>> GetByIdFromToken()
         {
-            var id = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
-            Debug.WriteLine("id from token ==> " + id);
             try
             {
-                var customer = await userService.GetByIdAsync(Guid.Parse(id));
+                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+                var customer = await userService.GetByIdAsync(Guid.Parse(userId));
                 return Ok(customer);
             }
             catch (Exception e)
