@@ -17,6 +17,8 @@ namespace BLL.Models
 
         public string LastName { get; set; }
 
+        public DateTime DateOfBirth { get; set; }
+
         public string Country { get; set; }
 
         public string City { get; set; }
