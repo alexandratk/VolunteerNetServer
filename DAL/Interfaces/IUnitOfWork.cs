@@ -8,10 +8,16 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork
     {
-        IUserRepository UserRepository { get; }
+        ICityRepository CityRepository { get; }
 
+        ICountryRepository CountryRepository { get; }
+        
         IProfilePictureRepository ProfilePictureRepository { get; }
 
         ISkillRepository SkillRepository { get; }
+        
+        IUserRepository UserRepository { get; }
+
+        
     }
 }

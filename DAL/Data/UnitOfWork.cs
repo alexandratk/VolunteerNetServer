@@ -15,6 +15,8 @@ namespace DAL.Data
         private UserRepository userRepository;
         private ProfilePictureRepository profilePictureRepository;
         private SkillRepository skillRepository;
+        private CityRepository cityRepository;
+        private CountryRepository countryRepository;
 
         public IUserRepository UserRepository
         {
@@ -49,6 +51,30 @@ namespace DAL.Data
                     skillRepository = new SkillRepository(context);
                 }
                 return skillRepository;
+            }
+        }
+
+        public ICityRepository CityRepository
+        {
+            get
+            {
+                if (cityRepository == null)
+                {
+                    cityRepository = new CityRepository(context);
+                }
+                return cityRepository;
+            }
+        }
+
+        public ICountryRepository CountryRepository
+        {
+            get
+            {
+                if (countryRepository == null)
+                {
+                    countryRepository = new CountryRepository(context);
+                }
+                return countryRepository;
             }
         }
 

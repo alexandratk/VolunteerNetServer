@@ -13,5 +13,7 @@ namespace BLL.Interfaces
         Task<UserViewModel> GetByIdAsync(Guid id);
 
         Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreatingModel model);
+
+        Task<UserViewModel> GetByIdAsync(Guid id, string language);
     }
 }

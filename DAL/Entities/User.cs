@@ -18,9 +18,8 @@ namespace DAL.Entities
 
         public DateTime DateOfBirth { get; set; }
 
-        public string Country { get; set; }
-
-        public string City { get; set; }
+        public Guid CityId { get; set; }
+        public City City { get; set; }
 
         public string Phone { get; set; }
 

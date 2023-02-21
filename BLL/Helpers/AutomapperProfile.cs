@@ -20,7 +20,6 @@ namespace BLL.Helpers
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
-                .ForMember(um => um.Country, u => u.MapFrom(x => x.Country))
                 .ForMember(um => um.City, u => u.MapFrom(x => x.City))
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role));
@@ -30,7 +29,7 @@ namespace BLL.Helpers
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
-                .ForMember(um => um.Country, u => u.MapFrom(x => x.Country))
+                .ForMember(um => um.Country, u => u.Ignore())
                 .ForMember(um => um.City, u => u.MapFrom(x => x.City))
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role));
@@ -40,16 +39,16 @@ namespace BLL.Helpers
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
-                .ForMember(um => um.Country, u => u.MapFrom(x => x.Country))
                 .ForMember(um => um.City, u => u.MapFrom(x => x.City))
-                .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone));
+                .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
+                .ForMember(um => um.City, u => u.Ignore());
             CreateMap<User, UserViewModel>().ForMember(um => um.Id, u => u.MapFrom(x => x.Id))
                 .ForMember(um => um.Login, u => u.MapFrom(x => x.Login))
                 .ForMember(um => um.Password, u => u.MapFrom(x => x.Password))
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
-                .ForMember(um => um.Country, u => u.MapFrom(x => x.Country))
+                .ForMember(um => um.Country, u => u.Ignore())
                 .ForMember(um => um.City, u => u.MapFrom(x => x.City))
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role))
@@ -60,6 +59,9 @@ namespace BLL.Helpers
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
             CreateMap<Skill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
+
+            CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
+            CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
         }
     }
 }

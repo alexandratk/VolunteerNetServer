@@ -53,13 +53,30 @@ namespace BLL.Services
             return mapperUsers;
         }
 
-        public async Task<UserViewModel> GetByIdAsync(Guid id)
+        public Task<UserViewModel> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<UserViewModel> GetByIdAsync(Guid id, string language)
         {
             var unmapperUser = await unitOfWork.UserRepository.GetByIdAsync(id);
             if (unmapperUser != null)
             {
                 var mapperUser = mapper.Map<User, UserViewModel>(unmapperUser);
-                if (unmapperUser.ProfilePicture != null)
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetCityTranslationById(unmapperUser.CityId, language);
+                if (cityTranslation != null)
+                {
+                    mapperUser.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        mapperUser.Country = countryTranslation.Name;
+                    }
+                }
+                if (unmapperUser.ProfilePicture != null) 
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
                 }

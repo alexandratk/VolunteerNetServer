@@ -51,6 +51,14 @@ namespace BLL.Services
             mapperUser.Password = HashHelper.ComputeSha256Hash(model.Password);
             mapperUser.Role = RoleUser;
 
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
+            if (cityTranslation == null)
+            {
+                validationResults.Add(new ValidationResult("Invalid location"));
+                return validationResults;
+            }
+            mapperUser.CityId = cityTranslation.CityId;
+
             await unitOfWork.UserRepository.AddAsync(mapperUser);
             return validationResults;
         }
