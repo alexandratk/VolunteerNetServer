@@ -96,12 +96,12 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("getlist")]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetList()
+        [HttpGet("getlist/{language}")]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetList(string language)
         {
             try
             {
-                var customers = await userService.GetAllAsync();
+                var customers = await userService.GetAllAsync(language);
                 return Ok(customers);
             }
             catch (Exception e)

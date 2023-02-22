@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using DAL.DefaultData.cs;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 

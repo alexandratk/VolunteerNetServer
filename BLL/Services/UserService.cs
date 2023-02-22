@@ -46,10 +46,30 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<UserModel>> GetAllAsync()
+        public async Task<IEnumerable<UserViewModel>> GetAllAsync(string language)
         {
             var unmapperUsers = await unitOfWork.UserRepository.GetAllAsync();
-            var mapperUsers = mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(unmapperUsers);
+            var mapperUsers = mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(unmapperUsers);
+            foreach(var mapperUser in mapperUsers)
+            {
+                var unmapperUser = unmapperUsers.Where(r => r.Id == mapperUser.Id).FirstOrDefault();
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetCityTranslationById(unmapperUser.CityId, language);
+                if (cityTranslation != null)
+                {
+                    mapperUser.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        mapperUser.Country = countryTranslation.Name;
+                    }
+                }
+                if (unmapperUser.ProfilePicture != null)
+                {
+                    mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
+                }
+            }
             return mapperUsers;
         }
 
@@ -80,13 +100,6 @@ namespace BLL.Services
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
                 }
-                // else
-                //{
-                //    mapperUser.ProfilePicture = "";
-                //    //byte[] profilePictureBytes = File.ReadAllBytes(DefaultProfilePicturePath);
-                //    //mapperUser.ProfilePicture = Convert.ToBase64String(profilePictureBytes);
-                //    //mapperUser.ProfilePictureFormat = findDefaultProfilePictureFormat();
-                //}
                 return mapperUser;
             }
             return null;
@@ -132,6 +145,11 @@ namespace BLL.Services
         {
             var unmapperUser = mapper.Map<UserModel, User>(model);
             await unitOfWork.UserRepository.Update(unmapperUser);
+        }
+
+        Task<IEnumerable<UserModel>> IService<UserModel>.GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -72,6 +72,11 @@ namespace DAL.Data
             modelBuilder.Entity<City>().HasData(locations.Cities);
             modelBuilder.Entity<CountryTranslation>().HasData(locations.CountryTranslations);
             modelBuilder.Entity<CityTranslation>().HasData(locations.CityTranslations);
+
+            FirstAdmin firstAdmin = new FirstAdmin();
+            firstAdmin.User.CityId = locations.Cities.First().Id;
+            modelBuilder.Entity<User>().HasData(firstAdmin.User);
+
         }
     }
-}
+} 

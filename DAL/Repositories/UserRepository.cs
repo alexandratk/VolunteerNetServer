@@ -38,7 +38,7 @@ namespace DAL.Repositories
 
         public async Task<List<User>> GetAllAsync()
         {
-            List<User> users = await _context.Users.AsNoTracking().ToListAsync();
+            List<User> users = await _context.Users.Include("ProfilePicture").AsNoTracking().ToListAsync();
             return users;
         }
 
