@@ -5,6 +5,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.Net;
 
 namespace WebAPI.Controllers
 {
@@ -43,8 +44,11 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AuthUser([FromBody] AuthRequestModel authRequestModel)
         {
             var authResponse = await authService.AuthUser(authRequestModel);
-
-            return Ok(authResponse);
+            if (!authResponse.jwtToken.Equals(""))
+            {
+                return Ok(authResponse);
+            }
+            return Unauthorized();
         }
     }
 }
