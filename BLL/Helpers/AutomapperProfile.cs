@@ -20,7 +20,7 @@ namespace BLL.Helpers
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
-                .ForMember(um => um.City, u => u.MapFrom(x => x.City))
+                .ForMember(um => um.City, u => u.Ignore())
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role));
             CreateMap<User, UserModel>().ForMember(um => um.Id, u => u.MapFrom(x => x.Id))
@@ -30,7 +30,7 @@ namespace BLL.Helpers
                 .ForMember(um => um.LastName, u => u.MapFrom(x => x.LastName))
                 .ForMember(um => um.DateOfBirth, u => u.MapFrom(x => x.DateOfBirth))
                 .ForMember(um => um.Country, u => u.Ignore())
-                .ForMember(um => um.City, u => u.MapFrom(x => x.City))
+                .ForMember(um => um.City, u => u.Ignore())
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role));
             CreateMap<UserCreatingModel, User>()
