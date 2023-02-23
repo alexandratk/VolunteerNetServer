@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,6 +27,25 @@ namespace WebAPI.Controllers
         public UserController(IUserService userService)
         {
             this.userService = userService;
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost("adduser")]
+        public async Task<ActionResult> Register([FromForm] UserModel value)
+        {
+            try
+            {
+                var validationResults = await userService.AddUserAsync(value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
 
         //[HttpPost("addlist")]

@@ -10,6 +10,8 @@ namespace BLL.Interfaces
 {
     public interface IUserService : IService<UserModel>
     {
+        Task<List<ValidationResult>> AddUserAsync(UserModel model);
+
         Task<UserViewModel> GetByIdAsync(Guid id);
 
         Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreatingModel model);

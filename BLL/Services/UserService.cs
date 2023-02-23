@@ -2,6 +2,7 @@
 using BLL.Helpers;
 using BLL.Interfaces;
 using BLL.Models;
+using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,38 @@ namespace BLL.Services
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+        }
+
+        public async Task<List<ValidationResult>> AddUserAsync(UserModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            if (unitOfWork.UserRepository.CheckLogin(model.Login))
+            {
+                validationResults.Add(new ValidationResult("Invalid login"));
+                return validationResults;
+            }
+
+            if (!UserRoles.Roles.Contains(model.Role))
+            {
+                validationResults.Add(new ValidationResult("Invalid role"));
+                return validationResults;
+            }
+
+            var mapperUser = mapper.Map<UserModel, User>(model);
+
+            mapperUser.Id = Guid.NewGuid();
+            mapperUser.Password = HashHelper.ComputeSha256Hash(model.Password);
+
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
+            if (cityTranslation == null)
+            {
+                validationResults.Add(new ValidationResult("Invalid location"));
+                return validationResults;
+            }
+            mapperUser.CityId = cityTranslation.CityId;
+
+            await unitOfWork.UserRepository.AddAsync(mapperUser);
+            return validationResults;
         }
 
         //public string findDefaultProfilePictureFormat()
