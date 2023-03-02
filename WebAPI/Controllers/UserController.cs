@@ -116,8 +116,8 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("getlist/{language}")]
-        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetList(string language)
+        [HttpGet("getlist")]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetList([FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {
