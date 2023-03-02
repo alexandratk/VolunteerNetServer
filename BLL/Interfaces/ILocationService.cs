@@ -9,8 +9,8 @@ namespace BLL.Interfaces
 {
     public interface ILocationService
     {
-        Task<IEnumerable<CountryViewModel>> GetCountryNamesAsync(CountryFiltrModel countryFiltrModel);
+        Task<IEnumerable<CountryViewModel>> GetCountryNamesAsync(string language);
 
-        Task<IEnumerable<CityViewModel>> GetCityNamesByCountryAsync(CitiesFiltrModel citiesFiltrModel);
+        Task<IEnumerable<CityViewModel>> GetCityNamesByCountryAsync(string language, string country);
     }
 }

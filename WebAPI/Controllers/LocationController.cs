@@ -20,12 +20,26 @@ namespace WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost("getcountries")]
-        public async Task<ActionResult<IEnumerable<CountryViewModel>>> GetListCountries([FromForm] CountryFiltrModel countryFiltrModel)
+        //[HttpPost("getcountries")]
+        //public async Task<ActionResult<IEnumerable<CountryViewModel>>> GetListCountries([FromForm] CountryFiltrModel countryFiltrModel)
+        //{
+        //    try
+        //    {
+        //        var countryNames = await locationService.GetCountryNamesAsync(countryFiltrModel);
+        //        return Ok(countryNames);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return NotFound(e);
+        //    }
+        //}
+
+        [HttpGet("getcountries")]
+        public async Task<ActionResult<IEnumerable<CountryViewModel>>> GetListCountries([FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {
-                var countryNames = await locationService.GetCountryNamesAsync(countryFiltrModel);
+                var countryNames = await locationService.GetCountryNamesAsync(language);
                 return Ok(countryNames);
             }
             catch (Exception e)
@@ -34,12 +48,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("getcities")]
-        public async Task<ActionResult<IEnumerable<CountryViewModel>>> GetListCities([FromForm] CitiesFiltrModel citiesFiltrModel)
+        [HttpGet("getcities/{country}")]
+        public async Task<ActionResult<IEnumerable<CountryViewModel>>> GetListCities([FromHeader(Name = "Accept-Language")] string language, string country)
         {
             try
             {
-                var cityNames = await locationService.GetCityNamesByCountryAsync(citiesFiltrModel);
+                var cityNames = await locationService.GetCityNamesByCountryAsync(language, country);
                 return Ok(cityNames);
             }
             catch (Exception e)

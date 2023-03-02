@@ -144,9 +144,25 @@ namespace WebAPI.Controllers
             }
         }
 
+        //[Authorize(Roles = "user, admin")]
+        //[HttpGet("get/{language}")]
+        //public async Task<ActionResult<UserModel>> GetByIdFromToken(string language)
+        //{
+        //    try
+        //    {
+        //        var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+        //        var customer = await userService.GetByIdAsync(Guid.Parse(userId), language);
+        //        return Ok(customer);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return NotFound(e);
+        //    }
+        //}
+
         [Authorize(Roles = "user, admin")]
-        [HttpGet("get/{language}")]
-        public async Task<ActionResult<UserModel>> GetByIdFromToken(string language)
+        [HttpGet("get")]
+        public async Task<ActionResult<UserModel>> GetByIdFromToken([FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {

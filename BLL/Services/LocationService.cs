@@ -23,17 +23,17 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<CountryViewModel>> GetCountryNamesAsync(CountryFiltrModel countryFiltrModel)
+        public async Task<IEnumerable<CountryViewModel>> GetCountryNamesAsync(string language)
         {
-            var countries = await unitOfWork.CountryRepository.GetCountryNamesAsync(countryFiltrModel.Language);
+            var countries = await unitOfWork.CountryRepository.GetCountryNamesAsync(language);
             var countryNames = mapper.Map<IEnumerable<CountryTranslation>, IEnumerable<CountryViewModel>>(countries);
             return countryNames;
         }
 
-        public async Task<IEnumerable<CityViewModel>> GetCityNamesByCountryAsync(CitiesFiltrModel citiesFiltrModel)
+        public async Task<IEnumerable<CityViewModel>> GetCityNamesByCountryAsync(string language, string countryName)
         {
-            var country = await unitOfWork.CountryRepository.getCountryIdByName(citiesFiltrModel.CountryName);
-            var cities = await unitOfWork.CityRepository.GetCityNamesByCountryNameAsync(country.CountryId, citiesFiltrModel.Language);
+            var country = await unitOfWork.CountryRepository.getCountryIdByName(countryName);
+            var cities = await unitOfWork.CityRepository.GetCityNamesByCountryNameAsync(country.CountryId, language);
             var cityNames = mapper.Map<IEnumerable<CityTranslation>, IEnumerable<CityViewModel>>(cities);
             return cityNames;
         }
