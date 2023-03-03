@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +14,16 @@ namespace BLL.Interfaces
         Task<List<ValidationResult>> AddUserAsync(UserModel model);
 
         Task<UserViewModel> GetByIdAsync(Guid id);
-
-        Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreatingModel model);
-
+        
         Task<UserViewModel> GetByIdAsync(Guid id, string language);
 
         Task<IEnumerable<UserViewModel>> GetAllAsync(string language);
+
+        Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreatingModel model);
+
+        Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreatingModel model);
+
+
+        DocumentModel GetUserSkillDocument(Guid id);
     }
 }

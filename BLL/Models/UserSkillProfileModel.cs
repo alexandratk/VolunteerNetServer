@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserSkillCreatingModel
+    public class UserSkillProfileModel : BaseModel
     {
         public Guid SkillId { get; set; }
-
-        public IFormFile? Document { get; set; }
+        public SkillModel Skill { get; set; }
     }
 }

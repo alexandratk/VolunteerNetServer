@@ -20,6 +20,7 @@ namespace DAL.Data
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserSkill> UserSkills { get; set; }
 
         public VolunteerNetServerDBContext(DbContextOptions<VolunteerNetServerDBContext> options) : base (options)
         {

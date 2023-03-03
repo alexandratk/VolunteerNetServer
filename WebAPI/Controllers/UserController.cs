@@ -101,6 +101,28 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "user")]
+        [HttpPost("update/skill")]
+        public async Task<ActionResult> UpdateSkillsByIdFromToken([FromForm] UserSkillCreatingModel value)
+        {
+            try
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+
+                var validationResults = await userService.UpdateUserSkillsAsync(Guid.Parse(userId), value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
         [HttpDelete("delete/{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
@@ -174,6 +196,15 @@ namespace WebAPI.Controllers
             {
                 return NotFound(e);
             }
+        }
+
+
+        [Authorize(Roles = "user")]
+        [HttpGet("getskilldocument/{id}")]
+        public ActionResult GetUserSkillDocument(Guid id)
+        {
+            var document = userService.GetUserSkillDocument(id);
+            return File(document.Document, document.DocumentFormat, "file");
         }
     }
 }

@@ -17,6 +17,7 @@ namespace DAL.Data
         private SkillRepository skillRepository;
         private CityRepository cityRepository;
         private CountryRepository countryRepository;
+        private UserSkillRepository userSkillRepository;
 
         public IUserRepository UserRepository
         {
@@ -78,10 +79,17 @@ namespace DAL.Data
             }
         }
 
-        //public UnitOfWork()
-        //{
-        //    context = new PhotoAlbumDbContext();
-        //}
+        public IUserSkillRepository UserSkillRepository
+        {
+            get
+            {
+                if (userSkillRepository == null)
+                {
+                    userSkillRepository = new UserSkillRepository(context);
+                }
+                return userSkillRepository;
+            }
+        }
 
         public UnitOfWork(VolunteerNetServerDBContext context)
         {

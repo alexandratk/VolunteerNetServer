@@ -29,5 +29,7 @@ namespace BLL.Models
         public string ProfilePicture { get; set; }
 
         public string ProfilePictureFormat { get; set; }
+
+        public List<UserSkillProfileModel> UserSkills { get; set; } = new List<UserSkillProfileModel>();
     }
 }

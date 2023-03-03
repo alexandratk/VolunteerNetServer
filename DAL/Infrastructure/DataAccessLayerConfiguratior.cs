@@ -20,6 +20,7 @@ namespace DAL.Infrastructure
             serviceCollection.AddTransient<ICountryRepository, CountryRepository>();
             serviceCollection.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();
             serviceCollection.AddTransient<ISkillRepository, SkillRepository>();
+            serviceCollection.AddTransient<IUserSkillRepository, UserSkillRepository>();
             serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
 
         }

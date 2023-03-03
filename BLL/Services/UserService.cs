@@ -5,6 +5,7 @@ using BLL.Models;
 using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
@@ -24,6 +25,8 @@ namespace BLL.Services
         private IMapper mapper;
 
         private const int DefaultProfilePictureLength = 256000;
+
+        private const int DefaultUserSkillDocumentLength = 5000000;
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -133,6 +136,10 @@ namespace BLL.Services
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
                 }
+                if (unmapperUser.UserSkills != null)
+                {
+                    mapperUser.UserSkills = mapper.Map<List<UserSkill>, List<UserSkillProfileModel>>(unmapperUser.UserSkills);
+                }
                 return mapperUser;
             }
             return null;
@@ -172,6 +179,46 @@ namespace BLL.Services
                 
             }
             return validationResults;
+        }
+
+        public async Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreatingModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            if (model.Document != null &&
+                model.Document.Length > DefaultUserSkillDocumentLength)
+            {
+                validationResults.Add(new ValidationResult("Invalid document"));
+                return validationResults;
+            }
+
+            if (model.Document != null)
+            {
+                UserSkill newUserSkill = new UserSkill();
+
+                newUserSkill.Id = Guid.NewGuid();
+                newUserSkill.UserId = userId;
+                newUserSkill.SkillId = model.SkillId;
+                newUserSkill.DocumentFormat = model.Document.ContentType;
+
+                var memoryStream = new MemoryStream();
+                model.Document.CopyTo(memoryStream);
+                newUserSkill.Document = memoryStream.ToArray();
+
+                await unitOfWork.UserSkillRepository.AddAsync(newUserSkill);
+            }
+            return validationResults;
+        }
+
+        public DocumentModel GetUserSkillDocument(Guid id)
+        {
+            UserSkill unmapperDocument = unitOfWork.UserSkillRepository.GetById(id);
+            DocumentModel documentModel = new DocumentModel();
+            if (unmapperDocument != null)
+            {
+                documentModel.DocumentFormat = unmapperDocument.DocumentFormat;
+                documentModel.Document = unmapperDocument.Document;
+            }
+            return documentModel;
         }
 
         public async Task UpdateAsync(UserModel model)

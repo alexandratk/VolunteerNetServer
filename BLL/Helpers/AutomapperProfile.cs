@@ -60,6 +60,11 @@ namespace BLL.Helpers
             CreateMap<Skill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
 
+            CreateMap<UserSkill, UserSkillProfileModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.SkillId, b => b.MapFrom(c => c.SkillId));
+
+
+
             CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
             CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
         }

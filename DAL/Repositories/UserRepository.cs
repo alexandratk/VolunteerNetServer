@@ -50,7 +50,7 @@ namespace DAL.Repositories
 
         public Task<User?> GetByIdAsync(Guid id)
         {
-            User? user = _context.Users.AsNoTracking().Where(r => r.Id == id).Include("ProfilePicture").FirstOrDefault();
+            User? user = _context.Users.AsNoTracking().Where(r => r.Id == id).Include("ProfilePicture").Include("UserSkills").Include("UserSkills.Skill").FirstOrDefault();
             return Task.FromResult(user);
         }
 
