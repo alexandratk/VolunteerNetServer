@@ -5,6 +5,7 @@ using DAL.Entities;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,29 @@ namespace BLL.Services
         {
             var unmapperSkills = await unitOfWork.SkillRepository.GetAllAsync();
             var mapperSkills = mapper.Map<IEnumerable<Skill>, IEnumerable<SkillModel>>(unmapperSkills);
+            return mapperSkills;
+        }
+
+        public async Task<List<SkillModel>> GetListByUserIdAsync(Guid userId, string language)
+        {
+            var unmapperSkills = await unitOfWork.SkillRepository.GetAllAsync();
+            var mapperSkills = mapper.Map<List<Skill>, List<SkillModel>>(unmapperSkills);
+
+            var unmapperUserSkills = await unitOfWork.UserSkillRepository.GetListUserSkillByUserId(userId);
+            var mapperUserSkills = mapper.Map<List<UserSkill>, List<UserSkillModel>>(unmapperUserSkills);
+
+            foreach (UserSkillModel userSkill in mapperUserSkills)
+            {
+                int i = 0;
+                while (i < mapperSkills.Count && mapperSkills[i].Id != userSkill.Skill.Id)
+                {
+                    i++;
+                }
+                if (i < mapperSkills.Count)
+                {
+                    mapperSkills.RemoveAt(i);
+                }
+            }
             return mapperSkills;
         }
 

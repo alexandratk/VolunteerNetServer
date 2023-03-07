@@ -1,6 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,12 @@ namespace DAL.Repositories
         public Task<List<UserSkill>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public Task<List<UserSkill>> GetListUserSkillByUserId(Guid userId)
+        {
+            var userSkills = _context.UserSkills.Include("Skill").AsNoTracking().Where(x => x.UserId == userId).ToList();
+            return Task.FromResult(userSkills);
         }
 
         public Task<UserSkill?> GetByIdAsync(Guid id)

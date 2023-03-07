@@ -24,9 +24,18 @@ namespace BLL.Services
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
 
-        private const int DefaultProfilePictureLength = 256000;
+        private const int LimitationProfilePictureLength = 256000;
 
-        private const int DefaultUserSkillDocumentLength = 5000000;
+        private const int LimitationUserSkillDocumentLength = 5000000;
+
+        private const string LimitationFormatUserSkillDocument = "application/pdf";
+
+        private List<string> LimitationFormatProfilePicture = new List<string>()
+        {
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+        };
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -66,13 +75,6 @@ namespace BLL.Services
             return validationResults;
         }
 
-        //public string findDefaultProfilePictureFormat()
-        //{
-        //    var pathAfterSplit = DefaultProfilePicturePath.Split('.');
-        //    string format = "image/" + pathAfterSplit[pathAfterSplit.Length - 1];
-        //    return format;
-        //}
-
         public async Task DeleteAsync(Guid modelId)
         {
             var unmapperUser = await unitOfWork.UserRepository.GetByIdAsync(modelId);
@@ -89,7 +91,8 @@ namespace BLL.Services
             foreach(var mapperUser in mapperUsers)
             {
                 var unmapperUser = unmapperUsers.Where(r => r.Id == mapperUser.Id).FirstOrDefault();
-                CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetCityTranslationById(unmapperUser.CityId, language);
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(unmapperUser.CityId, language);
                 if (cityTranslation != null)
                 {
                     mapperUser.City = cityTranslation.Name;
@@ -120,7 +123,8 @@ namespace BLL.Services
             if (unmapperUser != null)
             {
                 var mapperUser = mapper.Map<User, UserViewModel>(unmapperUser);
-                CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetCityTranslationById(unmapperUser.CityId, language);
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(unmapperUser.CityId, language);
                 if (cityTranslation != null)
                 {
                     mapperUser.City = cityTranslation.Name;
@@ -138,59 +142,79 @@ namespace BLL.Services
                 }
                 if (unmapperUser.UserSkills != null)
                 {
-                    mapperUser.UserSkills = mapper.Map<List<UserSkill>, List<UserSkillProfileModel>>(unmapperUser.UserSkills);
+                    mapperUser.UserSkills = mapper
+                        .Map<List<UserSkill>, List<UserSkillViewModel>>(unmapperUser.UserSkills);
                 }
                 return mapperUser;
             }
             return null;
         }
 
-        public async Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid userId, ProfilePictureCreatingModel model)
+        public async Task<List<ValidationResult>> UpdateProfilePictureAsync(
+            Guid userId, ProfilePictureCreatingModel model)
         {
             var validationResults = new List<ValidationResult>();
-            if (model.ProfilePicture != null &&
-                model.ProfilePicture.Length > DefaultProfilePictureLength)
+            if (model.ProfilePicture == null)
             {
-                validationResults.Add(new ValidationResult("Invalid profile picture"));
+                validationResults.Add(new ValidationResult("Profile picture is empty"));
+                return validationResults;
+            }
+            if (!LimitationFormatProfilePicture.Contains(model.ProfilePicture.ContentType))
+            {
+                validationResults.Add(new ValidationResult("Invalid profile picture format"));
+                return validationResults;
+            }
+            if (model.ProfilePicture.Length > LimitationProfilePictureLength)
+            {
+                validationResults.Add(new ValidationResult("Invalid profile picture length"));
                 return validationResults;
             }
 
-            if (model.ProfilePicture != null)
+            ProfilePicture newProfilePicture = new ProfilePicture();
+
+            newProfilePicture.UserId = userId;
+            newProfilePicture.Format = model.ProfilePicture.ContentType;
+
+            Debug.WriteLine("profile picture format == > " + newProfilePicture.Format);
+
+            var memoryStream = new MemoryStream();
+            model.ProfilePicture.CopyTo(memoryStream);
+            newProfilePicture.Data = memoryStream.ToArray();
+                
+            var currentProfilePicture = await unitOfWork.ProfilePictureRepository
+                .GetByUserIdAsync(userId);
+            if (currentProfilePicture == null)
             {
-                ProfilePicture newProfilePicture = new ProfilePicture();
-
-                newProfilePicture.UserId = userId;
-                newProfilePicture.Format = model.ProfilePicture.ContentType;
-
-                var memoryStream = new MemoryStream();
-                model.ProfilePicture.CopyTo(memoryStream);
-                newProfilePicture.Data = memoryStream.ToArray();
-                
-                var currentProfilePicture = await unitOfWork.ProfilePictureRepository.GetByUserIdAsync(userId);
-                if (currentProfilePicture == null)
-                {
-                    newProfilePicture.Id = Guid.NewGuid();
-                    await unitOfWork.ProfilePictureRepository.AddAsync(newProfilePicture);
-                } else
-                {
-                    newProfilePicture.Id = currentProfilePicture.Id;
-                    await unitOfWork.ProfilePictureRepository.Update(newProfilePicture);
-                }
-                
+                newProfilePicture.Id = Guid.NewGuid();
+                await unitOfWork.ProfilePictureRepository.AddAsync(newProfilePicture);
+            } else
+            {
+                newProfilePicture.Id = currentProfilePicture.Id;
+                await unitOfWork.ProfilePictureRepository.Update(newProfilePicture);
             }
+                
             return validationResults;
         }
 
-        public async Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreatingModel model)
+        public async Task<List<ValidationResult>> UpdateUserSkillsAsync(
+            Guid userId, UserSkillCreatingModel model)
         {
             var validationResults = new List<ValidationResult>();
-            if (model.Document != null &&
-                model.Document.Length > DefaultUserSkillDocumentLength)
+            if (model.Document == null)
             {
-                validationResults.Add(new ValidationResult("Invalid document"));
+                validationResults.Add(new ValidationResult("Document is empty"));
                 return validationResults;
             }
-
+            if (model.Document.Length > LimitationUserSkillDocumentLength)
+            {
+                validationResults.Add(new ValidationResult("Invalid document lenght"));
+                return validationResults;
+            }
+            if (model.Document.ContentType != LimitationFormatUserSkillDocument)
+            {
+                validationResults.Add(new ValidationResult("Invalid document format"));
+                return validationResults;
+            }
             if (model.Document != null)
             {
                 UserSkill newUserSkill = new UserSkill();

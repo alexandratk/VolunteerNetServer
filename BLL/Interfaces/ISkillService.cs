@@ -12,5 +12,7 @@ namespace BLL.Interfaces
         Task<SkillModel> GetByIdAsync(Guid id);
 
         Task AddAsync(SkillModel model);
+
+        Task<List<SkillModel>> GetListByUserIdAsync(Guid userId, string language);
     }
 }

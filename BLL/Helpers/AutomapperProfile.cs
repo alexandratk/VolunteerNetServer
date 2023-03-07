@@ -60,10 +60,15 @@ namespace BLL.Helpers
             CreateMap<Skill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
 
-            CreateMap<UserSkill, UserSkillProfileModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
-                .ForMember(a => a.SkillId, b => b.MapFrom(c => c.SkillId));
-
-
+            CreateMap<UserSkill, UserSkillViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.DocumentId, b => b.MapFrom(c => c.Id));
+            CreateMap<UserSkill, UserSkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.SkillId, b => b.MapFrom(c => c.SkillId))
+                .ForMember(a => a.Skill, b => b.MapFrom(c => c.Skill))
+                .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
+                .ForMember(a => a.User, b => b.MapFrom(c => c.User))
+                .ForMember(a => a.DocumentFormat, b => b.MapFrom(c => c.DocumentFormat))
+                .ForMember(a => a.Document, b => b.MapFrom(c => c.Document));
 
             CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
             CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));

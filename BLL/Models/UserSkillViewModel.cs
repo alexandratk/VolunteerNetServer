@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserSkillProfileModel : BaseModel
+    public class UserSkillViewModel : BaseModel
     {
-        public Guid SkillId { get; set; }
+        public Guid DocumentId { get; set; }
         public SkillModel Skill { get; set; }
     }
 }

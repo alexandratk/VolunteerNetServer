@@ -5,11 +5,13 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class SkillController : ControllerBase
     {
         private ISkillService skillService { get; set; }
@@ -52,8 +54,25 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var customers = await skillService.GetAllAsync();
-                return Ok(customers);
+                var skills = await skillService.GetAllAsync();
+                return Ok(skills);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user")]
+        [HttpGet("getlistbyid")]
+        public async Task<ActionResult<IEnumerable<SkillModel>>> GetListByUserId([FromHeader(Name = "Accept-Language")] string language)
+        {
+            try
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x => 
+                    x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+                var skills = await skillService.GetListByUserIdAsync(Guid.Parse(userId), language);
+                return Ok(skills);
             }
             catch (Exception e)
             {

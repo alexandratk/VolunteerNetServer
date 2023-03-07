@@ -9,6 +9,7 @@ namespace DAL.Interfaces
 {
     public interface IUserSkillRepository : IRepository<UserSkill>
     {
+        Task<List<UserSkill>> GetListUserSkillByUserId(Guid userId);
         UserSkill? GetById(Guid id);
     }
 }
