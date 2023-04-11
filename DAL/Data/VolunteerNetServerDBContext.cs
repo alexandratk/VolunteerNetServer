@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using DAL.DefaultData;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace DAL.Data
 {
     public class VolunteerNetServerDBContext : DbContext
     {
+        public DbSet<Application> Applications { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<Country> Countries { get; set; }

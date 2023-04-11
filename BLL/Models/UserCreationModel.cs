@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserCreatingModel
+    public class UserCreationModel
     {
         public string Login { get; set; }
 

@@ -25,9 +25,10 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(UserSkill entity)
+        public async Task DeleteAsync(UserSkill entity)
         {
-            throw new NotImplementedException();
+            _context.UserSkills.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteByIdAsync(Guid id)
@@ -52,15 +53,22 @@ namespace DAL.Repositories
             return Task.FromResult(userSkill);
         }
 
+        public Task<UserSkill?> GetByUserIdSkillIdAsync(Guid userId, Guid skillId)
+        {
+            var userSkill = _context.UserSkills.Where(x => x.UserId == userId && x.SkillId == skillId).FirstOrDefault();
+            return Task.FromResult(userSkill);
+        }
+
         public UserSkill? GetById(Guid id)
         {
             var userSkill = _context.UserSkills.Where(x => x.Id == id).FirstOrDefault();
             return userSkill;
         }
 
-        public Task Update(UserSkill entity)
+        public async Task Update(UserSkill entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

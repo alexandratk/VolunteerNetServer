@@ -35,7 +35,7 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<ValidationResult>> RegisterUserAsync(UserCreatingModel model)
+        public async Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model)
         {
             var validationResults = new List<ValidationResult>();
             if (unitOfWork.UserRepository.CheckLogin(model.Login))
@@ -44,7 +44,7 @@ namespace BLL.Services
                 return validationResults;
             }
             
-            var mapperUser = mapper.Map<UserCreatingModel, User>(model);
+            var mapperUser = mapper.Map<UserCreationModel, User>(model);
 
             mapperUser.Id = Guid.NewGuid();
             mapperUser.Password = HashHelper.ComputeSha256Hash(model.Password);

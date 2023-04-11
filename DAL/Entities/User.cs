@@ -29,5 +29,7 @@ namespace DAL.Entities
 
         public List<Skill> Skills { get; set; } = new List<Skill>();
         public List<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
+
+        public List<Application> Applications { get; set; } = new List<Application>();
     }
 }

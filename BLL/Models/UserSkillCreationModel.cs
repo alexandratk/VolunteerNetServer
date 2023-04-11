@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class UserSkillCreatingModel
+    public class UserSkillCreationModel
     {
         public Guid SkillId { get; set; }
 

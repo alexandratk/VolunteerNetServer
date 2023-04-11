@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromForm] UserCreatingModel value)
+        public async Task<ActionResult> Register([FromForm] UserCreationModel value)
         {
             try
             {

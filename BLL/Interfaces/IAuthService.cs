@@ -13,6 +13,6 @@ namespace BLL.Interfaces
     {
         Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel);
 
-        Task<List<ValidationResult>> RegisterUserAsync(UserCreatingModel model);
+        Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model);
     }
 }

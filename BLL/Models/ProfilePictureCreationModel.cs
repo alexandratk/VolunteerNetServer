@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class ProfilePictureCreatingModel
+    public class ProfilePictureCreationModel
     {
         public IFormFile? ProfilePicture { get; set; }
     }

@@ -12,18 +12,21 @@ namespace BLL.Interfaces
     public interface IUserService : IService<UserModel>
     {
         Task<List<ValidationResult>> AddUserAsync(UserModel model);
+        
+        Task<List<ValidationResult>> DeleteUserSkillsAsync(Guid userId, UserSkillDeletionModel model);
+        
+        Task<IEnumerable<UserViewModel>> GetAllAsync(string language);
 
         Task<UserViewModel> GetByIdAsync(Guid id);
         
         Task<UserViewModel> GetByIdAsync(Guid id, string language);
-
-        Task<IEnumerable<UserViewModel>> GetAllAsync(string language);
-
-        Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreatingModel model);
-
-        Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreatingModel model);
-
-
+        
         DocumentModel GetUserSkillDocument(Guid id);
+
+        Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreationModel model);
+
+        Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreationModel model);
+        
+        
     }
 }

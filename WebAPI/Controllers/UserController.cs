@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost("adduser")]
-        public async Task<ActionResult> Register([FromForm] UserModel value)
+        public async Task<ActionResult> AddUser([FromForm] UserModel value)
         {
             try
             {
@@ -81,14 +81,20 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "user, admin")]
         [HttpPost("update/profilepicture")]
-        public async Task<ActionResult> UpdateProfilePictureByIdFromToken([FromForm] ProfilePictureCreatingModel value)
+        public async Task<ActionResult> UpdateProfilePictureByIdFromToken([FromForm] ProfilePictureCreationModel value)
         {
             try
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(x =>
-                    x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
 
-                var validationResults = await userService.UpdateProfilePictureAsync(Guid.Parse(userId), value);
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await userService.UpdateProfilePictureAsync(userId, value);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
@@ -103,14 +109,48 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "user")]
         [HttpPost("update/skill")]
-        public async Task<ActionResult> UpdateSkillsByIdFromToken([FromForm] UserSkillCreatingModel value)
+        public async Task<ActionResult> UpdateSkillsByIdFromToken([FromForm] UserSkillCreationModel value)
         {
             try
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(x =>
-                    x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
 
-                var validationResults = await userService.UpdateUserSkillsAsync(Guid.Parse(userId), value);
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await userService.UpdateUserSkillsAsync(userId, value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user")]
+        [HttpPost("delete/skill")]
+        public async Task<ActionResult> DeleteSkillsByIdFromToken([FromForm] UserSkillDeletionModel value)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await userService.DeleteUserSkillsAsync(userId, value);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
@@ -188,8 +228,15 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
-                var customer = await userService.GetByIdAsync(Guid.Parse(userId), language);
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+                var customer = await userService.GetByIdAsync(userId, language);
                 return Ok(customer);
             }
             catch (Exception e)

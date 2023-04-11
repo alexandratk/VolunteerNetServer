@@ -12,12 +12,25 @@ namespace DAL.Data
     {
         public VolunteerNetServerDBContext context { get; set; }
 
-        private UserRepository userRepository;
-        private ProfilePictureRepository profilePictureRepository;
-        private SkillRepository skillRepository;
+        private ApplicationRepository applicationRepository;
         private CityRepository cityRepository;
         private CountryRepository countryRepository;
+        private ProfilePictureRepository profilePictureRepository;
+        private SkillRepository skillRepository;
+        private UserRepository userRepository;
         private UserSkillRepository userSkillRepository;
+
+        public IApplicationRepository ApplicationRepository
+        {
+            get
+            {
+                if (applicationRepository == null)
+                {
+                    applicationRepository = new ApplicationRepository(context);
+                }
+                return applicationRepository;
+            }
+        }
 
         public IUserRepository UserRepository
         {

@@ -8,6 +8,8 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork
     {
+        IApplicationRepository ApplicationRepository { get; }
+
         ICityRepository CityRepository { get; }
 
         ICountryRepository CountryRepository { get; }

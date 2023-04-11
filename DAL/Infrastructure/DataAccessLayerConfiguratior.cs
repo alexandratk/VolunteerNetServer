@@ -15,11 +15,12 @@ namespace DAL.Infrastructure
     {
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<IUserRepository, UserRepository>();
+            serviceCollection.AddTransient<IApplicationRepository, ApplicationRepository>();
             serviceCollection.AddTransient<ICityRepository, CityRepository>();
             serviceCollection.AddTransient<ICountryRepository, CountryRepository>();
             serviceCollection.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();
             serviceCollection.AddTransient<ISkillRepository, SkillRepository>();
+            serviceCollection.AddTransient<IUserRepository, UserRepository>();
             serviceCollection.AddTransient<IUserSkillRepository, UserSkillRepository>();
             serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
 

@@ -151,7 +151,7 @@ namespace BLL.Services
         }
 
         public async Task<List<ValidationResult>> UpdateProfilePictureAsync(
-            Guid userId, ProfilePictureCreatingModel model)
+            Guid userId, ProfilePictureCreationModel model)
         {
             var validationResults = new List<ValidationResult>();
             if (model.ProfilePicture == null)
@@ -197,7 +197,7 @@ namespace BLL.Services
         }
 
         public async Task<List<ValidationResult>> UpdateUserSkillsAsync(
-            Guid userId, UserSkillCreatingModel model)
+            Guid userId, UserSkillCreationModel model)
         {
             var validationResults = new List<ValidationResult>();
             if (model.Document == null)
@@ -215,7 +215,8 @@ namespace BLL.Services
                 validationResults.Add(new ValidationResult("Invalid document format"));
                 return validationResults;
             }
-            if (model.Document != null)
+            var userSkill = await unitOfWork.UserSkillRepository.GetByUserIdSkillIdAsync(userId, model.SkillId);
+            if (userSkill == null)
             {
                 UserSkill newUserSkill = new UserSkill();
 
@@ -229,7 +230,39 @@ namespace BLL.Services
                 newUserSkill.Document = memoryStream.ToArray();
 
                 await unitOfWork.UserSkillRepository.AddAsync(newUserSkill);
+            } else
+            {
+                userSkill.DocumentFormat = model.Document.ContentType;
+
+                var memoryStream = new MemoryStream();
+                model.Document.CopyTo(memoryStream);
+                userSkill.Document = memoryStream.ToArray();
+
+                await unitOfWork.UserSkillRepository.Update(userSkill);
             }
+
+            return validationResults;
+        }
+
+        public async Task<List<ValidationResult>> DeleteUserSkillsAsync(
+            Guid userId, UserSkillDeletionModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            if (model == null)
+            {
+                validationResults.Add(new ValidationResult("Skill id is empty"));
+                return validationResults;
+            }
+
+            var userSkill = await unitOfWork.UserSkillRepository.GetByUserIdSkillIdAsync(userId, model.SkillId);
+
+            if (userSkill == null)
+            {
+                validationResults.Add(new ValidationResult("Skill id or user id is wrong"));
+                return validationResults;
+            }
+
+            await unitOfWork.UserSkillRepository.DeleteAsync(userSkill);
             return validationResults;
         }
 

@@ -18,6 +18,7 @@ namespace BLL.Infrastructure
         {
             DataAccessLayerConfiguratior.ConfigureServices(serviceCollection);
             
+            serviceCollection.AddTransient<IApplicationService, ApplicationService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
             serviceCollection.AddTransient<ILocationService, LocationService>();
             serviceCollection.AddTransient<ISkillService, SkillService>();

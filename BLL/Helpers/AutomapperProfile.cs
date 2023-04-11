@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BLL.Helpers
 {
@@ -33,7 +32,7 @@ namespace BLL.Helpers
                 .ForMember(um => um.City, u => u.Ignore())
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role));
-            CreateMap<UserCreatingModel, User>()
+            CreateMap<UserCreationModel, User>()
                 .ForMember(um => um.Login, u => u.MapFrom(x => x.Login))
                 .ForMember(um => um.Password, u => u.MapFrom(x => x.Password))
                 .ForMember(um => um.FirstName, u => u.MapFrom(x => x.FirstName))
@@ -72,6 +71,20 @@ namespace BLL.Helpers
 
             CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
             CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
+
+
+            CreateMap<ApplicationCreationModel, Application>().ForMember(a => a.Id, b => b.Ignore())
+                .ForMember(a => a.UserId, b => b.Ignore())
+                .ForMember(a => a.User, b => b.Ignore())
+                .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
+            CreateMap<Application, ApplicationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
+                .ForMember(a => a.Status, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
         }
     }
 }

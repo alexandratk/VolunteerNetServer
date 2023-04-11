@@ -21,7 +21,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<VolunteerNetServerDBContext>(options =>
@@ -35,21 +35,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                // укзывает, будет ли валидироваться издатель при валидации токена
+                // specifies whether the publisher will be validated when validating the token
                 ValidateIssuer = true,
-                // строка, представляющая издателя
+                // a string representing the publisher
                 ValidIssuer = AuthOptions.ISSUER,
 
-                // будет ли валидироваться потребитель токена
+                // whether the consumer of the token will be validated
                 ValidateAudience = true,
-                // установка потребителя токена
+                // setting consumer token
                 ValidAudience = AuthOptions.AUDIENCE,
-                // будет ли валидироваться время существования
+                // whether lifetime will be validated
                 ValidateLifetime = true,
 
-                // установка ключа безопасности
+                // security key setting
                 IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                // валидация ключа безопасности
+                // security key validation
                 ValidateIssuerSigningKey = true,
             };
         });
