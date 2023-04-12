@@ -13,7 +13,7 @@ namespace BLL.Interfaces
     {
         Task<List<ValidationResult>> AddUserAsync(UserModel model);
         
-        Task<List<ValidationResult>> DeleteUserSkillsAsync(Guid userId, UserSkillDeletionModel model);
+        Task<List<ValidationResult>> DeleteUserSkillsAsync(Guid userId, Guid skillId);
         
         Task<IEnumerable<UserViewModel>> GetAllAsync(string language);
 

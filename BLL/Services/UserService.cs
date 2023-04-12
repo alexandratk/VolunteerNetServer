@@ -244,17 +244,16 @@ namespace BLL.Services
             return validationResults;
         }
 
-        public async Task<List<ValidationResult>> DeleteUserSkillsAsync(
-            Guid userId, UserSkillDeletionModel model)
+        public async Task<List<ValidationResult>> DeleteUserSkillsAsync(Guid userId, Guid skillId)
         {
             var validationResults = new List<ValidationResult>();
-            if (model == null)
+            if (skillId == null)
             {
                 validationResults.Add(new ValidationResult("Skill id is empty"));
                 return validationResults;
             }
 
-            var userSkill = await unitOfWork.UserSkillRepository.GetByUserIdSkillIdAsync(userId, model.SkillId);
+            var userSkill = await unitOfWork.UserSkillRepository.GetByUserIdSkillIdAsync(userId, skillId);
 
             if (userSkill == null)
             {

@@ -136,8 +136,8 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpPost("delete/skill")]
-        public async Task<ActionResult> DeleteSkillsByIdFromToken([FromForm] UserSkillDeletionModel value)
+        [HttpGet("delete/skill/{skillId}")]
+        public async Task<ActionResult> DeleteSkillsByIdFromToken(Guid skillId)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace WebAPI.Controllers
 
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
-                var validationResults = await userService.DeleteUserSkillsAsync(userId, value);
+                var validationResults = await userService.DeleteUserSkillsAsync(userId, skillId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
