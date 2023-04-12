@@ -81,7 +81,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
             CreateMap<Application, ApplicationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
-                .ForMember(a => a.Status, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
                 .ForMember(a => a.Status, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
                 .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
