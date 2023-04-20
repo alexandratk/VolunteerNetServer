@@ -48,13 +48,13 @@ namespace BLL.Services
             var validationResults = new List<ValidationResult>();
             if (unitOfWork.UserRepository.CheckLogin(model.Login))
             {
-                validationResults.Add(new ValidationResult("Invalid login"));
+                validationResults.Add(new ValidationResult("invalidLogin"));
                 return validationResults;
             }
 
             if (!UserRoles.Roles.Contains(model.Role))
             {
-                validationResults.Add(new ValidationResult("Invalid role"));
+                validationResults.Add(new ValidationResult("invalidRole"));
                 return validationResults;
             }
 
@@ -66,7 +66,7 @@ namespace BLL.Services
             CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
             if (cityTranslation == null)
             {
-                validationResults.Add(new ValidationResult("Invalid location"));
+                validationResults.Add(new ValidationResult("invalidLocation"));
                 return validationResults;
             }
             mapperUser.CityId = cityTranslation.CityId;
@@ -156,17 +156,17 @@ namespace BLL.Services
             var validationResults = new List<ValidationResult>();
             if (model.ProfilePicture == null)
             {
-                validationResults.Add(new ValidationResult("Profile picture is empty"));
+                validationResults.Add(new ValidationResult("profilePictureIsEmpty"));
                 return validationResults;
             }
             if (!LimitationFormatProfilePicture.Contains(model.ProfilePicture.ContentType))
             {
-                validationResults.Add(new ValidationResult("Invalid profile picture format"));
+                validationResults.Add(new ValidationResult("invalidProfilePictureFormat"));
                 return validationResults;
             }
             if (model.ProfilePicture.Length > LimitationProfilePictureLength)
             {
-                validationResults.Add(new ValidationResult("Invalid profile picture length"));
+                validationResults.Add(new ValidationResult("invalidProfilePictureLength"));
                 return validationResults;
             }
 
@@ -174,8 +174,6 @@ namespace BLL.Services
 
             newProfilePicture.UserId = userId;
             newProfilePicture.Format = model.ProfilePicture.ContentType;
-
-            Debug.WriteLine("profile picture format == > " + newProfilePicture.Format);
 
             var memoryStream = new MemoryStream();
             model.ProfilePicture.CopyTo(memoryStream);
@@ -216,17 +214,17 @@ namespace BLL.Services
             var validationResults = new List<ValidationResult>();
             if (model.Document == null)
             {
-                validationResults.Add(new ValidationResult("Document is empty"));
+                validationResults.Add(new ValidationResult("documentIsEmpty"));
                 return validationResults;
             }
             if (model.Document.Length > LimitationUserSkillDocumentLength)
             {
-                validationResults.Add(new ValidationResult("Invalid document lenght"));
+                validationResults.Add(new ValidationResult("invalidDocumentLenght"));
                 return validationResults;
             }
             if (model.Document.ContentType != LimitationFormatUserSkillDocument)
             {
-                validationResults.Add(new ValidationResult("Invalid document format"));
+                validationResults.Add(new ValidationResult("invalidDocumentFormat"));
                 return validationResults;
             }
             var userSkill = await unitOfWork.UserSkillRepository.GetByUserIdSkillIdAsync(userId, model.SkillId);
@@ -263,7 +261,7 @@ namespace BLL.Services
             var validationResults = new List<ValidationResult>();
             if (skillId == null)
             {
-                validationResults.Add(new ValidationResult("Skill id is empty"));
+                validationResults.Add(new ValidationResult("skillIdIsEmpty"));
                 return validationResults;
             }
 
@@ -271,7 +269,7 @@ namespace BLL.Services
 
             if (userSkill == null)
             {
-                validationResults.Add(new ValidationResult("Skill id or user id is wrong"));
+                validationResults.Add(new ValidationResult("skillIdOrUserIdIsWrong"));
                 return validationResults;
             }
 

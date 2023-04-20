@@ -40,7 +40,7 @@ namespace BLL.Services
             var validationResults = new List<ValidationResult>();
             if (unitOfWork.UserRepository.CheckLogin(model.Login))
             {
-                validationResults.Add(new ValidationResult("Invalid login"));
+                validationResults.Add(new ValidationResult("invalidLogin"));
                 return validationResults;
             }
             
@@ -53,7 +53,7 @@ namespace BLL.Services
             CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
             if (cityTranslation == null)
             {
-                validationResults.Add(new ValidationResult("Invalid location"));
+                validationResults.Add(new ValidationResult("invalidLocation"));
                 return validationResults;
             }
             mapperUser.CityId = cityTranslation.CityId;
