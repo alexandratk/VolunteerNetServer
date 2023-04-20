@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -62,7 +63,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user, admin, moderator")]
         [HttpPost("update/profilepicture")]
         public async Task<ActionResult> UpdateProfilePictureByIdFromToken([FromForm] ProfilePictureCreationModel value)
         {
@@ -78,6 +79,34 @@ namespace WebAPI.Controllers
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
                 var validationResults = await userService.UpdateProfilePictureAsync(userId, value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpDelete("delete/profilepicture")]
+        public async Task<ActionResult> DeleteProfilePictureByIdFromToken()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await userService.DeleteProfilePictureAsync(userId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
@@ -119,7 +148,7 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpGet("delete/skill/{skillId}")]
+        [HttpDelete("delete/skill/{skillId}")]
         public async Task<ActionResult> DeleteSkillsByIdFromToken(Guid skillId)
         {
             try

@@ -25,9 +25,10 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(ProfilePicture entity)
+        public async Task DeleteAsync(ProfilePicture entity)
         {
-            throw new NotImplementedException();
+            _context.ProfilePictures.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteByIdAsync(Guid id)

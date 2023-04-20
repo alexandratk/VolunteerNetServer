@@ -196,6 +196,20 @@ namespace BLL.Services
             return validationResults;
         }
 
+        public async Task<List<ValidationResult>> DeleteProfilePictureAsync(Guid userId)
+        {
+            var validationResults = new List<ValidationResult>();
+
+            var profilePicture = await unitOfWork.ProfilePictureRepository.GetByUserIdAsync(userId);
+
+            if (profilePicture != null)
+            {
+                await unitOfWork.ProfilePictureRepository.DeleteAsync(profilePicture);
+            }
+
+            return validationResults;
+        }
+
         public async Task<List<ValidationResult>> UpdateUserSkillsAsync(
             Guid userId, UserSkillCreationModel model)
         {
