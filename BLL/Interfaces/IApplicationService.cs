@@ -16,6 +16,8 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<ApplicationViewModel>> GetAllAsync(string language);
 
+        Task<ApplicationViewModel> GetByIdAsync(Guid applicationId, string language);
+
         Task<IEnumerable<ApplicationViewModel>> GetListForProcessingAsync(string language);
 
         Task<IEnumerable<ApplicationViewModel>> GetListForUserAsync(Guid userId, string language);

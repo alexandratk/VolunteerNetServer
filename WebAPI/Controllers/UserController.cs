@@ -48,23 +48,6 @@ namespace WebAPI.Controllers
             }
         }
 
-        //[HttpPost("addlist")]
-        //public async Task<ActionResult> AddList([FromBody] List<UserModel> value)
-        //{
-        //    for (int i = 0; i < value.Count; i++)
-        //    {
-        //        try
-        //        {
-        //            await userService.AddAsync(value[i]);
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return NotFound(e);
-        //        }
-        //    }
-        //    return Ok();
-        //}
-
         [HttpPut("update/{id}")]
         public async Task<ActionResult> Update(Guid Id, [FromBody] UserModel value)
         {
@@ -192,12 +175,13 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("getbyid/{id}")]
-        public async Task<ActionResult<UserModel>> GetById(Guid id)
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpGet("getbyid/{userId}")]
+        public async Task<ActionResult<UserModel>> GetById([FromHeader(Name = "Accept-Language")] string language, Guid userId)
         {
-            try
-            {
-                var customer = await userService.GetByIdAsync(id);
+            try 
+            { 
+                var customer = await userService.GetByIdAsync(userId, language);
                 return Ok(customer);
             }
             catch (Exception e)
@@ -206,23 +190,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "user, admin")]
-        //[HttpGet("get/{language}")]
-        //public async Task<ActionResult<UserModel>> GetByIdFromToken(string language)
-        //{
-        //    try
-        //    {
-        //        var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).ToString().Split(": ")[1];
-        //        var customer = await userService.GetByIdAsync(Guid.Parse(userId), language);
-        //        return Ok(customer);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return NotFound(e);
-        //    }
-        //}
-
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("get")]
         public async Task<ActionResult<UserModel>> GetByIdFromToken([FromHeader(Name = "Accept-Language")] string language)
         {
@@ -246,7 +214,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("getskilldocument/{id}")]
         public ActionResult GetUserSkillDocument(Guid id)
         {

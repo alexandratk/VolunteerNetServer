@@ -78,13 +78,19 @@ namespace BLL.Helpers
                 .ForMember(a => a.User, b => b.Ignore())
                 .ForMember(a => a.Status, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
-                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
+                .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
+                .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
+                .ForMember(a => a.NumberOfVolunteers, b => b.Ignore());
             CreateMap<Application, ApplicationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
                 .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
                 .ForMember(a => a.Status, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
-                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description));
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
+                .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
+                .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
+                .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers));
         }
     }
 }

@@ -10,6 +10,8 @@ namespace BLL.Services
 {
     public class ApplicationService : IApplicationService
     {
+        private const int StartValueNamberOfVolunteers = 0;
+
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
 
@@ -26,6 +28,7 @@ namespace BLL.Services
             mapperApplication.Id = Guid.NewGuid();
             mapperApplication.UserId = userId;
             mapperApplication.Status = (int) ApplicationStatuses.Status.Processing;
+            mapperApplication.NumberOfVolunteers = StartValueNamberOfVolunteers;
             await unitOfWork.ApplicationRepository.AddAsync(mapperApplication);
             return validationResults;
         }
@@ -46,6 +49,20 @@ namespace BLL.Services
                 application.Status = translation[language];
             }
             return mapperApplications;
+        }
+
+        public async Task<ApplicationViewModel> GetByIdAsync(Guid applicationId, string language)
+        {
+            var unmapperApplication = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+            if (unmapperApplication == null)
+            {
+                return null;
+            }
+            var mapperApplication = mapper.Map<Application, ApplicationViewModel>(unmapperApplication);
+
+            var translation = ApplicationStatuses.StatusTranslation[mapperApplication.StatusNumber];
+            mapperApplication.Status = translation[language];
+            return mapperApplication;
         }
 
         public async Task<IEnumerable<ApplicationViewModel>> GetListForProcessingAsync(string language)

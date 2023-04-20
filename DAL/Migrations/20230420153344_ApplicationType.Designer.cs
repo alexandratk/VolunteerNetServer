@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(VolunteerNetServerDBContext))]
-    partial class VolunteerNetServerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230420153344_ApplicationType")]
+    partial class ApplicationType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +35,6 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfVolunteers")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequiredNumberOfVolunteers")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -81,146 +80,146 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f775e0fc-a994-411c-a64e-123704375069"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("47c954f4-c369-47e4-81fe-fa19f4f9f7bb"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "vi"
                         },
                         new
                         {
-                            Id = new Guid("39c5983c-1693-4fe0-9e9c-6fe5c0ceb335"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("971b613e-827e-459c-a569-f1ebac222c7f"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "dn"
                         },
                         new
                         {
-                            Id = new Guid("de8818eb-12fa-4ab4-aeb4-50c3880659ee"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("22b1cf37-6c20-45fb-909c-0fd3479cdc6b"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "zhy"
                         },
                         new
                         {
-                            Id = new Guid("a8f9e902-36b3-450d-b3f1-a9ad3a68f210"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("bd8b9a78-a135-4547-afd1-50e6f384ac04"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "zp"
                         },
                         new
                         {
-                            Id = new Guid("088364c0-ef40-4fae-bd92-474c8b988b2e"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("eda27747-447f-43dd-8415-a63a84c3d028"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "if"
                         },
                         new
                         {
-                            Id = new Guid("c85a1a1a-3021-4656-a5ad-9fdb698a3375"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("bc283497-31f6-4c8d-b43e-1bbb4731c622"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "ky"
                         },
                         new
                         {
-                            Id = new Guid("0256606e-6308-40df-bfe8-61e925eebdfc"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("252189f1-823d-446b-9516-f91e1c6b6895"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "kr"
                         },
                         new
                         {
-                            Id = new Guid("68056499-7632-4e76-b8f3-93966dd2a2a8"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("c0cccf42-fb86-4716-a8b0-1fee3104611b"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "lut"
                         },
                         new
                         {
-                            Id = new Guid("be61d77f-3f22-4e93-9729-f073530e70be"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("81c8357f-f09a-41b3-8e6a-780216d82cc1"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "lv"
                         },
                         new
                         {
-                            Id = new Guid("1027c634-4611-458e-a7c8-46e1257f26a9"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("75cf52f1-b1f1-4031-9d6e-e3ea70861333"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "my"
                         },
                         new
                         {
-                            Id = new Guid("eff580ec-1b30-416e-b7d5-9e6b984ec21d"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("7b43b3f0-ce21-41ff-9a99-b6399e3c0d91"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "od"
                         },
                         new
                         {
-                            Id = new Guid("9ce965e8-f36a-438b-baac-30c351e97e99"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("0742e502-aad3-4ff7-b5c9-f269a9b5d705"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "pol"
                         },
                         new
                         {
-                            Id = new Guid("a16cca83-7ab5-423d-8946-302825653db8"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("ec2a363e-6f2a-4c28-92ad-4a9de5aea185"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "ri"
                         },
                         new
                         {
-                            Id = new Guid("e3849085-dd83-41f1-9807-57df2ce07141"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("ee35ffea-4fa7-4f4b-8ff8-99d0563e7345"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "su"
                         },
                         new
                         {
-                            Id = new Guid("bd15e204-5ea2-4535-b314-a0f775bad3b5"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("7a61e28c-9114-4d1d-9691-4538108507d8"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "ter"
                         },
                         new
                         {
-                            Id = new Guid("a5cd03d8-6bd5-4602-bde8-e7ed8a6eb7bd"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("3a546866-c259-42b6-9178-3b503412b948"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "uzh"
                         },
                         new
                         {
-                            Id = new Guid("aa5bf7c2-8704-49d6-8266-2c316d497909"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("a31cc716-3d7d-46c0-b7c9-b3a5f5866db4"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "khar"
                         },
                         new
                         {
-                            Id = new Guid("67f7d9c6-58eb-4ea4-ba0b-fda00a8a6d23"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("38b1359f-46b7-45b0-845e-d6f1fdc783b4"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "kher"
                         },
                         new
                         {
-                            Id = new Guid("2a44f6b8-1140-4a56-99f5-5e27fb84cbd9"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("2414fe8c-15a6-480d-850d-32503db698f9"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "khm"
                         },
                         new
                         {
-                            Id = new Guid("5c9f3cb6-0b9b-4f58-a51b-ea88248ad0ff"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("4efa95ff-e1ed-495b-a931-7d8c7ffaa015"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "chk"
                         },
                         new
                         {
-                            Id = new Guid("0fda1e51-f3af-4ccd-9d10-dc3c7bd453f2"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("47564b02-f7f7-40c6-8043-661273139f14"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "chv"
                         },
                         new
                         {
-                            Id = new Guid("3dbf085d-fc39-4842-8468-036ad9a83fcf"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("07e541d0-6ac4-4c0d-bda6-fe6732975ec2"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "chh"
                         },
                         new
                         {
-                            Id = new Guid("bd559d17-aa7e-48a3-8579-bfee09c6185f"),
-                            CountryId = new Guid("d7f717f7-a2e1-4694-a0f2-ccc0edf94554"),
+                            Id = new Guid("d05d838b-ceb5-4205-99b0-49755f0ae71a"),
+                            CountryId = new Guid("b8b23549-a017-4431-84a8-e31c2a0b52c6"),
                             ISO = "var"
                         },
                         new
                         {
-                            Id = new Guid("ab9723f8-2ff1-44f8-938e-06b29c2f406c"),
-                            CountryId = new Guid("d7f717f7-a2e1-4694-a0f2-ccc0edf94554"),
+                            Id = new Guid("d8c385fc-2dde-4d1b-a907-49cabdb48d39"),
+                            CountryId = new Guid("b8b23549-a017-4431-84a8-e31c2a0b52c6"),
                             ISO = "lub"
                         });
                 });
@@ -251,337 +250,337 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dacd8c56-dae8-4e4a-946f-1eab1a8b2354"),
-                            CityId = new Guid("f775e0fc-a994-411c-a64e-123704375069"),
+                            Id = new Guid("f203c2f1-766b-49ac-837c-f16c7e585302"),
+                            CityId = new Guid("47c954f4-c369-47e4-81fe-fa19f4f9f7bb"),
                             Language = "uk",
                             Name = "Вінниця"
                         },
                         new
                         {
-                            Id = new Guid("52c96b39-73e5-4530-b29f-5f379f6e1318"),
-                            CityId = new Guid("39c5983c-1693-4fe0-9e9c-6fe5c0ceb335"),
+                            Id = new Guid("28b111a2-d124-4e32-8759-289b843d89b5"),
+                            CityId = new Guid("971b613e-827e-459c-a569-f1ebac222c7f"),
                             Language = "uk",
                             Name = "Дніпро"
                         },
                         new
                         {
-                            Id = new Guid("3af5c820-e911-49ac-bb01-b83825f3ab5b"),
-                            CityId = new Guid("de8818eb-12fa-4ab4-aeb4-50c3880659ee"),
+                            Id = new Guid("631334e1-2642-41ce-81c7-88d64afcf7ce"),
+                            CityId = new Guid("22b1cf37-6c20-45fb-909c-0fd3479cdc6b"),
                             Language = "uk",
                             Name = "Житомир"
                         },
                         new
                         {
-                            Id = new Guid("93c439c1-02e7-44f5-91f2-103e36faa69d"),
-                            CityId = new Guid("a8f9e902-36b3-450d-b3f1-a9ad3a68f210"),
+                            Id = new Guid("a50ee315-9eac-4153-a021-5a6f66c92859"),
+                            CityId = new Guid("bd8b9a78-a135-4547-afd1-50e6f384ac04"),
                             Language = "uk",
                             Name = "Запоріжжя"
                         },
                         new
                         {
-                            Id = new Guid("f5cc591b-52e8-425f-a1ce-0250cd08fcfe"),
-                            CityId = new Guid("088364c0-ef40-4fae-bd92-474c8b988b2e"),
+                            Id = new Guid("e6ea604f-b991-48e8-9a44-02018c7bdbb9"),
+                            CityId = new Guid("eda27747-447f-43dd-8415-a63a84c3d028"),
                             Language = "uk",
                             Name = "Івано-Франківськ"
                         },
                         new
                         {
-                            Id = new Guid("651eb113-0452-45f1-8e28-36a70b4d6888"),
-                            CityId = new Guid("c85a1a1a-3021-4656-a5ad-9fdb698a3375"),
+                            Id = new Guid("53e7fc39-4572-4dfb-b364-86bc141df8a7"),
+                            CityId = new Guid("bc283497-31f6-4c8d-b43e-1bbb4731c622"),
                             Language = "uk",
                             Name = "Київ"
                         },
                         new
                         {
-                            Id = new Guid("abe2b97d-c301-4c2d-8c17-ad69eb9bad87"),
-                            CityId = new Guid("0256606e-6308-40df-bfe8-61e925eebdfc"),
+                            Id = new Guid("dd708338-dfb7-4431-ad8f-4d8f20c393ba"),
+                            CityId = new Guid("252189f1-823d-446b-9516-f91e1c6b6895"),
                             Language = "uk",
                             Name = "Кропивницький"
                         },
                         new
                         {
-                            Id = new Guid("2c4e9d35-abef-4fe8-921a-c1f848d25d9e"),
-                            CityId = new Guid("68056499-7632-4e76-b8f3-93966dd2a2a8"),
+                            Id = new Guid("1b3e594f-eae0-4f49-ba85-6b6749321908"),
+                            CityId = new Guid("c0cccf42-fb86-4716-a8b0-1fee3104611b"),
                             Language = "uk",
                             Name = "Луцьк"
                         },
                         new
                         {
-                            Id = new Guid("4e4467c4-b162-4f3b-abfa-c5808d72b8f4"),
-                            CityId = new Guid("be61d77f-3f22-4e93-9729-f073530e70be"),
+                            Id = new Guid("0aba799f-a6ab-451a-86d3-1f139827e0d3"),
+                            CityId = new Guid("81c8357f-f09a-41b3-8e6a-780216d82cc1"),
                             Language = "uk",
                             Name = "Львів"
                         },
                         new
                         {
-                            Id = new Guid("f90320ec-bcd7-4b64-937b-8910665522b6"),
-                            CityId = new Guid("1027c634-4611-458e-a7c8-46e1257f26a9"),
+                            Id = new Guid("9d9aa50d-a8e7-49a5-babe-836710b093fb"),
+                            CityId = new Guid("75cf52f1-b1f1-4031-9d6e-e3ea70861333"),
                             Language = "uk",
                             Name = "Миколаїв"
                         },
                         new
                         {
-                            Id = new Guid("1465d3b7-16dd-4e23-a3f3-2dff754cf614"),
-                            CityId = new Guid("eff580ec-1b30-416e-b7d5-9e6b984ec21d"),
+                            Id = new Guid("b3bd6e91-dda1-47af-b072-8010c1ec445f"),
+                            CityId = new Guid("7b43b3f0-ce21-41ff-9a99-b6399e3c0d91"),
                             Language = "uk",
                             Name = "Одеса"
                         },
                         new
                         {
-                            Id = new Guid("696fb331-1cce-4a2c-8dbd-189929e8236f"),
-                            CityId = new Guid("9ce965e8-f36a-438b-baac-30c351e97e99"),
+                            Id = new Guid("902855f7-56ae-4b4c-838e-e4fde3bb4f0b"),
+                            CityId = new Guid("0742e502-aad3-4ff7-b5c9-f269a9b5d705"),
                             Language = "uk",
                             Name = "Полтава"
                         },
                         new
                         {
-                            Id = new Guid("6f0971ae-1545-46c1-a2fd-956f06021f85"),
-                            CityId = new Guid("a16cca83-7ab5-423d-8946-302825653db8"),
+                            Id = new Guid("b83c63a5-8a17-45ed-9c0e-bed134c224ed"),
+                            CityId = new Guid("ec2a363e-6f2a-4c28-92ad-4a9de5aea185"),
                             Language = "uk",
                             Name = "Рівне"
                         },
                         new
                         {
-                            Id = new Guid("1e8502e8-de85-42a6-978f-9153cd6dedfa"),
-                            CityId = new Guid("e3849085-dd83-41f1-9807-57df2ce07141"),
+                            Id = new Guid("aca6c7ae-f4d0-4563-99d4-96c6334a445f"),
+                            CityId = new Guid("ee35ffea-4fa7-4f4b-8ff8-99d0563e7345"),
                             Language = "uk",
                             Name = "Суми"
                         },
                         new
                         {
-                            Id = new Guid("15f05935-efe9-4a55-90cc-f7978cf565d0"),
-                            CityId = new Guid("bd15e204-5ea2-4535-b314-a0f775bad3b5"),
+                            Id = new Guid("5198f15f-08ad-4082-b172-0b079155dd52"),
+                            CityId = new Guid("7a61e28c-9114-4d1d-9691-4538108507d8"),
                             Language = "uk",
                             Name = "Тернопіль"
                         },
                         new
                         {
-                            Id = new Guid("62085cf9-c281-4a1f-b9b0-ad237bbec5f8"),
-                            CityId = new Guid("a5cd03d8-6bd5-4602-bde8-e7ed8a6eb7bd"),
+                            Id = new Guid("92093e51-a10a-4c1d-81d3-44df26e2c1c8"),
+                            CityId = new Guid("3a546866-c259-42b6-9178-3b503412b948"),
                             Language = "uk",
                             Name = "Ужгород"
                         },
                         new
                         {
-                            Id = new Guid("2b8c0023-4fc8-4216-b2fd-7ebf985a61be"),
-                            CityId = new Guid("aa5bf7c2-8704-49d6-8266-2c316d497909"),
+                            Id = new Guid("49f85cb5-9714-482a-bc8a-b82d57b3fc75"),
+                            CityId = new Guid("a31cc716-3d7d-46c0-b7c9-b3a5f5866db4"),
                             Language = "uk",
                             Name = "Харків"
                         },
                         new
                         {
-                            Id = new Guid("7795488b-48aa-42cf-9bd3-e3da245adf4f"),
-                            CityId = new Guid("67f7d9c6-58eb-4ea4-ba0b-fda00a8a6d23"),
+                            Id = new Guid("4f75f46b-fffd-47eb-b008-4f2ce1cc46bf"),
+                            CityId = new Guid("38b1359f-46b7-45b0-845e-d6f1fdc783b4"),
                             Language = "uk",
                             Name = "Херсон"
                         },
                         new
                         {
-                            Id = new Guid("21ae1bdb-54d4-4e54-b1db-a90146b30069"),
-                            CityId = new Guid("2a44f6b8-1140-4a56-99f5-5e27fb84cbd9"),
+                            Id = new Guid("93b17d5c-1dfd-4455-8a90-9b9b6602386b"),
+                            CityId = new Guid("2414fe8c-15a6-480d-850d-32503db698f9"),
                             Language = "uk",
                             Name = "Хмельницький"
                         },
                         new
                         {
-                            Id = new Guid("e4741e3e-8877-4f98-a32e-331fbb94ba35"),
-                            CityId = new Guid("5c9f3cb6-0b9b-4f58-a51b-ea88248ad0ff"),
+                            Id = new Guid("14687ffd-6ff6-4f57-aba9-7a59d6595556"),
+                            CityId = new Guid("4efa95ff-e1ed-495b-a931-7d8c7ffaa015"),
                             Language = "uk",
                             Name = "Черкаси"
                         },
                         new
                         {
-                            Id = new Guid("a517d85d-c3ca-4634-be41-e8d4381f52db"),
-                            CityId = new Guid("0fda1e51-f3af-4ccd-9d10-dc3c7bd453f2"),
+                            Id = new Guid("9cdcb83b-09d5-4b4a-abeb-6c83ad876f61"),
+                            CityId = new Guid("47564b02-f7f7-40c6-8043-661273139f14"),
                             Language = "uk",
                             Name = "Чернівці"
                         },
                         new
                         {
-                            Id = new Guid("7eddf9b2-dd6d-4a0f-97b7-2be0f24fa950"),
-                            CityId = new Guid("3dbf085d-fc39-4842-8468-036ad9a83fcf"),
+                            Id = new Guid("734dfade-6afc-4f9e-8b73-918f8f4a0dcf"),
+                            CityId = new Guid("07e541d0-6ac4-4c0d-bda6-fe6732975ec2"),
                             Language = "uk",
                             Name = "Чернігів"
                         },
                         new
                         {
-                            Id = new Guid("02f74c13-daa2-41b3-8870-a37a3e91127b"),
-                            CityId = new Guid("f775e0fc-a994-411c-a64e-123704375069"),
+                            Id = new Guid("39e17771-ae43-4b60-802f-379032a54a22"),
+                            CityId = new Guid("47c954f4-c369-47e4-81fe-fa19f4f9f7bb"),
                             Language = "en",
                             Name = "Vinnytsia"
                         },
                         new
                         {
-                            Id = new Guid("dd21c8a6-772c-400b-8a07-8cf3da37c558"),
-                            CityId = new Guid("39c5983c-1693-4fe0-9e9c-6fe5c0ceb335"),
+                            Id = new Guid("d5ade2bf-cba0-4cba-81cb-1afb6e27ac28"),
+                            CityId = new Guid("971b613e-827e-459c-a569-f1ebac222c7f"),
                             Language = "en",
                             Name = "Dnipro"
                         },
                         new
                         {
-                            Id = new Guid("c5a0bd07-75d1-45f2-b2a8-a84b207b5ea6"),
-                            CityId = new Guid("de8818eb-12fa-4ab4-aeb4-50c3880659ee"),
+                            Id = new Guid("5f2fcb31-5596-4d4d-9b23-4ad19efca86f"),
+                            CityId = new Guid("22b1cf37-6c20-45fb-909c-0fd3479cdc6b"),
                             Language = "en",
                             Name = "Zhytomyr"
                         },
                         new
                         {
-                            Id = new Guid("6d6286d8-6ef2-48c2-a4ba-ebbe1e571ed2"),
-                            CityId = new Guid("a8f9e902-36b3-450d-b3f1-a9ad3a68f210"),
+                            Id = new Guid("cdd64565-7c11-4d14-9eaf-6cc489fe63b0"),
+                            CityId = new Guid("bd8b9a78-a135-4547-afd1-50e6f384ac04"),
                             Language = "en",
                             Name = "Zaporizhzhia"
                         },
                         new
                         {
-                            Id = new Guid("a4a97ff7-fa8b-401d-bd73-6d418c63fa83"),
-                            CityId = new Guid("088364c0-ef40-4fae-bd92-474c8b988b2e"),
+                            Id = new Guid("15a67fbd-dd59-4c30-a52c-1aa1c25da251"),
+                            CityId = new Guid("eda27747-447f-43dd-8415-a63a84c3d028"),
                             Language = "en",
                             Name = "Ivano-Frankivsk"
                         },
                         new
                         {
-                            Id = new Guid("3642fbef-468e-4aa7-8ed5-2aef6cc90ad7"),
-                            CityId = new Guid("c85a1a1a-3021-4656-a5ad-9fdb698a3375"),
+                            Id = new Guid("60e95855-2947-4b37-86df-f3b75743edb6"),
+                            CityId = new Guid("bc283497-31f6-4c8d-b43e-1bbb4731c622"),
                             Language = "en",
                             Name = "Kyiv"
                         },
                         new
                         {
-                            Id = new Guid("42ea9356-507f-470e-ba5f-ca27ea6ee16f"),
-                            CityId = new Guid("0256606e-6308-40df-bfe8-61e925eebdfc"),
+                            Id = new Guid("c9019316-8374-48e5-b983-97bcce472710"),
+                            CityId = new Guid("252189f1-823d-446b-9516-f91e1c6b6895"),
                             Language = "en",
                             Name = "Kropyvnytskyi"
                         },
                         new
                         {
-                            Id = new Guid("60ab37cb-ac89-4c6e-8794-e6341ec31b7e"),
-                            CityId = new Guid("68056499-7632-4e76-b8f3-93966dd2a2a8"),
+                            Id = new Guid("a86783d4-4293-45d2-aba1-77189f393f1b"),
+                            CityId = new Guid("c0cccf42-fb86-4716-a8b0-1fee3104611b"),
                             Language = "en",
                             Name = "Lutsk"
                         },
                         new
                         {
-                            Id = new Guid("463b0223-ed5a-40e2-af96-498839934092"),
-                            CityId = new Guid("be61d77f-3f22-4e93-9729-f073530e70be"),
+                            Id = new Guid("9f807280-5b86-4271-a565-40068bccce5f"),
+                            CityId = new Guid("81c8357f-f09a-41b3-8e6a-780216d82cc1"),
                             Language = "en",
                             Name = "Lviv"
                         },
                         new
                         {
-                            Id = new Guid("88338e56-f022-4af5-a6a4-8021fd65b2c5"),
-                            CityId = new Guid("1027c634-4611-458e-a7c8-46e1257f26a9"),
+                            Id = new Guid("87d6a340-63f9-4317-a35f-6241a3241f30"),
+                            CityId = new Guid("75cf52f1-b1f1-4031-9d6e-e3ea70861333"),
                             Language = "en",
                             Name = "Mykolaiv"
                         },
                         new
                         {
-                            Id = new Guid("137abb8a-9f8e-4751-9ad6-16ac789a5e41"),
-                            CityId = new Guid("eff580ec-1b30-416e-b7d5-9e6b984ec21d"),
+                            Id = new Guid("416d8368-12bf-457d-8e48-30c0b67a1070"),
+                            CityId = new Guid("7b43b3f0-ce21-41ff-9a99-b6399e3c0d91"),
                             Language = "en",
                             Name = "Odesa"
                         },
                         new
                         {
-                            Id = new Guid("3b814660-68f5-4879-a597-56fb3a514b85"),
-                            CityId = new Guid("9ce965e8-f36a-438b-baac-30c351e97e99"),
+                            Id = new Guid("b117e8e9-8af0-497d-92ec-ebed288f1591"),
+                            CityId = new Guid("0742e502-aad3-4ff7-b5c9-f269a9b5d705"),
                             Language = "en",
                             Name = "Poltava"
                         },
                         new
                         {
-                            Id = new Guid("7f6c47aa-3718-4468-aeb4-df289f170f65"),
-                            CityId = new Guid("a16cca83-7ab5-423d-8946-302825653db8"),
+                            Id = new Guid("9942c3fa-92b4-4de7-a1d2-e9fb8a033eab"),
+                            CityId = new Guid("ec2a363e-6f2a-4c28-92ad-4a9de5aea185"),
                             Language = "en",
                             Name = "Rivne"
                         },
                         new
                         {
-                            Id = new Guid("a276c068-bca3-4ba8-a97a-f7c2fabf8af0"),
-                            CityId = new Guid("e3849085-dd83-41f1-9807-57df2ce07141"),
+                            Id = new Guid("a15ba1db-52f4-4978-98d3-f3f78d200160"),
+                            CityId = new Guid("ee35ffea-4fa7-4f4b-8ff8-99d0563e7345"),
                             Language = "en",
                             Name = "Sumy"
                         },
                         new
                         {
-                            Id = new Guid("76d34220-5d4b-431f-a92b-a664417adf97"),
-                            CityId = new Guid("bd15e204-5ea2-4535-b314-a0f775bad3b5"),
+                            Id = new Guid("6681e0e0-a66b-4e90-a734-e1caeec583a2"),
+                            CityId = new Guid("7a61e28c-9114-4d1d-9691-4538108507d8"),
                             Language = "en",
                             Name = "Ternopil"
                         },
                         new
                         {
-                            Id = new Guid("d5865c2f-6f90-4565-8922-10461e1595bf"),
-                            CityId = new Guid("a5cd03d8-6bd5-4602-bde8-e7ed8a6eb7bd"),
+                            Id = new Guid("24383742-7e6b-4ab9-b21d-f1169b99bdcf"),
+                            CityId = new Guid("3a546866-c259-42b6-9178-3b503412b948"),
                             Language = "en",
                             Name = "Uzhhorod"
                         },
                         new
                         {
-                            Id = new Guid("a1a390ba-6b56-43a8-a8e0-09b15b294533"),
-                            CityId = new Guid("aa5bf7c2-8704-49d6-8266-2c316d497909"),
+                            Id = new Guid("979801a2-947e-4b07-806d-f6dddd755f9e"),
+                            CityId = new Guid("a31cc716-3d7d-46c0-b7c9-b3a5f5866db4"),
                             Language = "en",
                             Name = "Kharkiv"
                         },
                         new
                         {
-                            Id = new Guid("ebbd7003-0dc5-4fcc-ba11-f406149d0310"),
-                            CityId = new Guid("67f7d9c6-58eb-4ea4-ba0b-fda00a8a6d23"),
+                            Id = new Guid("0a12ad99-0a1a-4e0b-ab83-7c40c3076adf"),
+                            CityId = new Guid("38b1359f-46b7-45b0-845e-d6f1fdc783b4"),
                             Language = "en",
                             Name = "Kherson"
                         },
                         new
                         {
-                            Id = new Guid("83563050-b7e8-4c18-ad2d-794bf3c9b657"),
-                            CityId = new Guid("2a44f6b8-1140-4a56-99f5-5e27fb84cbd9"),
+                            Id = new Guid("44880e48-7c79-4e35-add5-6da2cac923d3"),
+                            CityId = new Guid("2414fe8c-15a6-480d-850d-32503db698f9"),
                             Language = "en",
                             Name = "Khmelnytskyi"
                         },
                         new
                         {
-                            Id = new Guid("44ee1a47-eed9-4876-969c-04026d5c7bab"),
-                            CityId = new Guid("5c9f3cb6-0b9b-4f58-a51b-ea88248ad0ff"),
+                            Id = new Guid("98f2a34e-da05-4957-abcf-04007f67cac6"),
+                            CityId = new Guid("4efa95ff-e1ed-495b-a931-7d8c7ffaa015"),
                             Language = "en",
                             Name = "Cherkasy"
                         },
                         new
                         {
-                            Id = new Guid("73649b38-e171-4d35-9627-bb10c192e942"),
-                            CityId = new Guid("0fda1e51-f3af-4ccd-9d10-dc3c7bd453f2"),
+                            Id = new Guid("aa75eaf9-63c2-4e6e-bba1-4c9e9810c84b"),
+                            CityId = new Guid("47564b02-f7f7-40c6-8043-661273139f14"),
                             Language = "en",
                             Name = "Chernivtsi"
                         },
                         new
                         {
-                            Id = new Guid("39762485-1b82-4bb8-b1f9-e6f8ddc6810e"),
-                            CityId = new Guid("3dbf085d-fc39-4842-8468-036ad9a83fcf"),
+                            Id = new Guid("f5b66019-b465-41c1-a8c9-e375c3bf82c3"),
+                            CityId = new Guid("07e541d0-6ac4-4c0d-bda6-fe6732975ec2"),
                             Language = "en",
                             Name = "Chernihiv"
                         },
                         new
                         {
-                            Id = new Guid("3c82b0d9-8fec-4009-8b49-d6303297ff1a"),
-                            CityId = new Guid("bd559d17-aa7e-48a3-8579-bfee09c6185f"),
+                            Id = new Guid("6fed76f9-9ae4-4de6-ad86-84cb8c528290"),
+                            CityId = new Guid("d05d838b-ceb5-4205-99b0-49755f0ae71a"),
                             Language = "uk",
                             Name = "Варшава"
                         },
                         new
                         {
-                            Id = new Guid("943f3537-ff80-42ce-95c0-c638e7d827a3"),
-                            CityId = new Guid("ab9723f8-2ff1-44f8-938e-06b29c2f406c"),
+                            Id = new Guid("b941e37d-d352-4e1b-8fec-b3df686c6b66"),
+                            CityId = new Guid("d8c385fc-2dde-4d1b-a907-49cabdb48d39"),
                             Language = "uk",
                             Name = "Люблін"
                         },
                         new
                         {
-                            Id = new Guid("529aa79b-6904-4196-bb35-f654555bf367"),
-                            CityId = new Guid("bd559d17-aa7e-48a3-8579-bfee09c6185f"),
+                            Id = new Guid("0fddc613-838a-41a1-a6e9-abf8e0ae51b2"),
+                            CityId = new Guid("d05d838b-ceb5-4205-99b0-49755f0ae71a"),
                             Language = "en",
                             Name = "Varshava"
                         },
                         new
                         {
-                            Id = new Guid("fdad54e6-54b4-4cff-abad-0112c57583d7"),
-                            CityId = new Guid("ab9723f8-2ff1-44f8-938e-06b29c2f406c"),
+                            Id = new Guid("246902d0-d6fb-4a99-9724-ca9921f126d8"),
+                            CityId = new Guid("d8c385fc-2dde-4d1b-a907-49cabdb48d39"),
                             Language = "en",
                             Name = "Lublin"
                         });
@@ -604,12 +603,12 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             ISO = "uk"
                         },
                         new
                         {
-                            Id = new Guid("d7f717f7-a2e1-4694-a0f2-ccc0edf94554"),
+                            Id = new Guid("b8b23549-a017-4431-84a8-e31c2a0b52c6"),
                             ISO = "pl"
                         });
                 });
@@ -640,29 +639,29 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("79543a45-ef1a-4e5f-aa21-715a28287b24"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("abdf73d0-0a4d-4b69-aeea-ac200ab74c2d"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             Language = "en",
                             Name = "Ukraine"
                         },
                         new
                         {
-                            Id = new Guid("fe570c98-d00e-4a4a-ba43-8dc133ac4f4d"),
-                            CountryId = new Guid("b62c38d3-7295-4a5d-b883-a4fb15029ed8"),
+                            Id = new Guid("cdb374b2-45be-4fa0-a8a3-577e4ef408ee"),
+                            CountryId = new Guid("31778fda-decf-470a-b9a6-af0a9a0c265f"),
                             Language = "uk",
                             Name = "Україна"
                         },
                         new
                         {
-                            Id = new Guid("4e2f3942-b7ed-49ba-9ffa-e8ac39ebe392"),
-                            CountryId = new Guid("d7f717f7-a2e1-4694-a0f2-ccc0edf94554"),
+                            Id = new Guid("654d8765-588f-4784-a021-4f8c7760ad4c"),
+                            CountryId = new Guid("b8b23549-a017-4431-84a8-e31c2a0b52c6"),
                             Language = "en",
                             Name = "Poland"
                         },
                         new
                         {
-                            Id = new Guid("3ad1d8f2-2b09-4fa6-bd57-9149c00227ea"),
-                            CountryId = new Guid("d7f717f7-a2e1-4694-a0f2-ccc0edf94554"),
+                            Id = new Guid("3a3a88ad-ad95-4a69-98f9-2f98a6df4fd9"),
+                            CountryId = new Guid("b8b23549-a017-4431-84a8-e31c2a0b52c6"),
                             Language = "uk",
                             Name = "Польша"
                         });
@@ -710,12 +709,12 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a0a330ef-76af-4a9c-a937-a1c0ddd4d2f5"),
+                            Id = new Guid("3bd4bb3a-5a14-41ae-8df6-342367232259"),
                             Title = "medicine"
                         },
                         new
                         {
-                            Id = new Guid("c398f1be-9d42-469e-a537-fd319f22128c"),
+                            Id = new Guid("cda08b8e-c25f-444e-ba82-67646307a137"),
                             Title = "cook"
                         });
                 });
@@ -765,9 +764,9 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1c85c92b-e81c-4036-a8f4-1c881ee1458b"),
-                            CityId = new Guid("f775e0fc-a994-411c-a64e-123704375069"),
-                            DateOfBirth = new DateTime(2023, 4, 20, 18, 54, 42, 716, DateTimeKind.Local).AddTicks(4102),
+                            Id = new Guid("6cc48dd6-1c15-49a3-840c-4870c2195c79"),
+                            CityId = new Guid("47c954f4-c369-47e4-81fe-fa19f4f9f7bb"),
+                            DateOfBirth = new DateTime(2023, 4, 20, 18, 33, 43, 810, DateTimeKind.Local).AddTicks(1225),
                             FirstName = "the first",
                             LastName = "admin",
                             Login = "ourfirstadmin",

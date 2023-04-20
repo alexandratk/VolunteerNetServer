@@ -13,6 +13,12 @@ namespace DAL.Entities
         
         public int Status { get; set; }
 
+        public string Type { get; set; }
+
+        public int RequiredNumberOfVolunteers { get; set; }
+
+        public int NumberOfVolunteers { get; set; }
+
         public Guid UserId { get; set; }
         public User User { get; set; }
     }

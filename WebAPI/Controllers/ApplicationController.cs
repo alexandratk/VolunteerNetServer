@@ -22,6 +22,8 @@ namespace WebAPI.Controllers
             this.applicationService = applicationService;
         }
 
+
+
         [Authorize(Roles = "user")]
         [HttpPost("add")]
         public async Task<ActionResult> Add([FromForm] ApplicationCreationModel value)
@@ -50,7 +52,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("getlist")]
         public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> GetList([FromHeader(Name = "Accept-Language")] string language)
         {
@@ -58,6 +60,21 @@ namespace WebAPI.Controllers
             {
                 var applications = await applicationService.GetAllAsync(language);
                 return Ok(applications);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpGet("get/{applicationId}")]
+        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
+        {
+            try
+            {
+                var application = await applicationService.GetByIdAsync(applicationId, language);
+                return Ok(application);
             }
             catch (Exception e)
             {
