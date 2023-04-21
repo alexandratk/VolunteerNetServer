@@ -45,7 +45,7 @@ namespace BLL.Services
             if (userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.User])
             {
                 unmapperApplications = unmapperApplications
-                    .Where(x => x.Status != (int)ApplicationStatuses.Status.Processing).ToList();
+                    .Where(x => x.Status == (int)ApplicationStatuses.Status.InProgress).ToList();
             }
             var mapperApplications = mapper
                 .Map<List<Application>, List<ApplicationViewModel>>(unmapperApplications);
