@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace WebAPI.Controllers
@@ -53,13 +54,13 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user, admin, moderator")]
-        [HttpGet("getlist")]
-        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> GetList([FromHeader(Name = "Accept-Language")] string language)
+        [HttpGet("get/{applicationId}")]
+        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
         {
             try
             {
-                var applications = await applicationService.GetAllAsync(language);
-                return Ok(applications);
+                var application = await applicationService.GetByIdAsync(applicationId, language);
+                return Ok(application);
             }
             catch (Exception e)
             {
@@ -68,13 +69,25 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user, admin, moderator")]
-        [HttpGet("get/{applicationId}")]
-        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
+        [HttpGet("getlist")]
+        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> GetList(
+            [FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {
-                var application = await applicationService.GetByIdAsync(applicationId, language);
-                return Ok(application);
+                var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultRoleClaimType);
+                if (userRoleClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userRole = userRoleClaim.ToString().Split(": ")[1];
+
+                Debug.WriteLine("user role ==> " + userRole);
+
+                var applications = await applicationService.GetAllAsync(userRole, language);
+                return Ok(applications);
             }
             catch (Exception e)
             {

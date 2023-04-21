@@ -14,7 +14,7 @@ namespace BLL.Interfaces
 
         Task<List<ValidationResult>> ApproveByModerator(Guid applicationId);
 
-        Task<IEnumerable<ApplicationViewModel>> GetAllAsync(string language);
+        Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language);
 
         Task<ApplicationViewModel> GetByIdAsync(Guid applicationId, string language);
 

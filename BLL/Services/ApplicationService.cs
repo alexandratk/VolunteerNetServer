@@ -4,6 +4,7 @@ using BLL.Models;
 using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Services
@@ -38,11 +39,16 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ApplicationViewModel>> GetAllAsync(string language)
+        public async Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language)
         {
-            var unmapperApplications = await unitOfWork.ApplicationRepository.GetAllAsync();
+            List<Application> unmapperApplications = await unitOfWork.ApplicationRepository.GetAllAsync();
+            if (userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.User])
+            {
+                unmapperApplications = unmapperApplications
+                    .Where(x => x.Status != (int)ApplicationStatuses.Status.Processing).ToList();
+            }
             var mapperApplications = mapper
-                .Map<IEnumerable<Application>, IEnumerable<ApplicationViewModel>>(unmapperApplications);
+                .Map<List<Application>, List<ApplicationViewModel>>(unmapperApplications);
             foreach(var application in mapperApplications)
             {
                 var translation = ApplicationStatuses.StatusTranslation[application.StatusNumber];
