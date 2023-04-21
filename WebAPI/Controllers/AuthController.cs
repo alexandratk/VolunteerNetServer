@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(authResponse);
             }
-            return Unauthorized("Unauthorized");
+            return Unauthorized();
         }
     }
 }
