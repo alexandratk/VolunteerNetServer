@@ -102,7 +102,7 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<ValidationResult>> ApproveByModerator(Guid applicationId)
+        public async Task<List<ValidationResult>> ApproveApplication(Guid applicationId)
         {
             var validationResults = new List<ValidationResult>();
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
@@ -117,6 +117,20 @@ namespace BLL.Services
                 return validationResults;
             }
             application.Status = (int) ApplicationStatuses.Status.InProgress;
+            await unitOfWork.ApplicationRepository.Update(application);
+            return validationResults;
+        }
+
+        public async Task<List<ValidationResult>> ForbidApplication(Guid applicationId)
+        {
+            var validationResults = new List<ValidationResult>();
+            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+            if (application == null)
+            {
+                validationResults.Add(new ValidationResult("incorectApplicationId"));
+                return validationResults;
+            }
+            application.Status = (int)ApplicationStatuses.Status.Forbidden;
             await unitOfWork.ApplicationRepository.Update(application);
             return validationResults;
         }

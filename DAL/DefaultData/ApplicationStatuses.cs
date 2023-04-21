@@ -27,6 +27,12 @@ namespace DAL.DefaultData
                     { "en", "completed" },
                     { "uk", "завершено" }
                 }
+            },
+            {3, new Dictionary<string, string>()
+                {
+                    { "en", "forbidden" },
+                    { "uk", "заборонено" }
+                }
             }
         };
 
@@ -34,7 +40,8 @@ namespace DAL.DefaultData
         { 
             Processing = 0,
             InProgress = 1,
-            Сompleted = 2
+            Сompleted = 2,
+            Forbidden = 3
         }
     }
 }

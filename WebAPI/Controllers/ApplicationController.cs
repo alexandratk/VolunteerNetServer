@@ -134,13 +134,32 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "moderator")]
+        [Authorize(Roles = "admin, moderator")]
         [HttpGet("approve/{applicationId}")]
         public async Task<ActionResult> ApproveApplication(Guid applicationId)
         {
             try
             {
-                var validationResults = await applicationService.ApproveByModerator(applicationId);
+                var validationResults = await applicationService.ApproveApplication(applicationId);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "admin, moderator")]
+        [HttpGet("forbid/{applicationId}")]
+        public async Task<ActionResult> ForbidApplication(Guid applicationId)
+        {
+            try
+            {
+                var validationResults = await applicationService.ForbidApplication(applicationId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
