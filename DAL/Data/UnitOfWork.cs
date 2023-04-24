@@ -19,6 +19,7 @@ namespace DAL.Data
         private SkillRepository skillRepository;
         private UserRepository userRepository;
         private UserSkillRepository userSkillRepository;
+        private VolunteerRepository volunteerRepository;
 
         public IApplicationRepository ApplicationRepository
         {
@@ -89,6 +90,18 @@ namespace DAL.Data
                     countryRepository = new CountryRepository(context);
                 }
                 return countryRepository;
+            }
+        }
+
+        public IVolunteerRepository VolunteerRepository
+        {
+            get
+            {
+                if (volunteerRepository == null)
+                {
+                    volunteerRepository = new VolunteerRepository(context);
+                }
+                return volunteerRepository;
             }
         }
 

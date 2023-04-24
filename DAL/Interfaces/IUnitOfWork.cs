@@ -21,5 +21,7 @@ namespace DAL.Interfaces
         IUserRepository UserRepository { get; }
 
         IUserSkillRepository UserSkillRepository { get; }
+
+        IVolunteerRepository VolunteerRepository { get; }
     }
 }

@@ -23,6 +23,7 @@ namespace BLL.Infrastructure
             serviceCollection.AddTransient<ILocationService, LocationService>();
             serviceCollection.AddTransient<ISkillService, SkillService>();
             serviceCollection.AddTransient<IUserService, UserService>();
+            serviceCollection.AddTransient<IVolunteerService, VolunteerService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

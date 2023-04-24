@@ -219,7 +219,7 @@ namespace BLL.Services
             }
             if (model.Document.Length > LimitationUserSkillDocumentLength)
             {
-                validationResults.Add(new ValidationResult("invalidDocumentLenght"));
+                validationResults.Add(new ValidationResult("invalidDocumentLength"));
                 return validationResults;
             }
             if (model.Document.ContentType != LimitationFormatUserSkillDocument)

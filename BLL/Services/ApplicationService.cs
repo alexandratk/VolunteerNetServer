@@ -108,12 +108,12 @@ namespace BLL.Services
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
             if (application == null) 
             {
-                validationResults.Add(new ValidationResult("incorectApplicationId"));
+                validationResults.Add(new ValidationResult("incorrectApplicationId"));
                 return validationResults;
             }
             if (application.Status != (int) ApplicationStatuses.Status.Processing)
             {
-                validationResults.Add(new ValidationResult("incorectApplicationStatus"));
+                validationResults.Add(new ValidationResult("incorrectApplicationStatus"));
                 return validationResults;
             }
             application.Status = (int) ApplicationStatuses.Status.InProgress;
@@ -127,7 +127,7 @@ namespace BLL.Services
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
             if (application == null)
             {
-                validationResults.Add(new ValidationResult("incorectApplicationId"));
+                validationResults.Add(new ValidationResult("incorrectApplicationId"));
                 return validationResults;
             }
             application.Status = (int)ApplicationStatuses.Status.Forbidden;

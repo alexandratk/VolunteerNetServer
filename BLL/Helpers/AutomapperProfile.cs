@@ -54,10 +54,12 @@ namespace BLL.Helpers
                 .ForMember(um => um.ProfilePictureFormat, u => u.MapFrom(x => x.ProfilePicture.Format))
                 .ForMember(um => um.ProfilePicture, u => u.Ignore());
 
+
             CreateMap<SkillModel, Skill>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
             CreateMap<Skill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
+
 
             CreateMap<UserSkill, UserSkillViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.DocumentId, b => b.MapFrom(c => c.Id));
@@ -68,6 +70,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.User, b => b.MapFrom(c => c.User))
                 .ForMember(a => a.DocumentFormat, b => b.MapFrom(c => c.DocumentFormat))
                 .ForMember(a => a.Document, b => b.MapFrom(c => c.Document));
+
 
             CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
             CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
@@ -91,6 +94,22 @@ namespace BLL.Helpers
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers));
+
+
+            CreateMap<VolunteerCreationModel, Volunteer>().ForMember(a => a.Id, b => b.Ignore())
+                .ForMember(a => a.UserId, b => b.Ignore())
+                .ForMember(a => a.User, b => b.Ignore())
+                .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
+                .ForMember(a => a.Application, b => b.Ignore());
+            CreateMap<Volunteer, VolunteerViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
+                .ForMember(a => a.User, b => b.MapFrom(c => c.User))
+                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
+                .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
+                .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.Status, b => b.Ignore());
+
         }
     }
 }

@@ -20,6 +20,7 @@ namespace DAL.Data
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
 
@@ -44,6 +45,7 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>()
                 .HasMany(p => p.Skills)
                 .WithMany(p => p.Users)
@@ -62,6 +64,24 @@ namespace DAL.Data
                         j.HasKey(t => new { t.UserId, t.SkillId });
                     });
 
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.RecievedApplications)
+                .WithMany(p => p.Users)
+                .UsingEntity<Volunteer>(
+                    j => j
+                        .HasOne(pt => pt.Application)
+                        .WithMany(t => t.Volunteers)
+                        .HasForeignKey(pt => pt.ApplicationId).OnDelete(DeleteBehavior.NoAction),
+                    j => j
+                        .HasOne(pt => pt.User)
+                        .WithMany(p => p.Volunteers)
+                        .HasForeignKey(pt => pt.UserId).OnDelete(DeleteBehavior.NoAction),
+                    j =>
+                    {
+                        j.HasKey(t => new { t.UserId, t.ApplicationId });
+                    });
+
+
             modelBuilder.Entity<Skill>().HasData(
                 new Skill[]
                 {
@@ -78,7 +98,6 @@ namespace DAL.Data
             FirstAdmin firstAdmin = new FirstAdmin();
             firstAdmin.User.CityId = locations.Cities.First().Id;
             modelBuilder.Entity<User>().HasData(firstAdmin.User);
-
         }
     }
 } 
