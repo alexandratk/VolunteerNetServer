@@ -10,7 +10,7 @@ namespace BLL.Interfaces
 {
     public interface IVolunteerService : IService<VolunteerModel>
     {
-        Task<List<ValidationResult>> AddAsync(Guid userId, VolunteerCreationModel model);
+        Task<List<ValidationResult>> AddAsync(Guid userId, Guid applicationId);
 
         Task<List<ValidationResult>> AcceptVolunteer(Guid userId, Guid volunteerId);
 

@@ -23,8 +23,8 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpPost("add")]
-        public async Task<ActionResult> Add([FromForm] VolunteerCreationModel value)
+        [HttpGet("add/{applicationId}")]
+        public async Task<ActionResult> Add(Guid applicationId)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
 
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
-                var validationResults = await volunteerService.AddAsync(userId, value);
+                var validationResults = await volunteerService.AddAsync(userId, applicationId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();

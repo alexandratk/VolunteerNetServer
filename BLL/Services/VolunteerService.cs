@@ -24,15 +24,15 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<ValidationResult>> AddAsync(Guid userId, VolunteerCreationModel model)
+        public async Task<List<ValidationResult>> AddAsync(Guid userId, Guid applicationId)
         {
             var validationResults = new List<ValidationResult>();
-            if (model == null)
+            if (applicationId == null)
             {
                 validationResults.Add(new ValidationResult("applicationIdIsEmpty"));
                 return validationResults;
             }
-            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(model.ApplicationId);
+            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
             if (application == null)
             {
                 validationResults.Add(new ValidationResult("incorrectApplicationId"));
@@ -43,15 +43,16 @@ namespace BLL.Services
                 validationResults.Add(new ValidationResult("userIsOwner"));
                 return validationResults;
             }
-            var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, model.ApplicationId);
+            var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
             if (volunteer != null)
             {
                 validationResults.Add(new ValidationResult("userIsVolunteerAlready"));
                 return validationResults;
             }
-            var mapperVolunteer = mapper.Map<VolunteerCreationModel, Volunteer>(model);
+            Volunteer mapperVolunteer = new Volunteer();
             mapperVolunteer.Id = Guid.NewGuid();
             mapperVolunteer.UserId = userId;
+            mapperVolunteer.ApplicationId = applicationId;
             mapperVolunteer.Status = (int)VolunteerStatuses.Status.Processing;
 
             await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
