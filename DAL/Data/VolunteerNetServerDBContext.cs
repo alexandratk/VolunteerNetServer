@@ -20,6 +20,7 @@ namespace DAL.Data
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<SkillTranslation> SkillTranslations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
@@ -81,13 +82,9 @@ namespace DAL.Data
                         j.HasKey(t => new { t.UserId, t.ApplicationId });
                     });
 
-
-            modelBuilder.Entity<Skill>().HasData(
-                new Skill[]
-                {
-                    new Skill() { Id = Guid.NewGuid(), Title = "medicine" },
-                    new Skill() { Id = Guid.NewGuid(), Title = "cook" }
-                });
+            Skills skills = new Skills();
+            modelBuilder.Entity<Skill>().HasData(skills.SkillsList);
+            modelBuilder.Entity<SkillTranslation>().HasData(skills.SkillTranslations);
 
             Locations locations = new Locations();
             modelBuilder.Entity<Country>().HasData(locations.Countries);

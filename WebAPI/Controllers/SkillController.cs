@@ -50,11 +50,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getlist")]
-        public async Task<ActionResult<IEnumerable<SkillModel>>> GetList()
+        public async Task<ActionResult<IEnumerable<SkillModel>>> GetList([FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {
-                var skills = await skillService.GetAllAsync();
+                var skills = await skillService.GetAllAsync(language);
                 return Ok(skills);
             }
             catch (Exception e)

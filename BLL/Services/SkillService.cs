@@ -39,10 +39,19 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<SkillModel>> GetAllAsync()
+        public async Task<IEnumerable<SkillModel>> GetAllAsync(string language)
         {
             var unmapperSkills = await unitOfWork.SkillRepository.GetAllAsync();
             var mapperSkills = mapper.Map<IEnumerable<Skill>, IEnumerable<SkillModel>>(unmapperSkills);
+            foreach (SkillModel skill in mapperSkills)
+            {
+                SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                    .GetSkillTranslationById(skill.Id, language);
+                if (skillTranslation != null)
+                {
+                    skill.Title = skillTranslation.Name;
+                }
+            }
             return mapperSkills;
         }
 
@@ -66,6 +75,16 @@ namespace BLL.Services
                     mapperSkills.RemoveAt(i);
                 }
             }
+
+            foreach (SkillModel skill in mapperSkills)
+            {
+                SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                    .GetSkillTranslationById(skill.Id, language);
+                if (skillTranslation != null)
+                {
+                    skill.Title = skillTranslation.Name;
+                }
+            }
             return mapperSkills;
         }
 
@@ -80,6 +99,11 @@ namespace BLL.Services
         {
             var mapperSkill = mapper.Map<SkillModel, Skill>(model);
             await unitOfWork.SkillRepository.Update(mapperSkill);
+        }
+
+        public Task<IEnumerable<SkillModel>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

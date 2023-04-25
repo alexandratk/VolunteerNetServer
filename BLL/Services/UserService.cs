@@ -144,6 +144,14 @@ namespace BLL.Services
                 {
                     mapperUser.UserSkills = mapper
                         .Map<List<UserSkill>, List<UserSkillViewModel>>(unmapperUser.UserSkills);
+                    foreach(UserSkillViewModel userSkillView in mapperUser.UserSkills)
+                    {
+                        SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                            .GetSkillTranslationById(userSkillView.Skill.Id, language);
+                        if (skillTranslation != null) {
+                            userSkillView.Skill.Title = skillTranslation.Name;
+                        }
+                    }
                 }
                 return mapperUser;
             }

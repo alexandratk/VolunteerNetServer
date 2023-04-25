@@ -48,6 +48,13 @@ namespace DAL.Repositories
             return Task.FromResult(skill);
         }
 
+        public Task<SkillTranslation?> GetSkillTranslationById(Guid id, string language)
+        {
+            SkillTranslation? skillTranslation = _context.SkillTranslations.AsNoTracking()
+                .Where(r => r.SkillId == id && r.Language == language).FirstOrDefault();
+            return Task.FromResult(skillTranslation);
+        }
+
         public async Task Update(Skill entity)
         {
             _context.Update(entity);
