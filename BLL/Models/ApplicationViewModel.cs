@@ -22,5 +22,7 @@ namespace BLL.Models
         public int NumberOfVolunteers { get; set; }
 
         public Guid UserId { get; set; }
+
+        public bool CheckVolunteer { get; set; }
     }
 }

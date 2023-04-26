@@ -57,7 +57,8 @@ namespace BLL.Services
             return mapperApplications;
         }
 
-        public async Task<ApplicationViewModel> GetByIdAsync(Guid applicationId, string language)
+        public async Task<ApplicationViewModel> GetByIdAsync(
+            Guid applicationId, Guid userId, string userRole, string language)
         {
             var unmapperApplication = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
             if (unmapperApplication == null)
@@ -68,6 +69,20 @@ namespace BLL.Services
 
             var translation = ApplicationStatuses.StatusTranslation[mapperApplication.StatusNumber];
             mapperApplication.Status = translation[language];
+
+            mapperApplication.CheckVolunteer = 
+                userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] && 
+                userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator];
+            if (mapperApplication.CheckVolunteer && mapperApplication.UserId == userId)
+            {
+                mapperApplication.CheckVolunteer = false;
+            }
+            if (mapperApplication.CheckVolunteer)
+            {
+                var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
+                mapperApplication.CheckVolunteer = volunteer == null;
+            }
+
             return mapperApplication;
         }
 

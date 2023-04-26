@@ -93,7 +93,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
-                .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers));
+                .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
+                .ForMember(a => a.CheckVolunteer, b => b.Ignore());
 
 
             CreateMap<VolunteerCreationModel, Volunteer>().ForMember(a => a.Id, b => b.Ignore())
