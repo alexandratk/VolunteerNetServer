@@ -46,6 +46,8 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Application>().HasKey(a => a.Id);
+            modelBuilder.Entity<Volunteer>().HasKey(a => a.Id);
             modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>()
                 .HasMany(p => p.Skills)

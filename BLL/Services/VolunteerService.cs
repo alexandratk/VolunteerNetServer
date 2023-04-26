@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BLL.Services
 {
@@ -63,9 +64,6 @@ namespace BLL.Services
 
             await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
 
-            application.NumberOfVolunteers++;
-            await unitOfWork.ApplicationRepository.Update(application);
-
             return validationResults;
         }
 
@@ -107,15 +105,10 @@ namespace BLL.Services
         public async Task<List<ValidationResult>> AcceptVolunteer(Guid userId, Guid volunteerId)
         {
             var validationResults = new List<ValidationResult>();
-            var volunteer = await unitOfWork.VolunteerRepository.GetByIdAsync(volunteerId);
+            var volunteer = await unitOfWork.VolunteerRepository.GetByIdWithoutForeignAsync(volunteerId);
             if (volunteer == null)
             {
                 validationResults.Add(new ValidationResult("incorrectVolunteerId"));
-                return validationResults;
-            }
-            if (volunteer.Application.UserId != userId)
-            {
-                validationResults.Add(new ValidationResult("incorrectOwnerId"));
                 return validationResults;
             }
             if (volunteer.Status != (int)VolunteerStatuses.Status.Processing)
@@ -125,6 +118,27 @@ namespace BLL.Services
             }
             volunteer.Status = (int)VolunteerStatuses.Status.Accepted;
             await unitOfWork.VolunteerRepository.Update(volunteer);
+
+            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(volunteer.ApplicationId);
+            if (application == null)
+            {
+                validationResults.Add(new ValidationResult("incorrectApplicationId"));
+                return validationResults;
+            }
+            if (application.UserId != userId)
+            {
+                validationResults.Add(new ValidationResult("incorrectOwnerId"));
+                return validationResults;
+            }
+            if (application.NumberOfVolunteers == application.RequiredNumberOfVolunteers)
+            {
+                validationResults.Add(new ValidationResult("recruitedRequiredNumberVolunteers"));
+                return validationResults;
+            }
+
+            application.NumberOfVolunteers++;
+            await unitOfWork.ApplicationRepository.Update(application);
+
             return validationResults;
         }
 

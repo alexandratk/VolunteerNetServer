@@ -45,14 +45,22 @@ namespace DAL.Repositories
         public async Task<List<Volunteer>> GetListInProcessingByUserId(Guid userId)
         {
             List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
-                .Where(x => x.Application.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Processing).AsNoTracking().ToListAsync();
+                .Where(x => x.Application.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Processing)
+                .AsNoTracking().ToListAsync();
             return volunteers;
         }
 
         public Task<Volunteer?> GetByIdAsync(Guid id)
         {
-            Volunteer? volunteer = _context.Volunteers.AsNoTracking()
-                .Where(r => r.Id == id).Include("User").Include("Application").FirstOrDefault();
+            Volunteer? volunteer = _context.Volunteers
+                .Where(r => r.Id == id).Include("User").Include("Application").AsNoTracking().FirstOrDefault();
+            return Task.FromResult(volunteer);
+        }
+
+        public Task<Volunteer?> GetByIdWithoutForeignAsync(Guid id)
+        {
+            Volunteer? volunteer = _context.Volunteers
+                .Where(r => r.Id == id).AsNoTracking().FirstOrDefault();
             return Task.FromResult(volunteer);
         }
 
@@ -66,8 +74,10 @@ namespace DAL.Repositories
 
         public async Task Update(Volunteer entity)
         {
+            _context.Entry(entity).State = EntityState.Detached;
             _context.Update(entity);
             await _context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Detached;
         }
     }
 }
