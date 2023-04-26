@@ -18,6 +18,7 @@ namespace DAL.Data
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SkillTranslation> SkillTranslations { get; set; }
@@ -46,9 +47,8 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Application>().HasKey(a => a.Id);
-            modelBuilder.Entity<Volunteer>().HasKey(a => a.Id);
             modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Volunteer>().HasKey(x => x.Id);
             modelBuilder.Entity<User>()
                 .HasMany(p => p.Skills)
                 .WithMany(p => p.Users)

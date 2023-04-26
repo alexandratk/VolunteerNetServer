@@ -15,5 +15,7 @@ namespace DAL.Entities
         public Guid ApplicationId { get; set; }
 
         public int Status { get; set; }
+
+        public List<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
     }
 }
