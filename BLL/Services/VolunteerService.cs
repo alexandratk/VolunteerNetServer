@@ -43,12 +43,18 @@ namespace BLL.Services
                 validationResults.Add(new ValidationResult("userIsOwner"));
                 return validationResults;
             }
+            if (application.NumberOfVolunteers == application.RequiredNumberOfVolunteers)
+            {
+                validationResults.Add(new ValidationResult("recruitedRequiredNumberVolunteers"));
+                return validationResults;
+            }
             var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
             if (volunteer != null)
             {
                 validationResults.Add(new ValidationResult("userIsVolunteerAlready"));
                 return validationResults;
             }
+
             Volunteer mapperVolunteer = new Volunteer();
             mapperVolunteer.Id = Guid.NewGuid();
             mapperVolunteer.UserId = userId;
@@ -56,6 +62,10 @@ namespace BLL.Services
             mapperVolunteer.Status = (int)VolunteerStatuses.Status.Processing;
 
             await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
+
+            application.NumberOfVolunteers++;
+            await unitOfWork.ApplicationRepository.Update(application);
+
             return validationResults;
         }
 

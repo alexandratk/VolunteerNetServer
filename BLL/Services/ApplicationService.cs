@@ -73,7 +73,8 @@ namespace BLL.Services
             mapperApplication.CheckVolunteer = 
                 userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] && 
                 userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator];
-            if (mapperApplication.CheckVolunteer && mapperApplication.UserId == userId)
+            if (mapperApplication.UserId == userId ||
+                mapperApplication.RequiredNumberOfVolunteers == mapperApplication.NumberOfVolunteers)
             {
                 mapperApplication.CheckVolunteer = false;
             }
