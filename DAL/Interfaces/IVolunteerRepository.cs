@@ -13,6 +13,8 @@ namespace DAL.Interfaces
 
         Task<Volunteer?> GetByIdWithoutForeignAsync(Guid id);
 
-        Task<List<Volunteer>> GetListInProcessingByUserId(Guid userId);
+        Task<List<Volunteer>> GetListAcceptedByUserId(Guid userId);
+
+        Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId);
     }
 }

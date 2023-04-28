@@ -42,7 +42,15 @@ namespace DAL.Repositories
             return volunteers;
         }
 
-        public async Task<List<Volunteer>> GetListInProcessingByUserId(Guid userId)
+        public async Task<List<Volunteer>> GetListAcceptedByUserId(Guid userId)
+        {
+            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
+                .Where(x => x.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Accepted)
+                .AsNoTracking().ToListAsync();
+            return volunteers;
+        }
+
+        public async Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId)
         {
             List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
                 .Where(x => x.Application.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Processing)

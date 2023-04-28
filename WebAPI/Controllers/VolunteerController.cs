@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "user")]
         [HttpGet("getlist/inprocessing")]
         public async Task<ActionResult<IEnumerable<VolunteerViewModel>>>
-            GetListInProcessingByUserId([FromHeader(Name = "Accept-Language")] string language)
+            GetListInProcessingByOwnerId([FromHeader(Name = "Accept-Language")] string language)
         {
             try
             {
@@ -82,7 +82,32 @@ namespace WebAPI.Controllers
 
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
-                var volunteers = await volunteerService.GetListInProcessingByUserId(userId, language);
+                var volunteers = await volunteerService.GetListInProcessingByOwnerId(userId, language);
+                return Ok(volunteers);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user")]
+        [HttpGet("getlist/accepted")]
+        public async Task<ActionResult<IEnumerable<VolunteerViewModel>>>
+            GetListAcceptedByUserId([FromHeader(Name = "Accept-Language")] string language)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var volunteers = await volunteerService.GetListAcceptedByUserId(userId, language);
                 return Ok(volunteers);
             }
             catch (Exception e)

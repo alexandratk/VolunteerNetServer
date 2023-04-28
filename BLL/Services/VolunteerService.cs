@@ -86,11 +86,27 @@ namespace BLL.Services
             return mapperVolunteers;
         }
 
-        public async Task<IEnumerable<VolunteerViewModel>> GetListInProcessingByUserId(
+        public async Task<IEnumerable<VolunteerViewModel>> GetListInProcessingByOwnerId(
             Guid userId, string language)
         {
             IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
-                .GetListInProcessingByUserId(userId);
+                .GetListInProcessingByOwnerId(userId);
+            var mapperVolunteers = mapper
+                .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
+
+            foreach (var volunteer in mapperVolunteers)
+            {
+                var translation = VolunteerStatuses.StatusTranslation[volunteer.StatusNumber];
+                volunteer.Status = translation[language];
+            }
+            return mapperVolunteers;
+        }
+
+        public async Task<IEnumerable<VolunteerViewModel>> GetListAcceptedByUserId(
+            Guid userId, string language)
+        {
+            IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
+                .GetListAcceptedByUserId(userId);
             var mapperVolunteers = mapper
                 .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
 
