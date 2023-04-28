@@ -38,6 +38,8 @@ namespace BLL.Services
             var mapperMessage = mapper.Map<MessageCreationModel, Message>(model);
             mapperMessage.Id = Guid.NewGuid();
             mapperMessage.VolunteerId = volunteer.Id;
+            mapperMessage.VolunteerUserId = volunteer.UserId;
+            mapperMessage.VolunteerApplicationId = volunteer.ApplicationId;
             Debug.WriteLine("SERVICE: " + "//message ==> " + model.Text);
             await unitOfWork.MessageRepository.AddAsync(mapperMessage);
             return validationResults;

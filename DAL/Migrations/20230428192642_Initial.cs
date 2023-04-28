@@ -219,7 +219,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Volunteers", x => x.Id);
+                    table.PrimaryKey("PK_Volunteers", x => new { x.UserId, x.ApplicationId });
                     table.ForeignKey(
                         name: "FK_Volunteers_Applications_ApplicationId",
                         column: x => x.ApplicationId,
@@ -238,16 +238,18 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VolunteerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    VolunteerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VolunteerUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VolunteerApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Volunteers_VolunteerId_VolunteerId",
-                        column: x => x.VolunteerId,
+                        name: "FK_Messages_Volunteers_VolunteerUserId_VolunteerApplicationId",
+                        columns: x => new { x.VolunteerUserId, x.VolunteerApplicationId },
                         principalTable: "Volunteers",
-                        principalColumn: "Id",
+                        principalColumns: new[] { "UserId", "ApplicationId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -256,8 +258,8 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "ISO" },
                 values: new object[,]
                 {
-                    { new Guid("129efdf6-5bea-4767-8fab-97f7925de5c4"), "pl" },
-                    { new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "uk" }
+                    { new Guid("5c19215f-fae7-4a65-a084-ccf7747cd124"), "pl" },
+                    { new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "uk" }
                 });
 
             migrationBuilder.InsertData(
@@ -265,10 +267,10 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("6955eb17-236d-457e-857c-905d32371c69"), "psychology" },
-                    { new Guid("81bb520a-1884-4715-822f-48600f867f9c"), "building" },
-                    { new Guid("9fd6c325-b504-4358-9f5f-76ec4cf73c73"), "cooking" },
-                    { new Guid("ac0f0563-b401-4eda-bd6a-86ad1028a1e5"), "medicine" }
+                    { new Guid("0c08734b-8bed-460b-a173-d0dedc8f581e"), "building" },
+                    { new Guid("1476a5d3-d28b-430c-8a1a-4762b075017a"), "psychology" },
+                    { new Guid("3eaec87f-d6a6-4dfb-9217-db0493101836"), "cooking" },
+                    { new Guid("518c2fb1-d3f5-428d-b6e4-ea5f15e6fb82"), "medicine" }
                 });
 
             migrationBuilder.InsertData(
@@ -276,30 +278,30 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "CountryId", "ISO" },
                 values: new object[,]
                 {
-                    { new Guid("01331e3d-c2d4-4f2c-9296-2205735e4b1a"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "pol" },
-                    { new Guid("1fbc2dba-18b6-4e0a-8f27-6d2d1b8dd70c"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "dn" },
-                    { new Guid("3ced847e-a8ed-4218-bcfe-6b5e79df8b06"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "zp" },
-                    { new Guid("40d7c2b4-ecad-4c9e-a49b-694cae3e7b3c"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "ky" },
-                    { new Guid("463fad84-1917-43ab-943a-2446b7d12be8"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "chh" },
-                    { new Guid("4d655442-e406-4f5d-99b7-86a37d2cf4d8"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "chk" },
-                    { new Guid("57ccc51d-838e-41ca-a938-525ccf594575"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "kr" },
-                    { new Guid("5afca0c8-e537-4d17-b08e-96f99e4cc8c1"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "vi" },
-                    { new Guid("774d5c09-d3f7-4c45-af81-cc9113da435e"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "chv" },
-                    { new Guid("778c5508-38ee-4a59-9b27-2b150510041c"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "su" },
-                    { new Guid("8848c278-99f6-41b5-9c51-05999da664be"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "ri" },
-                    { new Guid("9a53061c-f6fa-47a9-984d-68bd207bbe63"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "lut" },
-                    { new Guid("9d2415a6-4687-4203-a267-69e1752d4a24"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "khar" },
-                    { new Guid("9fb59cfd-76ab-4165-83c3-961851b7315d"), new Guid("129efdf6-5bea-4767-8fab-97f7925de5c4"), "var" },
-                    { new Guid("bb19cb49-98ed-4d4a-b203-b84e9c1a3c75"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "od" },
-                    { new Guid("bb7c6234-2c3b-42ea-9ae7-5be22b630dad"), new Guid("129efdf6-5bea-4767-8fab-97f7925de5c4"), "lub" },
-                    { new Guid("cd868940-1ee9-4aba-858e-997ad20b60a7"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "ter" },
-                    { new Guid("d6c6a119-3bd4-4704-bd39-713d49258996"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "if" },
-                    { new Guid("e8e38952-a6ab-45b4-8c24-f17a45bd515f"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "my" },
-                    { new Guid("ed1173b7-ce8b-40ff-9f28-e53312ba8954"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "zhy" },
-                    { new Guid("ef4d43cd-e75c-4a72-9ae5-9c8b7e8fce72"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "khm" },
-                    { new Guid("ef97b43b-525c-4a53-8828-cd9c96f2ee42"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "uzh" },
-                    { new Guid("f442a29c-4f82-4aa7-9689-b88680eaef93"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "lv" },
-                    { new Guid("f587378b-09bf-4659-86c8-038b3160d0b3"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "kher" }
+                    { new Guid("05a12e22-f5c3-4c69-a2b5-b65cd118c752"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "ter" },
+                    { new Guid("0e0530ad-f180-47a8-811c-fadd0ac59251"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "dn" },
+                    { new Guid("127e6bf5-9cb4-4219-aa99-85e678864ed5"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "kher" },
+                    { new Guid("15ad2297-c9dc-4d29-97ce-7e668cbb1d38"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "khar" },
+                    { new Guid("1963d595-2df5-4bf3-95e3-e50bf2151277"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "ky" },
+                    { new Guid("21392d0c-2b1c-4f29-bb75-13cbeb445e47"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "chk" },
+                    { new Guid("25777b82-798b-46ff-8e79-5d9eee60b090"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "zp" },
+                    { new Guid("2a68db21-dcc1-4bd2-beb9-d1ba44468bd6"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "zhy" },
+                    { new Guid("2d50b9de-cdc5-40b9-8ee2-1db6db29ecf6"), new Guid("5c19215f-fae7-4a65-a084-ccf7747cd124"), "lub" },
+                    { new Guid("30e2cf2d-0d07-4da8-9d83-e6383ce63b73"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "chh" },
+                    { new Guid("34700f20-3e77-4ad2-af01-c93c851dcdd7"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "my" },
+                    { new Guid("4324eb80-49d0-4118-8e34-14f80f71f027"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "lv" },
+                    { new Guid("56a792e5-7166-4269-a5d4-b5d9a0e3a960"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "pol" },
+                    { new Guid("5eaa27aa-319b-4f2f-a068-f852531b80ad"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "su" },
+                    { new Guid("71c6eec0-012b-4436-9e9f-882d00f83f16"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "chv" },
+                    { new Guid("9a5b8e47-eeae-4ce5-8843-ada8b9eb8f8d"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "vi" },
+                    { new Guid("a837f771-78d3-495d-bed6-ef9162d444ac"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "od" },
+                    { new Guid("ad32f639-0a8a-4bef-ab88-53d45b8c2814"), new Guid("5c19215f-fae7-4a65-a084-ccf7747cd124"), "var" },
+                    { new Guid("b2fbebf7-5c37-4a68-8869-b98cdfd34616"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "uzh" },
+                    { new Guid("b9bbe674-e9a7-4464-86ff-df7e850bf7f1"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "lut" },
+                    { new Guid("ca75b4ab-3fdb-4974-8f9e-382ec320654b"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "kr" },
+                    { new Guid("dd2bda82-ff64-40e6-be42-51f79f53c05e"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "ri" },
+                    { new Guid("e50cfd5c-f728-43c2-9474-5cc744295f29"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "if" },
+                    { new Guid("eb734b8e-e223-4eb1-addf-7960dc06ddc4"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "khm" }
                 });
 
             migrationBuilder.InsertData(
@@ -307,10 +309,10 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "CountryId", "Language", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("185da1d9-fb24-4c8c-8a07-967ba3d99cdc"), new Guid("129efdf6-5bea-4767-8fab-97f7925de5c4"), "en", "Poland" },
-                    { new Guid("28125b9b-2578-497c-b2b6-d48242390fc4"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "uk", "Україна" },
-                    { new Guid("ca8d5ec8-7198-405f-805b-eff8d9c8c882"), new Guid("129efdf6-5bea-4767-8fab-97f7925de5c4"), "uk", "Польша" },
-                    { new Guid("db8da78f-bd45-4d6d-85ee-ac5321c420af"), new Guid("92bfd562-df99-49c0-9670-c34a51e37772"), "en", "Ukraine" }
+                    { new Guid("5bdec72c-564a-4c8a-87ce-b812b669ab84"), new Guid("5c19215f-fae7-4a65-a084-ccf7747cd124"), "en", "Poland" },
+                    { new Guid("ca5c65ef-9d68-4c3e-9e7d-f4e5f1b7025c"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "uk", "Україна" },
+                    { new Guid("d03374f5-52bc-47ef-bf20-7bb6cfd05f10"), new Guid("61c9af51-12ef-4da9-ae94-068f5d94922b"), "en", "Ukraine" },
+                    { new Guid("d17aa06e-6f36-4aab-b094-99efaddfdd52"), new Guid("5c19215f-fae7-4a65-a084-ccf7747cd124"), "uk", "Польша" }
                 });
 
             migrationBuilder.InsertData(
@@ -318,14 +320,14 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "Language", "Name", "SkillId" },
                 values: new object[,]
                 {
-                    { new Guid("05e07eac-bc9c-4c19-9270-dd7cdb412b66"), "uk", "медицина", new Guid("ac0f0563-b401-4eda-bd6a-86ad1028a1e5") },
-                    { new Guid("36f52c60-3192-45dc-bc52-ec2c5621e5c3"), "en", "building", new Guid("81bb520a-1884-4715-822f-48600f867f9c") },
-                    { new Guid("49b11c61-55ec-4fe6-90c6-5a458a7a38bf"), "en", "psychology", new Guid("6955eb17-236d-457e-857c-905d32371c69") },
-                    { new Guid("6da99f29-ed4f-48e7-b75d-0d8416618b0e"), "uk", "психологія", new Guid("6955eb17-236d-457e-857c-905d32371c69") },
-                    { new Guid("71c57c5c-b308-4a4e-b2d2-879ccbe3d9f2"), "en", "cooking", new Guid("9fd6c325-b504-4358-9f5f-76ec4cf73c73") },
-                    { new Guid("dd7e0989-c44f-45fe-a928-8aa270ff05e7"), "en", "medicine", new Guid("ac0f0563-b401-4eda-bd6a-86ad1028a1e5") },
-                    { new Guid("f63afdd6-c75d-456e-a2b0-113d40fe5f39"), "uk", "кулінарія", new Guid("9fd6c325-b504-4358-9f5f-76ec4cf73c73") },
-                    { new Guid("f7e465ac-3fe6-4b43-9d45-2f7704df61d0"), "uk", "будівництво", new Guid("81bb520a-1884-4715-822f-48600f867f9c") }
+                    { new Guid("1547f492-c4bd-494e-89ca-a5047b93d1ad"), "en", "building", new Guid("0c08734b-8bed-460b-a173-d0dedc8f581e") },
+                    { new Guid("2dfb5ef1-5274-42eb-b4c1-0d94de0dbf23"), "en", "cooking", new Guid("3eaec87f-d6a6-4dfb-9217-db0493101836") },
+                    { new Guid("32249ff7-c7b4-4b28-81d2-e4ab930055cd"), "uk", "будівництво", new Guid("0c08734b-8bed-460b-a173-d0dedc8f581e") },
+                    { new Guid("41df599d-4da2-4949-82dd-2bd219c5b672"), "en", "psychology", new Guid("1476a5d3-d28b-430c-8a1a-4762b075017a") },
+                    { new Guid("782c1b79-2218-492a-bb8f-d5cfc32a9789"), "en", "medicine", new Guid("518c2fb1-d3f5-428d-b6e4-ea5f15e6fb82") },
+                    { new Guid("90d07a71-d27d-4625-be63-28e90d5e185f"), "uk", "медицина", new Guid("518c2fb1-d3f5-428d-b6e4-ea5f15e6fb82") },
+                    { new Guid("d5a84219-5f29-4d4e-ad02-63a4244719f3"), "uk", "психологія", new Guid("1476a5d3-d28b-430c-8a1a-4762b075017a") },
+                    { new Guid("f2c77f2a-df56-403d-b425-36f38619d4fa"), "uk", "кулінарія", new Guid("3eaec87f-d6a6-4dfb-9217-db0493101836") }
                 });
 
             migrationBuilder.InsertData(
@@ -333,48 +335,48 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "CityId", "Language", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0aadc5fe-e9fd-464b-af8e-cf4055d15885"), new Guid("f442a29c-4f82-4aa7-9689-b88680eaef93"), "en", "Lviv" },
-                    { new Guid("153a8eca-0a36-4880-a705-301cad31594e"), new Guid("ed1173b7-ce8b-40ff-9f28-e53312ba8954"), "uk", "Житомир" },
-                    { new Guid("1a9f78d3-891a-4496-8845-ed23b0a3738a"), new Guid("8848c278-99f6-41b5-9c51-05999da664be"), "en", "Rivne" },
-                    { new Guid("22b6e9ec-63e1-4bbf-881f-94a712e3c43e"), new Guid("cd868940-1ee9-4aba-858e-997ad20b60a7"), "en", "Ternopil" },
-                    { new Guid("24122ae4-f1cc-4e1b-b495-a7ae67f6b2bd"), new Guid("01331e3d-c2d4-4f2c-9296-2205735e4b1a"), "en", "Poltava" },
-                    { new Guid("2df7ae83-bd1b-4c3a-be85-e7ade575fa9b"), new Guid("bb7c6234-2c3b-42ea-9ae7-5be22b630dad"), "en", "Lublin" },
-                    { new Guid("348c3ae8-a735-4efa-91a6-9105b4133176"), new Guid("e8e38952-a6ab-45b4-8c24-f17a45bd515f"), "uk", "Миколаїв" },
-                    { new Guid("3bd2f32f-2ed8-445a-9a90-31ba01407e97"), new Guid("1fbc2dba-18b6-4e0a-8f27-6d2d1b8dd70c"), "en", "Dnipro" },
-                    { new Guid("46882d7f-8d2b-4e4a-a7b7-10899effd726"), new Guid("774d5c09-d3f7-4c45-af81-cc9113da435e"), "uk", "Чернівці" },
-                    { new Guid("47f1d312-2698-42e1-a3e9-6141ae8c13bd"), new Guid("5afca0c8-e537-4d17-b08e-96f99e4cc8c1"), "uk", "Вінниця" },
-                    { new Guid("4c1ac5ba-f948-47d5-8493-031291286871"), new Guid("ed1173b7-ce8b-40ff-9f28-e53312ba8954"), "en", "Zhytomyr" },
-                    { new Guid("529ff0d9-6bae-4432-9ccd-20b04dc0cea0"), new Guid("9fb59cfd-76ab-4165-83c3-961851b7315d"), "uk", "Варшава" },
-                    { new Guid("5a849e7b-d589-4d10-9e76-b10c295dd1a1"), new Guid("778c5508-38ee-4a59-9b27-2b150510041c"), "en", "Sumy" },
-                    { new Guid("5d92030c-b2ad-4e7b-af87-8ef9c04818e2"), new Guid("9a53061c-f6fa-47a9-984d-68bd207bbe63"), "uk", "Луцьк" },
-                    { new Guid("60009f07-b2c8-4e6d-a5c7-6c5c6ebf7c34"), new Guid("d6c6a119-3bd4-4704-bd39-713d49258996"), "uk", "Івано-Франківськ" },
-                    { new Guid("6288b79e-dfa2-46b3-8080-adefa30c05e4"), new Guid("e8e38952-a6ab-45b4-8c24-f17a45bd515f"), "en", "Mykolaiv" },
-                    { new Guid("65f5ac76-f407-4ae4-894e-36151638a67b"), new Guid("3ced847e-a8ed-4218-bcfe-6b5e79df8b06"), "en", "Zaporizhzhia" },
-                    { new Guid("67dbb00b-ad31-4a33-9ae0-c28b2fda292d"), new Guid("9d2415a6-4687-4203-a267-69e1752d4a24"), "uk", "Харків" },
-                    { new Guid("6aed6c00-c913-4773-97be-26ba00e5a392"), new Guid("f587378b-09bf-4659-86c8-038b3160d0b3"), "uk", "Херсон" },
-                    { new Guid("721695a7-160c-4fc0-a7c5-a0f497e94827"), new Guid("bb19cb49-98ed-4d4a-b203-b84e9c1a3c75"), "uk", "Одеса" },
-                    { new Guid("75b64f58-c0c3-4d6c-9b49-15dab9e16db2"), new Guid("40d7c2b4-ecad-4c9e-a49b-694cae3e7b3c"), "uk", "Київ" },
-                    { new Guid("7ce2d04c-40c5-401a-b945-219f92fbd52f"), new Guid("ef97b43b-525c-4a53-8828-cd9c96f2ee42"), "uk", "Ужгород" },
-                    { new Guid("7f125352-9a4d-41eb-b7d4-657e5375acd4"), new Guid("778c5508-38ee-4a59-9b27-2b150510041c"), "uk", "Суми" },
-                    { new Guid("89b13458-f824-4ec5-a571-1de81a2599a0"), new Guid("9fb59cfd-76ab-4165-83c3-961851b7315d"), "en", "Varshava" },
-                    { new Guid("8beed449-f2be-40bf-bb44-deaa4a66abcc"), new Guid("f442a29c-4f82-4aa7-9689-b88680eaef93"), "uk", "Львів" },
-                    { new Guid("93524438-fedc-47f2-8d6a-c8988fafc25b"), new Guid("5afca0c8-e537-4d17-b08e-96f99e4cc8c1"), "en", "Vinnytsia" },
-                    { new Guid("93bbd720-f8be-4a73-97ef-89f628e948b0"), new Guid("01331e3d-c2d4-4f2c-9296-2205735e4b1a"), "uk", "Полтава" },
-                    { new Guid("9501cbc1-6ac5-43b6-b2ce-07014c07c383"), new Guid("1fbc2dba-18b6-4e0a-8f27-6d2d1b8dd70c"), "uk", "Дніпро" },
-                    { new Guid("9808bc29-b36b-4b1f-95f9-cecd2a56dc91"), new Guid("774d5c09-d3f7-4c45-af81-cc9113da435e"), "en", "Chernivtsi" },
-                    { new Guid("98e851cd-99fc-4237-baba-996573bf2f48"), new Guid("9a53061c-f6fa-47a9-984d-68bd207bbe63"), "en", "Lutsk" },
-                    { new Guid("99bed382-4e8e-429e-bbfe-f27a608eb914"), new Guid("8848c278-99f6-41b5-9c51-05999da664be"), "uk", "Рівне" },
-                    { new Guid("9bfeaaee-1688-48d7-8ca6-6230a53e9988"), new Guid("ef4d43cd-e75c-4a72-9ae5-9c8b7e8fce72"), "en", "Khmelnytskyi" },
-                    { new Guid("9c1fc5ae-8b70-464c-9761-b4e69a405f1a"), new Guid("bb19cb49-98ed-4d4a-b203-b84e9c1a3c75"), "en", "Odesa" },
-                    { new Guid("9dce8ef5-93a1-45b5-9542-ced5ec478c22"), new Guid("ef97b43b-525c-4a53-8828-cd9c96f2ee42"), "en", "Uzhhorod" },
-                    { new Guid("b33fe486-5962-4922-b6c4-de64bb40ef22"), new Guid("3ced847e-a8ed-4218-bcfe-6b5e79df8b06"), "uk", "Запоріжжя" },
-                    { new Guid("ba210f5a-373f-45b2-adad-e77a3b7cf05d"), new Guid("cd868940-1ee9-4aba-858e-997ad20b60a7"), "uk", "Тернопіль" },
-                    { new Guid("bfb9818d-5762-4dfb-9b55-73cf32f39367"), new Guid("40d7c2b4-ecad-4c9e-a49b-694cae3e7b3c"), "en", "Kyiv" },
-                    { new Guid("caf8da75-822c-4c15-8e11-55773ee5468a"), new Guid("ef4d43cd-e75c-4a72-9ae5-9c8b7e8fce72"), "uk", "Хмельницький" },
-                    { new Guid("cecb49a2-67ad-46c9-a1a5-e4b3a585f49b"), new Guid("bb7c6234-2c3b-42ea-9ae7-5be22b630dad"), "uk", "Люблін" },
-                    { new Guid("cfe4c868-a333-4c3e-8119-bffd998e5de8"), new Guid("4d655442-e406-4f5d-99b7-86a37d2cf4d8"), "en", "Cherkasy" },
-                    { new Guid("d25d265c-dcd6-4a5c-bb90-5074a74c3f8a"), new Guid("57ccc51d-838e-41ca-a938-525ccf594575"), "en", "Kropyvnytskyi" },
-                    { new Guid("d359c66c-8954-49de-96f9-32d58d7feeb0"), new Guid("57ccc51d-838e-41ca-a938-525ccf594575"), "uk", "Кропивницький" }
+                    { new Guid("05435a4c-f006-47c0-9ede-45600efb9c11"), new Guid("eb734b8e-e223-4eb1-addf-7960dc06ddc4"), "en", "Khmelnytskyi" },
+                    { new Guid("08a1c873-a161-4cdb-b4b3-8b054e93f8c8"), new Guid("0e0530ad-f180-47a8-811c-fadd0ac59251"), "en", "Dnipro" },
+                    { new Guid("09d167b2-786b-4a68-bab6-49601239855f"), new Guid("2a68db21-dcc1-4bd2-beb9-d1ba44468bd6"), "uk", "Житомир" },
+                    { new Guid("0ff89b52-3b4d-43bf-9e35-7b28e697a9be"), new Guid("ca75b4ab-3fdb-4974-8f9e-382ec320654b"), "en", "Kropyvnytskyi" },
+                    { new Guid("10188182-c6eb-465b-a7d3-6a89cf7e1a45"), new Guid("56a792e5-7166-4269-a5d4-b5d9a0e3a960"), "uk", "Полтава" },
+                    { new Guid("126712ea-592d-496f-88c1-1d4f3e9ceffd"), new Guid("4324eb80-49d0-4118-8e34-14f80f71f027"), "en", "Lviv" },
+                    { new Guid("131dab1f-a578-43f1-a182-efbf8a2a0ef8"), new Guid("30e2cf2d-0d07-4da8-9d83-e6383ce63b73"), "en", "Chernihiv" },
+                    { new Guid("14950546-282f-453a-a2d3-15018b2b0e5c"), new Guid("5eaa27aa-319b-4f2f-a068-f852531b80ad"), "uk", "Суми" },
+                    { new Guid("1df94653-13de-4286-b327-89371aa3baf3"), new Guid("a837f771-78d3-495d-bed6-ef9162d444ac"), "uk", "Одеса" },
+                    { new Guid("353fb47a-373d-4d36-8134-c990c21442c8"), new Guid("b9bbe674-e9a7-4464-86ff-df7e850bf7f1"), "uk", "Луцьк" },
+                    { new Guid("41964212-5257-4994-ac6f-c7cfd6f8c5f1"), new Guid("71c6eec0-012b-4436-9e9f-882d00f83f16"), "en", "Chernivtsi" },
+                    { new Guid("4aa2af7c-f2e8-47fc-9d54-9810c9f19d1c"), new Guid("2d50b9de-cdc5-40b9-8ee2-1db6db29ecf6"), "en", "Lublin" },
+                    { new Guid("4c902c82-4d71-4681-8776-948b41f672f7"), new Guid("9a5b8e47-eeae-4ce5-8843-ada8b9eb8f8d"), "uk", "Вінниця" },
+                    { new Guid("4f1ca3d6-cdab-467e-a39a-1b5dd1e712a3"), new Guid("0e0530ad-f180-47a8-811c-fadd0ac59251"), "uk", "Дніпро" },
+                    { new Guid("5187fae3-369d-4e3f-afef-9cc8a97a70e6"), new Guid("e50cfd5c-f728-43c2-9474-5cc744295f29"), "uk", "Івано-Франківськ" },
+                    { new Guid("51aa6d3c-54c2-43f7-9fea-177c8b6573fa"), new Guid("15ad2297-c9dc-4d29-97ce-7e668cbb1d38"), "en", "Kharkiv" },
+                    { new Guid("55fdda02-a16f-4b84-a2fb-c15af2d64996"), new Guid("30e2cf2d-0d07-4da8-9d83-e6383ce63b73"), "uk", "Чернігів" },
+                    { new Guid("5a1fcf66-7b57-4e64-bd06-44542ed0a9eb"), new Guid("4324eb80-49d0-4118-8e34-14f80f71f027"), "uk", "Львів" },
+                    { new Guid("5a21504b-4097-41cc-a476-99759d8c187b"), new Guid("1963d595-2df5-4bf3-95e3-e50bf2151277"), "en", "Kyiv" },
+                    { new Guid("5ae4c8a2-2918-48e5-bd21-fa7aedfb39b6"), new Guid("ca75b4ab-3fdb-4974-8f9e-382ec320654b"), "uk", "Кропивницький" },
+                    { new Guid("68a927da-1180-40ca-bc73-28a237c0245c"), new Guid("b2fbebf7-5c37-4a68-8869-b98cdfd34616"), "uk", "Ужгород" },
+                    { new Guid("6dc08f1c-42e5-42a1-80c8-0523af7082db"), new Guid("9a5b8e47-eeae-4ce5-8843-ada8b9eb8f8d"), "en", "Vinnytsia" },
+                    { new Guid("729c660c-2ddc-4756-ad5c-c71be04f511e"), new Guid("b2fbebf7-5c37-4a68-8869-b98cdfd34616"), "en", "Uzhhorod" },
+                    { new Guid("753667c9-6121-4866-9c40-2b92e7a4acd3"), new Guid("5eaa27aa-319b-4f2f-a068-f852531b80ad"), "en", "Sumy" },
+                    { new Guid("7c30c247-f499-4978-973f-9c4b95c70027"), new Guid("25777b82-798b-46ff-8e79-5d9eee60b090"), "en", "Zaporizhzhia" },
+                    { new Guid("7eb32d91-feb7-4b45-b1e0-95da209bdb5e"), new Guid("127e6bf5-9cb4-4219-aa99-85e678864ed5"), "uk", "Херсон" },
+                    { new Guid("7f735e7e-de68-4c58-a466-7e3d9c0015b8"), new Guid("2d50b9de-cdc5-40b9-8ee2-1db6db29ecf6"), "uk", "Люблін" },
+                    { new Guid("809ae962-8ec1-486a-a7ac-34b23dd3170c"), new Guid("05a12e22-f5c3-4c69-a2b5-b65cd118c752"), "uk", "Тернопіль" },
+                    { new Guid("8183d17b-47f0-445d-bdc8-91b1d3785b35"), new Guid("127e6bf5-9cb4-4219-aa99-85e678864ed5"), "en", "Kherson" },
+                    { new Guid("86c651aa-b680-4d9b-b340-6f725e17594c"), new Guid("34700f20-3e77-4ad2-af01-c93c851dcdd7"), "uk", "Миколаїв" },
+                    { new Guid("8a42ba60-10b9-4db0-a97c-3f8228f7625b"), new Guid("25777b82-798b-46ff-8e79-5d9eee60b090"), "uk", "Запоріжжя" },
+                    { new Guid("8b3ddb96-4990-4a5d-b481-40a5f1a128b8"), new Guid("eb734b8e-e223-4eb1-addf-7960dc06ddc4"), "uk", "Хмельницький" },
+                    { new Guid("8d754d7f-60ec-4ab0-b19d-bb725a67fe13"), new Guid("21392d0c-2b1c-4f29-bb75-13cbeb445e47"), "en", "Cherkasy" },
+                    { new Guid("94621098-d060-4171-83b3-6b67fa3a1c2b"), new Guid("71c6eec0-012b-4436-9e9f-882d00f83f16"), "uk", "Чернівці" },
+                    { new Guid("94d3d8f7-e280-4bb9-a75a-d82f167ef928"), new Guid("34700f20-3e77-4ad2-af01-c93c851dcdd7"), "en", "Mykolaiv" },
+                    { new Guid("96eb10e8-6b27-42cf-bee5-cdef94725b16"), new Guid("15ad2297-c9dc-4d29-97ce-7e668cbb1d38"), "uk", "Харків" },
+                    { new Guid("97c5e1cf-3d6b-4000-980d-92eb890a8288"), new Guid("2a68db21-dcc1-4bd2-beb9-d1ba44468bd6"), "en", "Zhytomyr" },
+                    { new Guid("9b11140c-8c63-4dbb-8e09-f8560e89ea30"), new Guid("b9bbe674-e9a7-4464-86ff-df7e850bf7f1"), "en", "Lutsk" },
+                    { new Guid("aef25643-0c95-4491-ba95-81d2bfa22244"), new Guid("dd2bda82-ff64-40e6-be42-51f79f53c05e"), "uk", "Рівне" },
+                    { new Guid("caddd4a7-3285-4732-8241-a25931c8e6bc"), new Guid("a837f771-78d3-495d-bed6-ef9162d444ac"), "en", "Odesa" },
+                    { new Guid("cbd921c8-549b-4e6a-981d-fb0f58cbe2b4"), new Guid("dd2bda82-ff64-40e6-be42-51f79f53c05e"), "en", "Rivne" },
+                    { new Guid("d48ffa92-086e-46eb-abfd-fe43b0f16c69"), new Guid("e50cfd5c-f728-43c2-9474-5cc744295f29"), "en", "Ivano-Frankivsk" }
                 });
 
             migrationBuilder.InsertData(
@@ -382,18 +384,18 @@ namespace DAL.Migrations
                 columns: new[] { "Id", "CityId", "Language", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("d5cec7a7-17fa-4f87-a3dd-83092ba68715"), new Guid("463fad84-1917-43ab-943a-2446b7d12be8"), "en", "Chernihiv" },
-                    { new Guid("d89d5868-5a8e-4629-929c-e6fcc054d490"), new Guid("9d2415a6-4687-4203-a267-69e1752d4a24"), "en", "Kharkiv" },
-                    { new Guid("dba0baf6-a6d7-4b6e-878a-39abc26c5d54"), new Guid("4d655442-e406-4f5d-99b7-86a37d2cf4d8"), "uk", "Черкаси" },
-                    { new Guid("dc877c4e-5271-412b-9f87-8c52621af3db"), new Guid("d6c6a119-3bd4-4704-bd39-713d49258996"), "en", "Ivano-Frankivsk" },
-                    { new Guid("e2883d65-ddeb-4ae8-b585-e24e9e3eb167"), new Guid("f587378b-09bf-4659-86c8-038b3160d0b3"), "en", "Kherson" },
-                    { new Guid("f323ab58-93da-4f36-a0b7-7dc39abb644d"), new Guid("463fad84-1917-43ab-943a-2446b7d12be8"), "uk", "Чернігів" }
+                    { new Guid("d945082f-0d45-4198-8dad-1ff7e05eae39"), new Guid("21392d0c-2b1c-4f29-bb75-13cbeb445e47"), "uk", "Черкаси" },
+                    { new Guid("e9a4463f-a970-44c0-917e-c5f24b0c313f"), new Guid("56a792e5-7166-4269-a5d4-b5d9a0e3a960"), "en", "Poltava" },
+                    { new Guid("e9ca9b6b-df9d-4a2a-826d-f574b94c7a5f"), new Guid("1963d595-2df5-4bf3-95e3-e50bf2151277"), "uk", "Київ" },
+                    { new Guid("ec89d3af-d1f1-495d-9c8a-50622f9dd61b"), new Guid("ad32f639-0a8a-4bef-ab88-53d45b8c2814"), "uk", "Варшава" },
+                    { new Guid("f637d796-9c3b-4e47-9c78-04d1223f4467"), new Guid("05a12e22-f5c3-4c69-a2b5-b65cd118c752"), "en", "Ternopil" },
+                    { new Guid("f9d51154-56ab-4cf3-b66f-e30e5e91dfb3"), new Guid("ad32f639-0a8a-4bef-ab88-53d45b8c2814"), "en", "Varshava" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CityId", "DateOfBirth", "FirstName", "LastName", "Login", "Password", "Phone", "Role" },
-                values: new object[] { new Guid("aaab5803-b509-40b4-91c0-a239022426ae"), new Guid("5afca0c8-e537-4d17-b08e-96f99e4cc8c1"), new DateTime(2023, 4, 27, 22, 55, 21, 67, DateTimeKind.Local).AddTicks(5391), "the first", "admin", "ourfirstadmin", "Rk/ryiBNbnHx+s9i1IveCNNw4axYPQHm4T1eratfQlg=", "+11111111111", "admin" });
+                values: new object[] { new Guid("8c97202e-4f74-4c5d-bcd4-0a53a46f9660"), new Guid("9a5b8e47-eeae-4ce5-8843-ada8b9eb8f8d"), new DateTime(2023, 4, 28, 22, 26, 40, 843, DateTimeKind.Local).AddTicks(7189), "the first", "admin", "ourfirstadmin", "Rk/ryiBNbnHx+s9i1IveCNNw4axYPQHm4T1eratfQlg=", "+11111111111", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_UserId",
@@ -414,6 +416,11 @@ namespace DAL.Migrations
                 name: "IX_CountryTranslations_CountryId",
                 table: "CountryTranslations",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_VolunteerUserId_VolunteerApplicationId",
+                table: "Messages",
+                columns: new[] { "VolunteerUserId", "VolunteerApplicationId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfilePictures_UserId",

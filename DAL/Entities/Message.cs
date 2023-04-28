@@ -12,5 +12,9 @@ namespace DAL.Entities
 
         public Guid VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; }
+
+        public Guid VolunteerApplicationId { get; set; }
+
+        public Guid VolunteerUserId { get; set; }
     }
 }
