@@ -4,6 +4,6 @@ namespace WebAPI.Hubs
 {
     public interface IChatClient
     {
-        Task ReceiveMessage(MessageModel message);
+        Task ReceiveMessage(MessageCreationModel message);
     }
 }

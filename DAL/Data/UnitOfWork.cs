@@ -15,6 +15,7 @@ namespace DAL.Data
         private ApplicationRepository applicationRepository;
         private CityRepository cityRepository;
         private CountryRepository countryRepository;
+        private MessageRepository messageRepository;
         private ProfilePictureRepository profilePictureRepository;
         private SkillRepository skillRepository;
         private UserRepository userRepository;
@@ -30,6 +31,18 @@ namespace DAL.Data
                     applicationRepository = new ApplicationRepository(context);
                 }
                 return applicationRepository;
+            }
+        }
+
+        public IMessageRepository MessageRepository
+        {
+            get
+            {
+                if (messageRepository == null)
+                {
+                    messageRepository = new MessageRepository(context);
+                }
+                return messageRepository;
             }
         }
 

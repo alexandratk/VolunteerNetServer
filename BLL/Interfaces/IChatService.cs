@@ -1,14 +1,15 @@
 ﻿using BLL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    public interface IChatService : IService<MessageModel>
+    public interface IChatService : IService<MessageCreationModel>
     {
-        Task<MessageModel> Test(MessageModel value);
+        Task<List<ValidationResult>> AddAsync(Guid userId, MessageCreationModel model);
     }
 }

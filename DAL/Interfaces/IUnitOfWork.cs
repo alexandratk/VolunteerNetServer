@@ -13,6 +13,8 @@ namespace DAL.Interfaces
         ICityRepository CityRepository { get; }
 
         ICountryRepository CountryRepository { get; }
+
+        IMessageRepository MessageRepository { get; }
         
         IProfilePictureRepository ProfilePictureRepository { get; }
 

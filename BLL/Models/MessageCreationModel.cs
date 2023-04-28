@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class MessageModel : BaseModel
+    public class MessageCreationModel : BaseModel
     {
         public string User { get; set; }
 
-        public string Message { get; set; }
+        public string Text { get; set; }
+
+        public Guid ApplicationId { get; set; }
     }
 }
