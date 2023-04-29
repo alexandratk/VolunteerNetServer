@@ -26,23 +26,28 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<ValidationResult>> AddAsync(Guid userId, MessageCreationModel model)
+        public async Task<MessageViewModel> AddAsync(Guid userId, MessageCreationModel model)
         {
             var validationResults = new List<ValidationResult>();
             var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, model.ApplicationId);
-            if (volunteer == null) 
-            {
-                validationResults.Add(new ValidationResult("invalidApplicationIdOrUserId"));
-                return validationResults;
-            }
+
             var mapperMessage = mapper.Map<MessageCreationModel, Message>(model);
             mapperMessage.Id = Guid.NewGuid();
+            mapperMessage.DateTime = DateTime.Now;
             mapperMessage.VolunteerId = volunteer.Id;
             mapperMessage.VolunteerUserId = volunteer.UserId;
             mapperMessage.VolunteerApplicationId = volunteer.ApplicationId;
             Debug.WriteLine("SERVICE: " + "//message ==> " + model.Text);
             await unitOfWork.MessageRepository.AddAsync(mapperMessage);
-            return validationResults;
+
+            MessageViewModel messageView = new MessageViewModel();
+            messageView.Id = mapperMessage.Id;
+            messageView.Text = mapperMessage.Text;
+            messageView.DateTime = mapperMessage.DateTime;
+            messageView.FirstName = volunteer.User.FirstName;
+            messageView.LastName = volunteer.User.LastName;
+            var message = mapper.Map<Message, MessageViewModel>(mapperMessage);
+            return message;
         }
 
         public Task DeleteAsync(Guid modelId)
@@ -53,6 +58,14 @@ namespace BLL.Services
         public Task<IEnumerable<MessageCreationModel>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<MessageViewModel>> GetListByApplicationId(ChatCreationModel value)
+        {
+            var unmapperMessages = await unitOfWork.MessageRepository.GetListByApplicationIdAsync(value.ApplicationId);
+            var mapperMessages = mapper
+                .Map<IEnumerable<Message>, IEnumerable<MessageViewModel>>(unmapperMessages);
+            return mapperMessages;
         }
 
         public Task UpdateAsync(MessageCreationModel model)

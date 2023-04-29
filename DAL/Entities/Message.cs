@@ -10,11 +10,12 @@ namespace DAL.Entities
     {
         public string Text { get; set; }
 
+        public DateTime DateTime { get; set; }
+
         public Guid VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; }
 
         public Guid VolunteerApplicationId { get; set; }
-
         public Guid VolunteerUserId { get; set; }
     }
 }

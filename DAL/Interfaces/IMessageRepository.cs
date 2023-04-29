@@ -9,5 +9,6 @@ namespace DAL.Interfaces
 {
     public interface IMessageRepository : IRepository<Message>
     {
+        Task<List<Message>> GetListByApplicationIdAsync(Guid applicationId);
     }
 }

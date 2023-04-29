@@ -10,6 +10,8 @@ namespace BLL.Interfaces
 {
     public interface IChatService : IService<MessageCreationModel>
     {
-        Task<List<ValidationResult>> AddAsync(Guid userId, MessageCreationModel model);
+        Task<MessageViewModel> AddAsync(Guid userId, MessageCreationModel model);
+
+        Task<IEnumerable<MessageViewModel>> GetListByApplicationId(ChatCreationModel value);
     }
 }

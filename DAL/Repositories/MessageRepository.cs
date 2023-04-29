@@ -1,6 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,13 @@ namespace DAL.Repositories
         public Task<Message?> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Message>> GetListByApplicationIdAsync(Guid applicationId)
+        {
+            List<Message> messages = await _context.Messages.Include("Volunteer").Include("Volunteer.User")
+                .Where(x => x.VolunteerApplicationId == applicationId).OrderBy(x => x.DateTime).AsNoTracking().ToListAsync();
+            return messages;
         }
 
         public Task Update(Message entity)

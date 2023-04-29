@@ -2,6 +2,7 @@
 using BLL.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json.Linq;
 using NuGet.Protocol;
@@ -26,7 +27,8 @@ namespace WebAPI.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, value.ApplicationId.ToString());
             MessageCreationModel messageCreationModel = new MessageCreationModel();
             messageCreationModel.Text = $"{value.ApplicationId.ToString()} вошел в чат";
-            await Clients.Group(value.ApplicationId.ToString()).ReceiveMessage(messageCreationModel);
+            var messages = await chatService.GetListByApplicationId(value);
+            await Clients.Group(value.ApplicationId.ToString()).SendListAsync(messages);
         }
 
         public async Task SendMessage(MessageCreationModel value)
@@ -37,9 +39,9 @@ namespace WebAPI.Hubs
             var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
             Debug.WriteLine("context ==> " + userIdClaim.ToString().Split(": ")[1]);
             Debug.WriteLine("HUB1: " + "//message ==> " + value.Text);
-            await chatService.AddAsync(userId, value);
+            var message = await chatService.AddAsync(userId, value);
             Debug.WriteLine("HUB2: " + "//message ==> " + value.Text);
-            await Clients.Group(value.ApplicationId.ToString()).ReceiveMessage(value);
+            await Clients.Group(value.ApplicationId.ToString()).ReceiveMessage(message);
         }
     }
 }
