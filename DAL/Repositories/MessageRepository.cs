@@ -47,7 +47,8 @@ namespace DAL.Repositories
 
         public async Task<List<Message>> GetListByApplicationIdAsync(Guid applicationId)
         {
-            List<Message> messages = await _context.Messages.Include("Volunteer").Include("Volunteer.User")
+            List<Message> messages = await _context.Messages
+                .Include("Volunteer").Include("Volunteer.User").Include("Volunteer.User.ProfilePicture")
                 .Where(x => x.VolunteerApplicationId == applicationId).OrderBy(x => x.DateTime).AsNoTracking().ToListAsync();
             return messages;
         }

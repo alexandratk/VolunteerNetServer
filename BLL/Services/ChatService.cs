@@ -46,6 +46,11 @@ namespace BLL.Services
             messageView.DateTime = mapperMessage.DateTime;
             messageView.FirstName = volunteer.User.FirstName;
             messageView.LastName = volunteer.User.LastName;
+            if (volunteer.User.ProfilePicture != null)
+            {
+                messageView.ProfilePicture = Convert.ToBase64String(volunteer.User.ProfilePicture.Data);
+                messageView.ProfilePictureFormat = volunteer.User.ProfilePicture.Format;
+            }
             return messageView;
         }
 
@@ -59,11 +64,20 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<MessageViewModel>> GetListByApplicationId(ChatCreationModel value)
+        public async Task<List<MessageViewModel>> GetListByApplicationId(ChatCreationModel value)
         {
             var unmapperMessages = await unitOfWork.MessageRepository.GetListByApplicationIdAsync(value.ApplicationId);
             var mapperMessages = mapper
-                .Map<IEnumerable<Message>, IEnumerable<MessageViewModel>>(unmapperMessages);
+                .Map<List<Message>, List<MessageViewModel>>(unmapperMessages);
+            for (int i = 0; i < mapperMessages.Count; i++)
+            {
+                if (unmapperMessages[i].Volunteer.User.ProfilePicture != null)
+                {
+                    mapperMessages[i].ProfilePicture =
+                        Convert.ToBase64String(unmapperMessages[i].Volunteer.User.ProfilePicture.Data);
+                    mapperMessages[i].ProfilePictureFormat = unmapperMessages[i].Volunteer.User.ProfilePicture.Format;
+                }
+            }
             return mapperMessages;
         }
 

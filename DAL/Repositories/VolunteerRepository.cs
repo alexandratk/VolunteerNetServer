@@ -75,7 +75,7 @@ namespace DAL.Repositories
         public Task<Volunteer?> GetByUserIdApplicationId(Guid userId, Guid applicationId)
         {
             Volunteer? volunteer = _context.Volunteers.AsNoTracking()
-                .Include("User").Include("Application")
+                .Include("User").Include("User.ProfilePicture").Include("Application")
                 .Where(r => r.UserId == userId && r.ApplicationId == applicationId).FirstOrDefault();
             return Task.FromResult(volunteer);
         }

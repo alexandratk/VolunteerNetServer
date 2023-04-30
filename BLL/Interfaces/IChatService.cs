@@ -12,6 +12,6 @@ namespace BLL.Interfaces
     {
         Task<MessageViewModel> AddAsync(Guid userId, MessageCreationModel model);
 
-        Task<IEnumerable<MessageViewModel>> GetListByApplicationId(ChatCreationModel value);
+        Task<List<MessageViewModel>> GetListByApplicationId(ChatCreationModel value);
     }
 }

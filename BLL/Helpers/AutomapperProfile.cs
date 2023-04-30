@@ -122,7 +122,9 @@ namespace BLL.Helpers
                 .ForMember(a => a.Text, b => b.MapFrom(c => c.Text))
                 .ForMember(a => a.DateTime, b => b.MapFrom(c => c.DateTime))
                 .ForMember(a => a.FirstName, b => b.MapFrom(c => c.Volunteer.User.FirstName))
-                .ForMember(a => a.LastName, b => b.MapFrom(c => c.Volunteer.User.LastName));
+                .ForMember(a => a.LastName, b => b.MapFrom(c => c.Volunteer.User.LastName))
+                .ForMember(a => a.ProfilePicture, b => b.Ignore())
+                .ForMember(a => a.ProfilePictureFormat, b => b.Ignore());
         }
     }
 }
