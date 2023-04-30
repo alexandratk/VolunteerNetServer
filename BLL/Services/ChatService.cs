@@ -46,8 +46,7 @@ namespace BLL.Services
             messageView.DateTime = mapperMessage.DateTime;
             messageView.FirstName = volunteer.User.FirstName;
             messageView.LastName = volunteer.User.LastName;
-            var message = mapper.Map<Message, MessageViewModel>(mapperMessage);
-            return message;
+            return messageView;
         }
 
         public Task DeleteAsync(Guid modelId)
