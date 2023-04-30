@@ -118,7 +118,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.Volunteer, b => b.Ignore())
                 .ForMember(a => a.VolunteerUserId, b => b.Ignore())
                 .ForMember(a => a.VolunteerApplicationId, b => b.Ignore());
-            CreateMap<Message, MessageViewModel>().ForMember(a => a.Id, b => b.Ignore())
+            CreateMap<Message, MessageViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Volunteer.User.Id))
                 .ForMember(a => a.Text, b => b.MapFrom(c => c.Text))
                 .ForMember(a => a.DateTime, b => b.MapFrom(c => c.DateTime))
                 .ForMember(a => a.FirstName, b => b.MapFrom(c => c.Volunteer.User.FirstName))
