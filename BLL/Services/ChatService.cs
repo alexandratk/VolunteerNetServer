@@ -41,7 +41,7 @@ namespace BLL.Services
             await unitOfWork.MessageRepository.AddAsync(mapperMessage);
 
             MessageViewModel messageView = new MessageViewModel();
-            messageView.Id = mapperMessage.Id;
+            messageView.Id = volunteer.UserId;
             messageView.Text = mapperMessage.Text;
             messageView.DateTime = mapperMessage.DateTime;
             messageView.FirstName = volunteer.User.FirstName;
