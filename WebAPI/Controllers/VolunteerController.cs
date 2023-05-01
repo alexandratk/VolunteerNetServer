@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpGet("getlist/accepted")]
+        [HttpGet("getlist/chats")]
         public async Task<ActionResult<IEnumerable<VolunteerViewModel>>>
             GetListAcceptedByUserId([FromHeader(Name = "Accept-Language")] string language)
         {
@@ -107,7 +107,7 @@ namespace WebAPI.Controllers
 
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
-                var volunteers = await volunteerService.GetListAcceptedByUserId(userId, language);
+                var volunteers = await volunteerService.GetListWithChatsByUserId(userId, language);
                 return Ok(volunteers);
             }
             catch (Exception e)

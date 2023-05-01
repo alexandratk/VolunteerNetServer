@@ -102,11 +102,11 @@ namespace BLL.Services
             return mapperVolunteers;
         }
 
-        public async Task<IEnumerable<VolunteerViewModel>> GetListAcceptedByUserId(
+        public async Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(
             Guid userId, string language)
         {
             IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
-                .GetListAcceptedByUserId(userId);
+                .GetListWithChatsByUserId(userId);
             var mapperVolunteers = mapper
                 .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
 

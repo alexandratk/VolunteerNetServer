@@ -13,7 +13,7 @@ namespace DAL.Interfaces
 
         Task<Volunteer?> GetByIdWithoutForeignAsync(Guid id);
 
-        Task<List<Volunteer>> GetListAcceptedByUserId(Guid userId);
+        Task<List<Volunteer>> GetListWithChatsByUserId(Guid userId);
 
         Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId);
     }

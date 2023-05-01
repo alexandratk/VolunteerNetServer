@@ -18,7 +18,7 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<VolunteerViewModel>> GetListInProcessingByOwnerId(Guid userId, string language);
 
-        Task<IEnumerable<VolunteerViewModel>> GetListAcceptedByUserId(Guid userId, string language);
+        Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(Guid userId, string language);
 
         Task<List<ValidationResult>> RejectVolunteer(Guid userId, Guid volunteerId);
     }

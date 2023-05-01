@@ -134,6 +134,15 @@ namespace BLL.Services
             }
             application.Status = (int) ApplicationStatuses.Status.InProgress;
             await unitOfWork.ApplicationRepository.Update(application);
+
+            Volunteer mapperVolunteer = new Volunteer();
+            mapperVolunteer.Id = Guid.NewGuid();
+            mapperVolunteer.UserId = application.UserId;
+            mapperVolunteer.ApplicationId = applicationId;
+            mapperVolunteer.Status = (int)VolunteerStatuses.Status.Owner;
+
+            await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
+
             return validationResults;
         }
 
