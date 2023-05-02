@@ -22,6 +22,12 @@ namespace BLL.Models
 
         public string Email { get; set; }
 
+        public string Country { get; set; }
+
+        public string City { get; set; }
+
+        public Guid CityId { get; set; }
+
         public int RequiredNumberOfVolunteers { get; set; }
 
         public int NumberOfVolunteers { get; set; }

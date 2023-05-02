@@ -23,6 +23,9 @@ namespace DAL.Entities
 
         public int NumberOfVolunteers { get; set; }
 
+        public Guid CityId { get; set; }
+        public City City { get; set; }
+
         public Guid UserId { get; set; }
         public User User { get; set; }
 

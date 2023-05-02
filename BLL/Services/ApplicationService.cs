@@ -30,6 +30,15 @@ namespace BLL.Services
             mapperApplication.UserId = userId;
             mapperApplication.Status = (int) ApplicationStatuses.Status.Processing;
             mapperApplication.NumberOfVolunteers = StartValueNamberOfVolunteers;
+
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
+            if (cityTranslation == null)
+            {
+                validationResults.Add(new ValidationResult("invalidLocation"));
+                return validationResults;
+            }
+            mapperApplication.CityId = cityTranslation.CityId;
+
             await unitOfWork.ApplicationRepository.AddAsync(mapperApplication);
             return validationResults;
         }
@@ -53,6 +62,19 @@ namespace BLL.Services
             {
                 var translation = ApplicationStatuses.StatusTranslation[application.StatusNumber];
                 application.Status = translation[language];
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(application.CityId, language);
+                if (cityTranslation != null)
+                {
+                    application.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        application.Country = countryTranslation.Name;
+                    }
+                }
             }
             return mapperApplications;
         }
@@ -69,6 +91,19 @@ namespace BLL.Services
 
             var translation = ApplicationStatuses.StatusTranslation[mapperApplication.StatusNumber];
             mapperApplication.Status = translation[language];
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(mapperApplication.CityId, language);
+            if (cityTranslation != null)
+            {
+                mapperApplication.City = cityTranslation.Name;
+
+                CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                    .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                if (countryTranslation != null)
+                {
+                    mapperApplication.Country = countryTranslation.Name;
+                }
+            }
 
             mapperApplication.CheckVolunteer = 
                 userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] && 
@@ -96,6 +131,19 @@ namespace BLL.Services
             {
                 var translation = ApplicationStatuses.StatusTranslation[application.StatusNumber];
                 application.Status = translation[language];
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(application.CityId, language);
+                if (cityTranslation != null)
+                {
+                    application.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        application.Country = countryTranslation.Name;
+                    }
+                }
             }
             return mapperApplications;
         }
@@ -109,6 +157,19 @@ namespace BLL.Services
             {
                 var translation = ApplicationStatuses.StatusTranslation[application.StatusNumber];
                 application.Status = translation[language];
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(application.CityId, language);
+                if (cityTranslation != null)
+                {
+                    application.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        application.Country = countryTranslation.Name;
+                    }
+                }
             }
             return mapperApplications;
         }

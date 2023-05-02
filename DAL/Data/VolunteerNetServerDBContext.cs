@@ -49,6 +49,7 @@ namespace DAL.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Application>().HasOne(x => x.City).WithMany(x => x.Applications).HasForeignKey(x => x.CityId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Volunteer>().HasKey(x => x.Id);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.User).WithMany(x => x.Volunteers).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.Application).WithMany(x => x.Volunteers).HasForeignKey(x => x.ApplicationId).OnDelete(DeleteBehavior.Cascade);

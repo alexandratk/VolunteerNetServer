@@ -14,8 +14,10 @@ namespace DAL.Entities
         public Guid CountryId { get; set; }
         public Country Country { get; set; }
 
-        public List<User> Users { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
 
-        public List<CityTranslation> CityTranslations { get; set; }
+        public List<Application> Applications { get; set; } = new List<Application>();
+
+        public List<CityTranslation> CityTranslations { get; set; } = new List<CityTranslation>();
     }
 }

@@ -80,6 +80,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.UserId, b => b.Ignore())
                 .ForMember(a => a.User, b => b.Ignore())
                 .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.City, b => b.Ignore())
+                .ForMember(a => a.CityId, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
                 .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
                 .ForMember(a => a.Phone, b => b.MapFrom(c => c.Phone))
@@ -96,6 +98,9 @@ namespace BLL.Helpers
                 .ForMember(a => a.Phone, b => b.MapFrom(c => c.Phone))
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.Email))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
+                .ForMember(a => a.CityId, b => b.MapFrom(c => c.CityId))
+                .ForMember(a => a.City, b => b.Ignore())
+                .ForMember(a => a.Country, b => b.Ignore())
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
                 .ForMember(a => a.CheckVolunteer, b => b.Ignore());
