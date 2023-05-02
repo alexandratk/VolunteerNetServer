@@ -27,8 +27,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<VolunteerNetServerDBContext>(options =>
 //options.UseSqlServer(@"Server=localhost,1435;Database=VolunteerNet;User Id=SA;Password=2Secure*Password2;"));
-//options.UseSqlServer(@"Server=localhost;Database=VolunteerNet;Trusted_Connection=True;"));
-options.UseSqlServer(@"Server=host.docker.internal,1435;Database=VolunteerNet;User Id=SA;Password=MySecurePassword*19*5;"));
+options.UseSqlServer(@"Server=localhost;Database=VolunteerNet;Trusted_Connection=True;"));
+//options.UseSqlServer(@"Server=host.docker.internal,1435;Database=VolunteerNet;User Id=SA;Password=MySecurePassword*19*5;"));
 
 builder.Services.AddSignalR();
 
