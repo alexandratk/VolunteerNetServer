@@ -42,23 +42,6 @@ namespace DAL.Repositories
             return volunteers;
         }
 
-        public async Task<List<Volunteer>> GetListWithChatsByUserId(Guid userId)
-        {
-            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
-                .Where(x => x.UserId == userId && (x.Status == (int)VolunteerStatuses.Status.Accepted 
-                || x.Status == (int)VolunteerStatuses.Status.Owner))
-                .AsNoTracking().ToListAsync();
-            return volunteers;
-        }
-
-        public async Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId)
-        {
-            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
-                .Where(x => x.Application.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Processing)
-                .AsNoTracking().ToListAsync();
-            return volunteers;
-        }
-
         public Task<Volunteer?> GetByIdAsync(Guid id)
         {
             Volunteer? volunteer = _context.Volunteers
@@ -79,6 +62,31 @@ namespace DAL.Repositories
                 .Include("User").Include("User.ProfilePicture").Include("Application")
                 .Where(r => r.UserId == userId && r.ApplicationId == applicationId).FirstOrDefault();
             return Task.FromResult(volunteer);
+        }
+
+        public async Task<List<Volunteer>> GetListByUserId(Guid userId)
+        {
+            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
+                .Where(x => x.UserId == userId && x.Status != (int)VolunteerStatuses.Status.Owner)
+                .AsNoTracking().ToListAsync();
+            return volunteers;
+        }
+
+        public async Task<List<Volunteer>> GetListWithChatsByUserId(Guid userId)
+        {
+            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
+                .Where(x => x.UserId == userId && (x.Status == (int)VolunteerStatuses.Status.Accepted 
+                || x.Status == (int)VolunteerStatuses.Status.Owner))
+                .AsNoTracking().ToListAsync();
+            return volunteers;
+        }
+
+        public async Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId)
+        {
+            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
+                .Where(x => x.Application.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Processing)
+                .AsNoTracking().ToListAsync();
+            return volunteers;
         }
 
         public async Task Update(Volunteer entity)

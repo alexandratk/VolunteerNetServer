@@ -16,6 +16,8 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<VolunteerViewModel>> GetAllAsync(string language);
 
+        Task<IEnumerable<VolunteerViewModel>> GetListByUserId(Guid userId, string language);
+
         Task<IEnumerable<VolunteerViewModel>> GetListInProcessingByOwnerId(Guid userId, string language);
 
         Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(Guid userId, string language);
