@@ -24,5 +24,7 @@ namespace BLL.Models
 
         public int RequiredNumberOfVolunteers { get; set; }
 
+        public List<Guid> SkillIds { get; set; } = new List<Guid>();
+
     }
 }

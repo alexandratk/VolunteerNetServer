@@ -14,6 +14,7 @@ namespace DAL.Data
     public class VolunteerNetServerDBContext : DbContext
     {
         public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationSkill> ApplicationSkills { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -50,6 +51,22 @@ namespace DAL.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Application>().HasOne(x => x.City).WithMany(x => x.Applications).HasForeignKey(x => x.CityId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Application>()
+                .HasMany(p => p.Skills)
+                .WithMany(p => p.Applications)
+                .UsingEntity<ApplicationSkill>(
+                    j => j
+                        .HasOne(pt => pt.Skill)
+                        .WithMany(t => t.ApplicationSkills)
+                        .HasForeignKey(pt => pt.SkillId),
+                    j => j
+                        .HasOne(pt => pt.Application)
+                        .WithMany(p => p.ApplicationSkills)
+                        .HasForeignKey(pt => pt.ApplicationId),
+                    j =>
+                    {
+                        j.HasKey(t => new { t.ApplicationId, t.SkillId });
+                    });
             modelBuilder.Entity<Volunteer>().HasKey(x => x.Id);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.User).WithMany(x => x.Volunteers).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.Application).WithMany(x => x.Volunteers).HasForeignKey(x => x.ApplicationId).OnDelete(DeleteBehavior.Cascade);

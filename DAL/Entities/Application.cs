@@ -29,6 +29,9 @@ namespace DAL.Entities
         public Guid UserId { get; set; }
         public User User { get; set; }
 
+        public List<ApplicationSkill> ApplicationSkills { get; set; } = new List<ApplicationSkill>();
+        public List<Skill> Skills { get; set; } = new List<Skill>();
+
         public List<User> Users { get; set; } = new List<User>();
         public List<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
     }

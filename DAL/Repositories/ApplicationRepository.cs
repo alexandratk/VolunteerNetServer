@@ -43,6 +43,13 @@ namespace DAL.Repositories
             return applications;
         }
 
+        public Task<Application?> GetByIdAsync(Guid id)
+        {
+            Application? application = _context.Applications.AsNoTracking()
+                .Where(r => r.Id == id).Include("User").Include("ApplicationSkills").FirstOrDefault();
+            return Task.FromResult(application);
+        }
+
         public async Task<List<Application>> GetListForProcessingAsync()
         {
             List<Application> applications = await _context.Applications
@@ -56,13 +63,6 @@ namespace DAL.Repositories
             List<Application> applications = await _context.Applications
                 .Where(x => x.UserId == userId).AsNoTracking().ToListAsync();
             return applications;
-        }
-
-        public Task<Application?> GetByIdAsync(Guid id)
-        {
-            Application? application = _context.Applications.AsNoTracking()
-                .Where(r => r.Id == id).Include("User").FirstOrDefault();
-            return Task.FromResult(application);
         }
 
         public async Task Update(Application entity)

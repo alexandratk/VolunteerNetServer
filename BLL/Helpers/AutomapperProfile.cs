@@ -103,8 +103,11 @@ namespace BLL.Helpers
                 .ForMember(a => a.Country, b => b.Ignore())
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
-                .ForMember(a => a.CheckVolunteer, b => b.Ignore());
+                .ForMember(a => a.CheckVolunteer, b => b.Ignore())
+                .ForMember(a => a.ApplicationSkills, b => b.MapFrom(c => c.ApplicationSkills.Select(x => new SkillModel() { Id = x.SkillId }).ToList()));
 
+            CreateMap<ApplicationSkill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Title, b => b.Ignore());
 
             CreateMap<VolunteerCreationModel, Volunteer>().ForMember(a => a.Id, b => b.Ignore())
                 .ForMember(a => a.UserId, b => b.Ignore())

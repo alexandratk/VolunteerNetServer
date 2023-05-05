@@ -38,6 +38,17 @@ namespace BLL.Services
                 return validationResults;
             }
             mapperApplication.CityId = cityTranslation.CityId;
+             
+            foreach(Guid id in model.SkillIds)
+            {
+                var skill = await unitOfWork.SkillRepository.GetByIdAsync(id);
+                if (skill != null) {
+                    var applicationSkill = new ApplicationSkill();
+                    applicationSkill.Id = Guid.NewGuid();
+                    applicationSkill.SkillId = id;
+                    mapperApplication.ApplicationSkills.Add(applicationSkill);
+                }
+            }
 
             await unitOfWork.ApplicationRepository.AddAsync(mapperApplication);
             return validationResults;
@@ -102,6 +113,17 @@ namespace BLL.Services
                 if (countryTranslation != null)
                 {
                     mapperApplication.Country = countryTranslation.Name;
+                }
+            }
+
+
+            foreach (SkillModel skillModel in mapperApplication.ApplicationSkills)
+            {
+                SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                    .GetSkillTranslationById(skillModel.Id, language);
+                if (skillTranslation != null)
+                {
+                    skillModel.Title = skillTranslation.Name;
                 }
             }
 
