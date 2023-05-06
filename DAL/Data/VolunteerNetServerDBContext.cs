@@ -15,6 +15,8 @@ namespace DAL.Data
     {
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationSkill> ApplicationSkills { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -104,6 +106,9 @@ namespace DAL.Data
                     {
                         j.HasKey(t => new { t.UserId, t.ApplicationId });
                     });
+            Categories categories = new Categories();
+            modelBuilder.Entity<Category>().HasData(categories.CategoriesList);
+            modelBuilder.Entity<CategoryTranslation>().HasData(categories.CategoryTranslations);
 
             Skills skills = new Skills();
             modelBuilder.Entity<Skill>().HasData(skills.SkillsList);

@@ -20,6 +20,7 @@ namespace BLL.Infrastructure
             
             serviceCollection.AddTransient<IApplicationService, ApplicationService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
+            serviceCollection.AddTransient<ICategoryService, CategoryService>();
             serviceCollection.AddTransient<IChatService, ChatService>();
             serviceCollection.AddTransient<ILocationService, LocationService>();
             serviceCollection.AddTransient<ISkillService, SkillService>();

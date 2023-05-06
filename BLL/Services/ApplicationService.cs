@@ -116,6 +116,13 @@ namespace BLL.Services
                 }
             }
 
+            CategoryTranslation? categoryTranslation = await unitOfWork.CategoryRepository
+                .GetCategoryTranslationById(mapperApplication.CategoryId, language);
+            if (categoryTranslation != null)
+            {
+                mapperApplication.Category = categoryTranslation.Name;
+            }
+
 
             foreach (SkillModel skillModel in mapperApplication.ApplicationSkills)
             {

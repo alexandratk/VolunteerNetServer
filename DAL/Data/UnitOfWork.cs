@@ -13,6 +13,7 @@ namespace DAL.Data
         public VolunteerNetServerDBContext context { get; set; }
 
         private ApplicationRepository applicationRepository;
+        private CategoryRepository categoryRepository;
         private CityRepository cityRepository;
         private CountryRepository countryRepository;
         private MessageRepository messageRepository;
@@ -34,51 +35,15 @@ namespace DAL.Data
             }
         }
 
-        public IMessageRepository MessageRepository
+        public ICategoryRepository CategoryRepository
         {
             get
             {
-                if (messageRepository == null)
+                if (categoryRepository == null)
                 {
-                    messageRepository = new MessageRepository(context);
+                    categoryRepository = new CategoryRepository(context);
                 }
-                return messageRepository;
-            }
-        }
-
-        public IUserRepository UserRepository
-        {
-            get
-            {
-                if (userRepository == null)
-                {
-                    userRepository = new UserRepository(context);
-                }
-                return userRepository;
-            }
-        }
-
-        public IProfilePictureRepository ProfilePictureRepository
-        {
-            get
-            {
-                if (profilePictureRepository == null)
-                {
-                    profilePictureRepository = new ProfilePictureRepository(context);
-                }
-                return profilePictureRepository;
-            }
-        }
-
-        public ISkillRepository SkillRepository
-        {
-            get
-            {
-                if (skillRepository == null)
-                {
-                    skillRepository = new SkillRepository(context);
-                }
-                return skillRepository;
+                return categoryRepository;
             }
         }
 
@@ -106,15 +71,51 @@ namespace DAL.Data
             }
         }
 
-        public IVolunteerRepository VolunteerRepository
+        public IMessageRepository MessageRepository
         {
             get
             {
-                if (volunteerRepository == null)
+                if (messageRepository == null)
                 {
-                    volunteerRepository = new VolunteerRepository(context);
+                    messageRepository = new MessageRepository(context);
                 }
-                return volunteerRepository;
+                return messageRepository;
+            }
+        }
+
+        public IProfilePictureRepository ProfilePictureRepository
+        {
+            get
+            {
+                if (profilePictureRepository == null)
+                {
+                    profilePictureRepository = new ProfilePictureRepository(context);
+                }
+                return profilePictureRepository;
+            }
+        }
+
+        public ISkillRepository SkillRepository
+        {
+            get
+            {
+                if (skillRepository == null)
+                {
+                    skillRepository = new SkillRepository(context);
+                }
+                return skillRepository;
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (userRepository == null)
+                {
+                    userRepository = new UserRepository(context);
+                }
+                return userRepository;
             }
         }
 
@@ -127,6 +128,18 @@ namespace DAL.Data
                     userSkillRepository = new UserSkillRepository(context);
                 }
                 return userSkillRepository;
+            }
+        }
+
+        public IVolunteerRepository VolunteerRepository
+        {
+            get
+            {
+                if (volunteerRepository == null)
+                {
+                    volunteerRepository = new VolunteerRepository(context);
+                }
+                return volunteerRepository;
             }
         }
 

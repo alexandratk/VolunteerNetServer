@@ -16,6 +16,7 @@ namespace DAL.Infrastructure
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IApplicationRepository, ApplicationRepository>();
+            serviceCollection.AddTransient<ICategoryRepository, CategoryRepository>();
             serviceCollection.AddTransient<ICityRepository, CityRepository>();
             serviceCollection.AddTransient<ICountryRepository, CountryRepository>();
             serviceCollection.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();

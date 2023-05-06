@@ -10,6 +10,8 @@ namespace DAL.Interfaces
     {
         IApplicationRepository ApplicationRepository { get; }
 
+        ICategoryRepository CategoryRepository { get; }
+
         ICityRepository CityRepository { get; }
 
         ICountryRepository CountryRepository { get; }

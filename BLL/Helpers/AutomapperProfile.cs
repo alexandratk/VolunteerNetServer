@@ -60,6 +60,8 @@ namespace BLL.Helpers
             CreateMap<Skill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
 
+            CreateMap<Category, CategoryModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
 
             CreateMap<UserSkill, UserSkillViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.DocumentId, b => b.MapFrom(c => c.Id));
@@ -88,6 +90,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.Email))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
+                .ForMember(a => a.CategoryId, b => b.MapFrom(c => c.CategoryId))
                 .ForMember(a => a.NumberOfVolunteers, b => b.Ignore());
             CreateMap<Application, ApplicationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
@@ -99,6 +102,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.Email))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
                 .ForMember(a => a.CityId, b => b.MapFrom(c => c.CityId))
+                .ForMember(a => a.CategoryId, b => b.MapFrom(c => c.CategoryId))
+                .ForMember(a => a.Category, b => b.Ignore())
                 .ForMember(a => a.City, b => b.Ignore())
                 .ForMember(a => a.Country, b => b.Ignore())
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
