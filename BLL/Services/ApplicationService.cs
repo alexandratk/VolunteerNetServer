@@ -12,6 +12,7 @@ namespace BLL.Services
     public class ApplicationService : IApplicationService
     {
         private const int StartValueNamberOfVolunteers = 0;
+        private const int StartValueOfSum = 0;
 
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
@@ -29,7 +30,15 @@ namespace BLL.Services
             mapperApplication.Id = Guid.NewGuid();
             mapperApplication.UserId = userId;
             mapperApplication.Status = (int) ApplicationStatuses.Status.Processing;
+
+            if (!ApplicationKinds.Kinds.Contains(model.Kind))
+            {
+                validationResults.Add(new ValidationResult("invalidKind"));
+                return validationResults;
+            }
+
             mapperApplication.NumberOfVolunteers = StartValueNamberOfVolunteers;
+            mapperApplication.CurrentSum = StartValueOfSum;
 
             CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
             if (cityTranslation == null)

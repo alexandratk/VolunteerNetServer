@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,21 @@ namespace DAL.Entities
 
         public string Email { get; set; }
 
-        public int RequiredNumberOfVolunteers { get; set; }
+        public string Kind { get; set; }
 
-        public int NumberOfVolunteers { get; set; }
+        public int? RequiredNumberOfVolunteers { get; set; }
+
+        public int? NumberOfVolunteers { get; set; }
+
+        public decimal? RequiredSum { get; set; }
+
+        public decimal? CurrentSum { get; set; }
+
+        public string? CardNumber { get; set; }
+
+        public string? AccountNumber { get; set; }
+
+        public string? OwnerCardName { get; set; }
 
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }

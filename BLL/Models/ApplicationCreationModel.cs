@@ -22,7 +22,17 @@ namespace BLL.Models
 
         public string City { get; set; }
 
-        public int RequiredNumberOfVolunteers { get; set; }
+        public string Kind { get; set; }
+
+        public int? RequiredNumberOfVolunteers { get; set; }
+
+        public decimal? RequiredSum { get; set; }
+
+        public string? CardNumber { get; set; }
+
+        public string? AccountNumber { get; set; }
+
+        public string? OwnerCardName { get; set; }
 
         public Guid CategoryId { get; set; }
 
