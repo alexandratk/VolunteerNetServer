@@ -22,6 +22,8 @@ namespace BLL.Models
 
         public string Email { get; set; }
 
+        public string Kind { get; set; }
+
         public string Category { get; set; }
 
         public Guid CategoryId { get; set; }

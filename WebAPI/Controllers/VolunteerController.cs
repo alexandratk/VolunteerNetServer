@@ -142,6 +142,31 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
+        [HttpGet("getlist/usersinchat/{applicationId}")]
+        public async Task<ActionResult<IEnumerable<VolunteerViewModel>>> GetListUsersInChatByApplicationId(
+            Guid apllicationId, [FromHeader(Name = "Accept-Language")] string language)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var volunteers = await volunteerService.GetListByUserId(userId, language);
+                return Ok(volunteers);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user")]
         [HttpGet("accept/{volunteerId}")]
         public async Task<ActionResult> AcceptVolunteer(Guid volunteerId)
         {

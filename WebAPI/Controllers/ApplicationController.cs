@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("get/{applicationId}")]
-        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
+        public async Task<ActionResult<ApplicationViewModel>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
         {
             try
             {

@@ -22,6 +22,8 @@ namespace BLL.Models
 
         public string City { get; set; }
 
+        public string Kind { get; set; }
+
         public int RequiredNumberOfVolunteers { get; set; }
 
         public int NumberOfVolunteers { get; set; }

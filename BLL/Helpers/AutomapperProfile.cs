@@ -106,6 +106,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.Phone, b => b.MapFrom(c => c.Phone))
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.Email))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
+                .ForMember(a => a.Kind, b => b.MapFrom(c => c.Kind))
                 .ForMember(a => a.CityId, b => b.MapFrom(c => c.CityId))
                 .ForMember(a => a.CategoryId, b => b.MapFrom(c => c.CategoryId))
                 .ForMember(a => a.Category, b => b.Ignore())
