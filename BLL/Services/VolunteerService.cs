@@ -118,6 +118,22 @@ namespace BLL.Services
             return mapperVolunteers;
         }
 
+        public async Task<IEnumerable<VolunteerViewModel>> GetListVolunteersInChat(
+            Guid applicationId, Guid userId, string language)
+        {
+            IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
+                .GetListVolunteersInChat(applicationId);
+            var mapperVolunteers = mapper
+                .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
+
+            foreach (var volunteer in mapperVolunteers)
+            {
+                var translation = VolunteerStatuses.StatusTranslation[volunteer.StatusNumber];
+                volunteer.Status = translation[language];
+            }
+            return mapperVolunteers;
+        }
+
         public async Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(
             Guid userId, string language)
         {
