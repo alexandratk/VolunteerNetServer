@@ -13,21 +13,36 @@ namespace WebAPI.Controllers
     [Authorize]
     public class LiqPayController : ControllerBase
     {
-        private IApplicationService applicationService { get; set; }
+        private ILiqPayService liqPayService { get; set; }
 
-        public LiqPayController(IApplicationService applicationService)
+        public LiqPayController(ILiqPayService liqPayService)
         {
-            this.applicationService = applicationService;
+            this.liqPayService = liqPayService;
         }
 
+        //[Authorize(Roles = "user")]
+        //[HttpPost("pay")]
+        //public async Task<ActionResult> Add([FromForm] LiqPayCreationModel value)
+        //{
+        //    try
+        //    {
+        //        Debug.WriteLine("liq-pay data ==> " + value.Data + "\n signature ==> " + value.Signature);
+        //        return Ok();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return NotFound(e);
+        //    }
+        //}
+
         [Authorize(Roles = "user")]
-        [HttpPost("pay")]
-        public async Task<ActionResult> Add([FromForm] LiqPayCreationModel value)
+        [HttpPost("createparams")]
+        public async Task<ActionResult<LiqPayViewModel>> CreateParams([FromForm] LiqPayCreationModel value)
         {
             try
             {
-                Debug.WriteLine("liq-pay data ==> " + value.Data + "\n signature ==> " + value.Signature);
-                return Ok();
+                var liqPayViewModel = liqPayService.CreateParams(value);
+                return Ok(liqPayViewModel);
             }
             catch (Exception e)
             {

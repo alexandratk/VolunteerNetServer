@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Models
 {
-    public class LiqPayCreationModel
+    public class LiqPayViewModel
     {
-        public double Sum { get; set; }
+        public string Data { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public string Signature { get; set; }
     }
 }
