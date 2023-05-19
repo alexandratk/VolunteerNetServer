@@ -10,7 +10,6 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class LiqPayController : ControllerBase
     {
         private ILiqPayService liqPayService { get; set; }
@@ -35,13 +34,12 @@ namespace WebAPI.Controllers
         //    }
         //}
 
-        [Authorize(Roles = "user")]
         [HttpPost("createparams")]
         public async Task<ActionResult<LiqPayViewModel>> CreateParams([FromForm] LiqPayCreationModel value)
         {
             try
             {
-                var liqPayViewModel = liqPayService.CreateParams(value);
+                LiqPayViewModel liqPayViewModel = await liqPayService.CreateParams(value);
                 return Ok(liqPayViewModel);
             }
             catch (Exception e)
