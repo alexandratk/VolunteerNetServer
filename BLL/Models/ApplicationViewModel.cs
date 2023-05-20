@@ -34,6 +34,10 @@ namespace BLL.Models
 
         public Guid CityId { get; set; }
 
+        public decimal RequiredSum { get; set; }
+
+        public decimal CurrentSum { get; set; }
+
         public int RequiredNumberOfVolunteers { get; set; }
 
         public int NumberOfVolunteers { get; set; }

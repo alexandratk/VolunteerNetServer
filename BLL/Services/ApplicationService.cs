@@ -95,6 +95,16 @@ namespace BLL.Services
                         application.Country = countryTranslation.Name;
                     }
                 }
+
+                foreach (SkillModel skillModel in application.ApplicationSkills)
+                {
+                    SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                        .GetSkillTranslationById(skillModel.Id, language);
+                    if (skillTranslation != null)
+                    {
+                        skillModel.Title = skillTranslation.Name;
+                    }
+                }
             }
             return mapperApplications;
         }
@@ -206,6 +216,16 @@ namespace BLL.Services
                     if (countryTranslation != null)
                     {
                         application.Country = countryTranslation.Name;
+                    }
+                }
+
+                foreach (SkillModel skillModel in application.ApplicationSkills)
+                {
+                    SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                        .GetSkillTranslationById(skillModel.Id, language);
+                    if (skillTranslation != null)
+                    {
+                        skillModel.Title = skillTranslation.Name;
                     }
                 }
             }

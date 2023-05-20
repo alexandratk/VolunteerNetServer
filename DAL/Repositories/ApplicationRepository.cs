@@ -38,7 +38,7 @@ namespace DAL.Repositories
 
         public async Task<List<Application>> GetAllAsync()
         {
-            List<Application> applications = await _context.Applications
+            List<Application> applications = await _context.Applications.Include("ApplicationSkills")
                 .AsNoTracking().ToListAsync();
             return applications;
         }
@@ -61,7 +61,7 @@ namespace DAL.Repositories
         public async Task<List<Application>> GetListForUserAsync(Guid userId)
         {
             List<Application> applications = await _context.Applications
-                .Where(x => x.UserId == userId).AsNoTracking().ToListAsync();
+                .Where(x => x.UserId == userId).Include("ApplicationSkills").AsNoTracking().ToListAsync();
             return applications;
         }
 

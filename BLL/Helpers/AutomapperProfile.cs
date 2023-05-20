@@ -112,6 +112,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.Category, b => b.Ignore())
                 .ForMember(a => a.City, b => b.Ignore())
                 .ForMember(a => a.Country, b => b.Ignore())
+                .ForMember(a => a.RequiredSum, b => b.MapFrom(c => c.RequiredSum))
+                .ForMember(a => a.CurrentSum, b => b.MapFrom(c => c.CurrentSum))
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
                 .ForMember(a => a.CheckVolunteer, b => b.Ignore())

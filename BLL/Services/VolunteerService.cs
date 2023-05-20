@@ -67,9 +67,34 @@ namespace BLL.Services
             return validationResults;
         }
 
-        public Task DeleteAsync(Guid modelId)
+        public async Task<List<ValidationResult>> DeleteAsync(Guid volunteerId, Guid userId)
         {
-            throw new NotImplementedException();
+            var validationResults = new List<ValidationResult>();
+            if (volunteerId == null)
+            {
+                validationResults.Add(new ValidationResult("volunteerIdIsEmpty"));
+                return validationResults;
+            }
+            var volunteer = await unitOfWork.VolunteerRepository.GetByIdAsync(volunteerId);
+            if (volunteer == null)
+            {
+                validationResults.Add(new ValidationResult("incorrectVolunteerId"));
+                return validationResults;
+            }
+            if (volunteer.Application.UserId != userId)
+            {
+                validationResults.Add(new ValidationResult("userIsNotOwner"));
+                return validationResults;
+            }
+            if (volunteer.UserId == userId)
+            {
+                validationResults.Add(new ValidationResult("volunteerIsOwner"));
+                return validationResults;
+            }
+
+            await unitOfWork.VolunteerRepository.DeleteAsync(volunteer);
+
+            return validationResults;
         }
 
         public async Task<IEnumerable<VolunteerViewModel>> GetAllAsync(string language)
@@ -204,7 +229,8 @@ namespace BLL.Services
                 validationResults.Add(new ValidationResult("incorrectOwnerId"));
                 return validationResults;
             }
-            if (volunteer.Status != (int)VolunteerStatuses.Status.Processing)
+            if (volunteer.Status != (int)VolunteerStatuses.Status.Processing &&
+                volunteer.Status != (int)VolunteerStatuses.Status.Accepted)
             {
                 validationResults.Add(new ValidationResult("incorrectVolunteerStatus"));
                 return validationResults;
@@ -220,6 +246,11 @@ namespace BLL.Services
         }
 
         public Task UpdateAsync(VolunteerModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IService<VolunteerModel>.DeleteAsync(Guid modelId)
         {
             throw new NotImplementedException();
         }

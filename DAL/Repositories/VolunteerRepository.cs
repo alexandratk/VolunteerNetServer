@@ -26,9 +26,10 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Volunteer entity)
+        public async Task DeleteAsync(Volunteer entity)
         {
-            throw new NotImplementedException();
+            _context.Volunteers.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteByIdAsync(Guid id)
@@ -67,7 +68,7 @@ namespace DAL.Repositories
         public async Task<List<Volunteer>> GetListByUserId(Guid userId)
         {
             List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
-                .Where(x => x.UserId == userId && x.Status != (int)VolunteerStatuses.Status.Owner)
+                .Where(x => x.UserId == userId && x.Status == (int)VolunteerStatuses.Status.Accepted)
                 .AsNoTracking().ToListAsync();
             return volunteers;
         }
