@@ -22,6 +22,7 @@ namespace DAL.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SkillTranslation> SkillTranslations { get; set; }
@@ -69,9 +70,16 @@ namespace DAL.Data
                     {
                         j.HasKey(t => new { t.ApplicationId, t.SkillId });
                     });
+
+            modelBuilder.Entity<Notification>().HasOne(x => x.Application).WithMany(x => x.Notifications).HasForeignKey(x => x.ApplictionId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Notification>().HasOne(x => x.UserRecipient).WithMany(x => x.ReceivedNotifications).HasForeignKey(x => x.UserRecipientId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Notification>().HasOne(x => x.UserSender).WithMany(x => x.SentNotifications).HasForeignKey(x => x.UserSenderId).OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Volunteer>().HasKey(x => x.Id);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.User).WithMany(x => x.Volunteers).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Volunteer>().HasOne(x => x.Application).WithMany(x => x.Volunteers).HasForeignKey(x => x.ApplicationId).OnDelete(DeleteBehavior.Cascade);
+            
+            
             modelBuilder.Entity<User>()
                 .HasMany(p => p.Skills)
                 .WithMany(p => p.Users)

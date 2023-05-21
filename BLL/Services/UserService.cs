@@ -84,6 +84,15 @@ namespace BLL.Services
             }
         }
 
+        public async Task DeleteNotificationAsync(Guid notificationId, Guid userId)
+        {
+            var unmapperNotification = await unitOfWork.NotificationRepository.GetByIdAsync(notificationId);
+            if (unmapperNotification != null && unmapperNotification.UserRecipientId == userId)
+            {
+                await unitOfWork.NotificationRepository.DeleteAsync(unmapperNotification);
+            }
+        }
+
         public async Task<IEnumerable<UserViewModel>> GetAllAsync(string language)
         {
             var unmapperUsers = await unitOfWork.UserRepository.GetAllAsync();
@@ -295,6 +304,15 @@ namespace BLL.Services
                 documentModel.Document = unmapperDocument.Document;
             }
             return documentModel;
+        }
+
+        public async Task<IEnumerable<NotificationViewModel>> GetListNotifications(Guid userId)
+        {
+            var unmapperNotifications = await unitOfWork.NotificationRepository.GetListByUserRecipientId(userId);
+            var mapperNotifications = mapper
+                .Map<IEnumerable<Notification>, IEnumerable<NotificationViewModel>>(unmapperNotifications);
+            
+            return mapperNotifications;
         }
 
         public async Task UpdateAsync(UserModel model)

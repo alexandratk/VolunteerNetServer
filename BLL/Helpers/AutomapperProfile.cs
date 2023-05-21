@@ -122,20 +122,6 @@ namespace BLL.Helpers
             CreateMap<ApplicationSkill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.Ignore());
 
-            CreateMap<VolunteerCreationModel, Volunteer>().ForMember(a => a.Id, b => b.Ignore())
-                .ForMember(a => a.UserId, b => b.Ignore())
-                .ForMember(a => a.User, b => b.Ignore())
-                .ForMember(a => a.Status, b => b.Ignore())
-                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
-                .ForMember(a => a.Application, b => b.Ignore());
-            CreateMap<Volunteer, VolunteerViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
-                .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
-                .ForMember(a => a.User, b => b.MapFrom(c => c.User))
-                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
-                .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
-                .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
-                .ForMember(a => a.Status, b => b.Ignore());
-
             CreateMap<MessageCreationModel, Message>().ForMember(a => a.Id, b => b.Ignore())
                 .ForMember(a => a.Text, b => b.MapFrom(c => c.Text))
                 .ForMember(a => a.DateTime, b => b.Ignore())
@@ -150,6 +136,27 @@ namespace BLL.Helpers
                 .ForMember(a => a.LastName, b => b.MapFrom(c => c.Volunteer.User.LastName))
                 .ForMember(a => a.ProfilePicture, b => b.Ignore())
                 .ForMember(a => a.ProfilePictureFormat, b => b.Ignore());
+
+            CreateMap<Notification, NotificationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
+                .ForMember(a => a.Reason, b => b.MapFrom(c => c.Reason))
+                .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
+                .ForMember(a => a.UserSender, b => b.MapFrom(c => c.UserSender))
+                .ForMember(a => a.UserRecipient, b => b.MapFrom(c => c.UserRecipient));
+
+            CreateMap<VolunteerCreationModel, Volunteer>().ForMember(a => a.Id, b => b.Ignore())
+                .ForMember(a => a.UserId, b => b.Ignore())
+                .ForMember(a => a.User, b => b.Ignore())
+                .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
+                .ForMember(a => a.Application, b => b.Ignore());
+            CreateMap<Volunteer, VolunteerViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
+                .ForMember(a => a.User, b => b.MapFrom(c => c.User))
+                .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
+                .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
+                .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.Status, b => b.Ignore());
         }
     }
 }

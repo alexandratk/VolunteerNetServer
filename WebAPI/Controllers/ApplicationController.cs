@@ -157,7 +157,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var validationResults = await applicationService.ApproveApplication(applicationId);
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await applicationService.ApproveApplication(applicationId, userId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();
@@ -171,12 +180,21 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin, moderator")]
-        [HttpGet("forbid/{applicationId}")]
-        public async Task<ActionResult> ForbidApplication(Guid applicationId)
+        [HttpPost("forbid")]
+        public async Task<ActionResult> ForbidApplication([FromForm] NotificationCreationModel value)
         {
             try
             {
-                var validationResults = await applicationService.ForbidApplication(applicationId);
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await applicationService.ForbidApplication(value, userId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();

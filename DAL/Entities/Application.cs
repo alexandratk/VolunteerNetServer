@@ -50,5 +50,7 @@ namespace DAL.Entities
 
         public List<User> Users { get; set; } = new List<User>();
         public List<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
+
+        public List<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

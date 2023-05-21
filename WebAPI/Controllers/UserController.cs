@@ -242,6 +242,55 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpGet("getnotifications")]
+        public async Task<ActionResult<IEnumerable<NotificationViewModel>>> GetListNotifications()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var notifications = await userService.GetListNotifications(userId);
+                return Ok(notifications);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpDelete("delete/notification/{notificationId}")]
+        public async Task<ActionResult> RemoveNotification(Guid notificationId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                await userService.DeleteNotificationAsync(notificationId, userId);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
 
         [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("getskilldocument/{id}")]

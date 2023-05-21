@@ -18,6 +18,8 @@ namespace DAL.Interfaces
 
         IMessageRepository MessageRepository { get; }
         
+        INotificationRepository NotificationRepository { get; }
+
         IProfilePictureRepository ProfilePictureRepository { get; }
 
         ISkillRepository SkillRepository { get; }

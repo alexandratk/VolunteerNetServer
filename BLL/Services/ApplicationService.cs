@@ -237,7 +237,7 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<ValidationResult>> ApproveApplication(Guid applicationId)
+        public async Task<List<ValidationResult>> ApproveApplication(Guid applicationId, Guid moderatorId)
         {
             var validationResults = new List<ValidationResult>();
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
@@ -254,21 +254,29 @@ namespace BLL.Services
             application.Status = (int) ApplicationStatuses.Status.InProgress;
             await unitOfWork.ApplicationRepository.Update(application);
 
-            Volunteer mapperVolunteer = new Volunteer();
-            mapperVolunteer.Id = Guid.NewGuid();
-            mapperVolunteer.UserId = application.UserId;
-            mapperVolunteer.ApplicationId = applicationId;
-            mapperVolunteer.Status = (int)VolunteerStatuses.Status.Owner;
+            Volunteer volunteer = new Volunteer();
+            volunteer.Id = Guid.NewGuid();
+            volunteer.UserId = application.UserId;
+            volunteer.ApplicationId = applicationId;
+            volunteer.Status = (int)VolunteerStatuses.Status.Owner;
 
-            await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
+            await unitOfWork.VolunteerRepository.AddAsync(volunteer);
+
+            Notification notification = new Notification();
+            notification.ApplictionId = application.Id;
+            notification.UserRecipientId = application.UserId;
+            notification.UserSenderId = moderatorId;
+            notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ApproveApplication];
+
+            await unitOfWork.NotificationRepository.AddAsync(notification);
 
             return validationResults;
         }
 
-        public async Task<List<ValidationResult>> ForbidApplication(Guid applicationId)
+        public async Task<List<ValidationResult>> ForbidApplication(NotificationCreationModel model, Guid moderatorId)
         {
             var validationResults = new List<ValidationResult>();
-            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(model.ApplicationId);
             if (application == null)
             {
                 validationResults.Add(new ValidationResult("incorrectApplicationId"));
@@ -276,6 +284,16 @@ namespace BLL.Services
             }
             application.Status = (int)ApplicationStatuses.Status.Forbidden;
             await unitOfWork.ApplicationRepository.Update(application);
+
+            Notification notification = new Notification();
+            notification.ApplictionId = application.Id;
+            notification.UserRecipientId = application.UserId;
+            notification.UserSenderId = moderatorId;
+            notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ForbidApplication];
+            notification.Reason = model.Reason;
+
+            await unitOfWork.NotificationRepository.AddAsync(notification);
+
             return validationResults;
         }
 

@@ -13,6 +13,8 @@ namespace BLL.Interfaces
     {
         Task<List<ValidationResult>> AddUserAsync(UserModel model);
 
+        Task DeleteNotificationAsync(Guid notificationId, Guid userId);
+
         Task<List<ValidationResult>> DeleteProfilePictureAsync(Guid userId);
 
         Task<List<ValidationResult>> DeleteUserSkillsAsync(Guid userId, Guid skillId);
@@ -22,13 +24,13 @@ namespace BLL.Interfaces
         Task<UserViewModel> GetByIdAsync(Guid id);
         
         Task<UserViewModel> GetByIdAsync(Guid id, string language);
-        
+
+        Task<IEnumerable<NotificationViewModel>> GetListNotifications(Guid userId);
+
         DocumentModel GetUserSkillDocument(Guid id);
 
         Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreationModel model);
 
         Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreationModel model);
-        
-        
     }
 }

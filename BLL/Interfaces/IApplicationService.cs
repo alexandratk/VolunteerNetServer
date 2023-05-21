@@ -12,7 +12,7 @@ namespace BLL.Interfaces
     {
         Task<List<ValidationResult>> AddAsync(Guid userId, ApplicationCreationModel model);
 
-        Task<List<ValidationResult>> ApproveApplication(Guid applicationId);
+        Task<List<ValidationResult>> ApproveApplication(Guid applicationId, Guid moderatorId);
 
         Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language);
 
@@ -22,6 +22,6 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<ApplicationViewModel>> GetListForUserAsync(Guid userId, string language);
 
-        Task<List<ValidationResult>> ForbidApplication(Guid applicationId);
+        Task<List<ValidationResult>> ForbidApplication(NotificationCreationModel value, Guid moderatorId);
     }
 }

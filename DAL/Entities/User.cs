@@ -34,5 +34,8 @@ namespace DAL.Entities
 
         public List<Application> RecievedApplications { get; set; } = new List<Application>();
         public List<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
+
+        public List<Notification> SentNotifications { get; set; } = new List<Notification>();
+        public List<Notification> ReceivedNotifications { get; set; } = new List<Notification>();
     }
 }
