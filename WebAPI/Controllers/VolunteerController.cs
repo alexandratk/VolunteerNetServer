@@ -50,34 +50,6 @@ namespace WebAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "user")]
-        //[HttpGet("remove/volunteer/{volunteerId}")]
-        //public async Task<ActionResult> RemoveVolunteer(Guid volunteerId)
-        //{
-        //    try
-        //    {
-        //        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
-        //            x.Type == ClaimsIdentity.DefaultNameClaimType);
-        //        if (userIdClaim == null)
-        //        {
-        //            return BadRequest(new ValidationResult("Invalid token"));
-        //        }
-
-        //        var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
-
-        //        var validationResults = await volunteerService.DeleteAsync(volunteerId, userId);
-        //        if (validationResults.IsNullOrEmpty())
-        //        {
-        //            return Ok();
-        //        }
-        //        return BadRequest(validationResults);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return NotFound(e);
-        //    }
-        //}
-
         [Authorize(Roles = "admin")]
         [HttpGet("getlist")]
         public async Task<ActionResult<IEnumerable<VolunteerViewModel>>> GetList(
@@ -223,8 +195,8 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpGet("reject/{volunteerId}")]
-        public async Task<ActionResult> RejectVolunteer(Guid volunteerId)
+        [HttpPost("reject")]
+        public async Task<ActionResult> RejectVolunteer([FromForm] NotificationCreationModel model)
         {
             try
             {
@@ -237,7 +209,7 @@ namespace WebAPI.Controllers
 
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
 
-                var validationResults = await volunteerService.RejectVolunteer(userId, volunteerId);
+                var validationResults = await volunteerService.RejectVolunteer(model, userId);
                 if (validationResults.IsNullOrEmpty())
                 {
                     return Ok();

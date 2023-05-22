@@ -212,13 +212,30 @@ namespace BLL.Services
             application.NumberOfVolunteers++;
             await unitOfWork.ApplicationRepository.Update(application);
 
+            Notification notification = new Notification();
+            notification.ApplictionId = application.Id;
+            notification.UserRecipientId = volunteer.UserId;
+            notification.UserSenderId = userId;
+            notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.AcceptVolunteer];
+            notification.CreationDateTime = DateTime.Now;
+
+            await unitOfWork.NotificationRepository.AddAsync(notification);
+
             return validationResults;
         }
 
-        public async Task<List<ValidationResult>> RejectVolunteer(Guid userId, Guid volunteerId)
+        public async Task<List<ValidationResult>> RejectVolunteer(NotificationCreationModel model, Guid userId)
         {
             var validationResults = new List<ValidationResult>();
-            var volunteer = await unitOfWork.VolunteerRepository.GetByIdAsync(volunteerId);
+            if (model == null || model.UserRecipientId.Equals(null) || model.ApplicationId.Equals(null))
+            {
+                validationResults.Add(new ValidationResult("incorrectData"));
+                return validationResults;
+            }
+
+            var volunteer = await unitOfWork.VolunteerRepository
+                .GetByUserIdApplicationId((Guid)model.UserRecipientId, model.ApplicationId);
+
             if (volunteer == null)
             {
                 validationResults.Add(new ValidationResult("incorrectVolunteerId"));
@@ -237,6 +254,17 @@ namespace BLL.Services
             }
             volunteer.Status = (int)VolunteerStatuses.Status.Rejected;
             await unitOfWork.VolunteerRepository.Update(volunteer);
+
+            Notification notification = new Notification();
+            notification.ApplictionId = volunteer.ApplicationId;
+            notification.UserRecipientId = volunteer.UserId;
+            notification.UserSenderId = userId;
+            notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RejectVolunteer];
+            notification.Reason = model.Reason;
+            notification.CreationDateTime = DateTime.Now;
+
+            await unitOfWork.NotificationRepository.AddAsync(notification);
+
             return validationResults;
         }
 

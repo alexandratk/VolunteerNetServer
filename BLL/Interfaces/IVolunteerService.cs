@@ -27,6 +27,6 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(Guid userId, string language);
 
-        Task<List<ValidationResult>> RejectVolunteer(Guid userId, Guid volunteerId);
+        Task<List<ValidationResult>> RejectVolunteer(NotificationCreationModel model, Guid userId);
     }
 }
