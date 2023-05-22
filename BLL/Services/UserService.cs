@@ -311,8 +311,16 @@ namespace BLL.Services
             var unmapperNotifications = await unitOfWork.NotificationRepository.GetListByUserRecipientId(userId);
             var mapperNotifications = mapper
                 .Map<IEnumerable<Notification>, IEnumerable<NotificationViewModel>>(unmapperNotifications);
-            
+
             return mapperNotifications;
+        }
+
+        public async Task<int> GetNumberOfNotificationsById(Guid userId)
+        {
+            var unmapperNotifications = await unitOfWork.NotificationRepository.GetListByUserRecipientId(userId);
+            var numberOfNotification = unmapperNotifications.Count();
+            
+            return numberOfNotification;
         }
 
         public async Task UpdateAsync(UserModel model)

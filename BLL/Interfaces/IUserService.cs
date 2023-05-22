@@ -27,6 +27,8 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<NotificationViewModel>> GetListNotifications(Guid userId);
 
+        Task<int> GetNumberOfNotificationsById(Guid userId);
+
         DocumentModel GetUserSkillDocument(Guid id);
 
         Task<List<ValidationResult>> UpdateProfilePictureAsync(Guid id, ProfilePictureCreationModel model);

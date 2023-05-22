@@ -210,8 +210,8 @@ namespace WebAPI.Controllers
         {
             try 
             { 
-                var customer = await userService.GetByIdAsync(userId, language);
-                return Ok(customer);
+                var user = await userService.GetByIdAsync(userId, language);
+                return Ok(user);
             }
             catch (Exception e)
             {
@@ -235,6 +235,29 @@ namespace WebAPI.Controllers
                 var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
                 var customer = await userService.GetByIdAsync(userId, language);
                 return Ok(customer);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpGet("getnumber/notifications")]
+        public async Task<ActionResult<int>> GetNumberOfNotificationsById()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+                var number = await userService.GetNumberOfNotificationsById(userId);
+                return Ok(number);
             }
             catch (Exception e)
             {
