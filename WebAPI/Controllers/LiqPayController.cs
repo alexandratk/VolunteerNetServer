@@ -47,5 +47,19 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [HttpPost("donate")]
+        public async Task<ActionResult> Add([FromForm] LiqPayModel value)
+        {
+            try
+            {
+                //LiqPayViewModel liqPayViewModel = await liqPayService.CreateParams(value);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
     }
 }
