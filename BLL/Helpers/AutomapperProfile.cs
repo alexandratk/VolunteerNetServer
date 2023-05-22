@@ -140,6 +140,7 @@ namespace BLL.Helpers
             CreateMap<Notification, NotificationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
                 .ForMember(a => a.Reason, b => b.MapFrom(c => c.Reason))
+                .ForMember(a => a.CreationDateTime, b => b.MapFrom(c => c.CreationDateTime))
                 .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
                 .ForMember(a => a.UserSender, b => b.MapFrom(c => c.UserSender))
                 .ForMember(a => a.UserRecipient, b => b.MapFrom(c => c.UserRecipient));

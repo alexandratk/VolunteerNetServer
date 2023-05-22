@@ -12,6 +12,8 @@ namespace DAL.Entities
 
         public string? Reason { get; set; }
 
+        public DateTime CreationDateTime { get; set; }
+
         public Guid ApplictionId { get; set; }
         public Application Application { get; set; }
 

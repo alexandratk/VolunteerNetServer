@@ -13,6 +13,8 @@ namespace BLL.Models
 
         public string? Reason { get; set; }
 
+        public DateTime CreationDateTime { get; set; }
+
         public ApplicationViewModel Application { get; set; }
 
         public UserViewModel UserSender { get; set; }

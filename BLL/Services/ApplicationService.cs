@@ -267,6 +267,7 @@ namespace BLL.Services
             notification.UserRecipientId = application.UserId;
             notification.UserSenderId = moderatorId;
             notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ApproveApplication];
+            notification.CreationDateTime = DateTime.Now;
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
 
@@ -291,6 +292,7 @@ namespace BLL.Services
             notification.UserSenderId = moderatorId;
             notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ForbidApplication];
             notification.Reason = model.Reason;
+            notification.CreationDateTime = DateTime.Now;
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
 
