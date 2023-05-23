@@ -13,10 +13,17 @@ namespace DAL.DefaultData
             ApproveApplication = 0,
             ForbidApplication = 1,
             AcceptVolunteer = 2,
-            RejectVolunteer = 3
+            RejectVolunteer = 3,
+            RemoveVolunteer = 4
         }
 
         public static List<string> Types { get; set; }
-            = new List<string>() { "approveApplication", "forbidApplication", "acceptVolunteer", "rejectVolunteer" };
+            = new List<string>() { 
+                "approveApplication",
+                "forbidApplication",
+                "acceptVolunteer",
+                "rejectVolunteer" ,
+                "removeVolunteer" 
+            };
     }
 }

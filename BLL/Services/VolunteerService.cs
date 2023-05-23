@@ -263,6 +263,11 @@ namespace BLL.Services
             notification.Reason = model.Reason;
             notification.CreationDateTime = DateTime.Now;
 
+            if (model.Type == NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RemoveVolunteer])
+            {
+                notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RemoveVolunteer];
+            }
+
             await unitOfWork.NotificationRepository.AddAsync(notification);
 
             return validationResults;

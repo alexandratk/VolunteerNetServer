@@ -12,6 +12,8 @@ namespace BLL.Models
 
         public Guid? UserRecipientId { get; set; }
 
+        public string? Type { get; set; }
+
         public string Reason { get; set; }
     }
 }
