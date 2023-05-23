@@ -157,6 +157,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.ApplicationId, b => b.MapFrom(c => c.ApplicationId))
                 .ForMember(a => a.Application, b => b.MapFrom(c => c.Application))
                 .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.CreationDateTime, b => b.MapFrom(c => c.CreationDateTime))
                 .ForMember(a => a.Status, b => b.Ignore());
         }
     }

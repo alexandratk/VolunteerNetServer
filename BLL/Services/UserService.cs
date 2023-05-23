@@ -319,7 +319,12 @@ namespace BLL.Services
         {
             var unmapperNotifications = await unitOfWork.NotificationRepository.GetListByUserRecipientId(userId);
             var numberOfNotification = unmapperNotifications.Count();
-            
+
+            IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
+                .GetListInProcessingByOwnerId(userId);
+
+            numberOfNotification += unmapperVolunteers.Count();
+
             return numberOfNotification;
         }
 

@@ -259,6 +259,7 @@ namespace BLL.Services
             volunteer.UserId = application.UserId;
             volunteer.ApplicationId = applicationId;
             volunteer.Status = (int)VolunteerStatuses.Status.Owner;
+            volunteer.CreationDateTime = DateTime.Now;
 
             await unitOfWork.VolunteerRepository.AddAsync(volunteer);
 

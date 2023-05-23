@@ -12,6 +12,8 @@ namespace BLL.Models
 
         public UserViewModel User { get; set; }
 
+        public DateTime CreationDateTime { get; set; }
+
         public Guid ApplicationId { get; set; }
 
         public ApplicationViewModel Application { get; set; }

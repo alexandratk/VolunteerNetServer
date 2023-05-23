@@ -61,6 +61,7 @@ namespace BLL.Services
             mapperVolunteer.UserId = userId;
             mapperVolunteer.ApplicationId = applicationId;
             mapperVolunteer.Status = (int)VolunteerStatuses.Status.Processing;
+            mapperVolunteer.CreationDateTime = DateTime.Now;
 
             await unitOfWork.VolunteerRepository.AddAsync(mapperVolunteer);
 

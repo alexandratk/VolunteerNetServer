@@ -9,6 +9,8 @@ namespace DAL.Entities
 {
     public class Volunteer : BaseEntity
     {
+        public DateTime CreationDateTime { get; set; }
+
         public int Status { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
