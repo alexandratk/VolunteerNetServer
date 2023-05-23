@@ -2,10 +2,14 @@
 using BLL.Interfaces;
 using BLL.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
@@ -49,6 +53,21 @@ namespace WebAPI.Controllers
                 return Ok(authResponse);
             }
             return Unauthorized();
+        }
+
+        [HttpGet("getlist/applications")]
+        public async Task<ActionResult<IEnumerable<ApplicationViewModel>>> GetList(
+            [FromHeader(Name = "Accept-Language")] string language)
+        {
+            try
+            {
+                var applications = await authService.GetAllApplicationsAsync(language);
+                return Ok(applications);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
         }
     }
 }

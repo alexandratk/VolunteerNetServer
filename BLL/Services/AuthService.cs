@@ -19,6 +19,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using DAL.DefaultData;
 
 namespace BLL.Services
 {
@@ -111,5 +112,44 @@ namespace BLL.Services
             return encodedJwt;
         }
 
+
+        public async Task<List<ApplicationViewModel>> GetAllApplicationsAsync(string language)
+        {
+            List<Application> unmapperApplications = await unitOfWork.ApplicationRepository.GetAllAsync();
+            unmapperApplications = unmapperApplications
+                    .Where(x => x.Status == (int)ApplicationStatuses.Status.InProgress).ToList();
+
+            var mapperApplications = mapper
+                .Map<List<Application>, List<ApplicationViewModel>>(unmapperApplications);
+            foreach (var application in mapperApplications)
+            {
+                var translation = ApplicationStatuses.StatusTranslation[application.StatusNumber];
+                application.Status = translation[language];
+                CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(application.CityId, language);
+                if (cityTranslation != null)
+                {
+                    application.City = cityTranslation.Name;
+
+                    CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                        .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                    if (countryTranslation != null)
+                    {
+                        application.Country = countryTranslation.Name;
+                    }
+                }
+
+                foreach (SkillModel skillModel in application.ApplicationSkills)
+                {
+                    SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                        .GetSkillTranslationById(skillModel.Id, language);
+                    if (skillTranslation != null)
+                    {
+                        skillModel.Title = skillTranslation.Name;
+                    }
+                }
+            }
+            return mapperApplications;
+        }
     }
 }

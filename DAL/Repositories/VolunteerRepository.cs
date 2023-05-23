@@ -84,8 +84,11 @@ namespace DAL.Repositories
         public async Task<List<Volunteer>> GetListWithChatsByUserId(Guid userId)
         {
             List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
-                .Where(x => x.UserId == userId && (x.Status == (int)VolunteerStatuses.Status.Accepted 
-                || x.Status == (int)VolunteerStatuses.Status.Owner))
+                .Where(x => x.UserId == userId && 
+                (x.Application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer] ||
+                x.Application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed]) &&
+                (x.Status == (int)VolunteerStatuses.Status.Accepted ||
+                x.Status == (int)VolunteerStatuses.Status.Owner))
                 .AsNoTracking().ToListAsync();
             return volunteers;
         }

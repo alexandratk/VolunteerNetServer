@@ -13,6 +13,8 @@ namespace BLL.Interfaces
     {
         Task<AuthResponseModel> AuthUser(AuthRequestModel authRequestModel);
 
+        Task<List<ApplicationViewModel>> GetAllApplicationsAsync(string language);
+
         Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model);
     }
 }
