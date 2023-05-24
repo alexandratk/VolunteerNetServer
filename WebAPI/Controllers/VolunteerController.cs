@@ -221,5 +221,33 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [Authorize(Roles = "user")]
+        [HttpPost("exit")]
+        public async Task<ActionResult> ExitVolunteer([FromForm] NotificationCreationModel model)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await volunteerService.ExitVolunteer(model, userId);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
     }
 }

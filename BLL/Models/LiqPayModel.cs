@@ -29,5 +29,9 @@ namespace BLL.Models
         public string SenderCardType { get; set; }
 
         public double SenderCommission { get; set; }
+
+        public string EndDate { get; set; }
+
+        public string OrderId { get; set; }
     }
 }

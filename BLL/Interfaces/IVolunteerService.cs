@@ -16,6 +16,8 @@ namespace BLL.Interfaces
 
         Task<List<ValidationResult>> DeleteAsync(Guid volunteerId, Guid userId);
 
+        Task<List<ValidationResult>> ExitVolunteer(NotificationCreationModel model, Guid userId);
+
         Task<IEnumerable<VolunteerViewModel>> GetAllAsync(string language);
 
         Task<IEnumerable<VolunteerViewModel>> GetListByUserId(Guid userId, string language);

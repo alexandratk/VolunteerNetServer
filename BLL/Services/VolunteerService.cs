@@ -274,6 +274,48 @@ namespace BLL.Services
             return validationResults;
         }
 
+        public async Task<List<ValidationResult>> ExitVolunteer(NotificationCreationModel model, Guid userId)
+        {
+            var validationResults = new List<ValidationResult>();
+            if (model == null || model.ApplicationId.Equals(null))
+            {
+                validationResults.Add(new ValidationResult("incorrectData"));
+                return validationResults;
+            }
+
+            var volunteer = await unitOfWork.VolunteerRepository
+                .GetByUserIdApplicationId(userId, model.ApplicationId);
+
+            if (volunteer == null)
+            {
+                validationResults.Add(new ValidationResult("incorrectVolunteerId"));
+                return validationResults;
+            }
+            if (volunteer.Application.UserId == userId)
+            {
+                validationResults.Add(new ValidationResult("incorrectUserIsOwner"));
+                return validationResults;
+            }
+            if (volunteer.Status != (int)VolunteerStatuses.Status.Accepted)
+            {
+                validationResults.Add(new ValidationResult("incorrectVolunteerStatus"));
+                return validationResults;
+            }
+            volunteer.Status = (int)VolunteerStatuses.Status.Rejected;
+            await unitOfWork.VolunteerRepository.Update(volunteer);
+
+            Notification notification = new Notification();
+            notification.ApplictionId = volunteer.ApplicationId;
+            notification.UserRecipientId = volunteer.Application.UserId;
+            notification.UserSenderId = userId;
+            notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ExitVolunteer];
+            notification.CreationDateTime = DateTime.Now;
+
+            await unitOfWork.NotificationRepository.AddAsync(notification);
+
+            return validationResults;
+        }
+
         public Task<IEnumerable<VolunteerModel>> GetAllAsync()
         {
             throw new NotImplementedException();
