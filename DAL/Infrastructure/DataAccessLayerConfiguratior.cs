@@ -19,6 +19,7 @@ namespace DAL.Infrastructure
             serviceCollection.AddTransient<ICategoryRepository, CategoryRepository>();
             serviceCollection.AddTransient<ICityRepository, CityRepository>();
             serviceCollection.AddTransient<ICountryRepository, CountryRepository>();
+            serviceCollection.AddTransient<IDonateRepository, DonateRepository>();
             serviceCollection.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();
             serviceCollection.AddTransient<INotificationRepository, NotificationRepository>();
             serviceCollection.AddTransient<ISkillRepository, SkillRepository>();

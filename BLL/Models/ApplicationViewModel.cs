@@ -12,6 +12,10 @@ namespace BLL.Models
 
         public string Description { get; set; }
 
+        public DateTime DateTimeStart { get; set; }
+
+        public DateTime DateTimeEnd { get; set; }
+
         public int StatusNumber { get; set; }
 
         public string Status { get; set; }

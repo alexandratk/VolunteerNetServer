@@ -10,7 +10,12 @@ namespace DAL.Entities
     public class Application : BaseEntity
     {
         public string Title { get; set; }
+
         public string Description { get; set; }
+
+        public DateTime DateTimeStart { get; set; }
+
+        public DateTime DateTimeEnd { get; set; }
         
         public int Status { get; set; }
 
@@ -52,5 +57,7 @@ namespace DAL.Entities
         public List<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
 
         public List<Notification> Notifications { get; set; } = new List<Notification>();
+
+        public List<Donate> Donates { get; set; } = new List<Donate>();
     }
 }

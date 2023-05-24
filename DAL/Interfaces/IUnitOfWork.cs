@@ -16,6 +16,8 @@ namespace DAL.Interfaces
 
         ICountryRepository CountryRepository { get; }
 
+        IDonateRepository DonateRepository { get; }
+
         IMessageRepository MessageRepository { get; }
         
         INotificationRepository NotificationRepository { get; }

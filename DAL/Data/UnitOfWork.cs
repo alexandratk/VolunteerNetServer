@@ -16,6 +16,7 @@ namespace DAL.Data
         private CategoryRepository categoryRepository;
         private CityRepository cityRepository;
         private CountryRepository countryRepository;
+        private DonateRepository donateRepository;
         private MessageRepository messageRepository;
         private NotificationRepository notificationRepository;
         private ProfilePictureRepository profilePictureRepository;
@@ -69,6 +70,18 @@ namespace DAL.Data
                     countryRepository = new CountryRepository(context);
                 }
                 return countryRepository;
+            }
+        }
+
+        public IDonateRepository DonateRepository
+        {
+            get
+            {
+                if (donateRepository == null)
+                {
+                    donateRepository = new DonateRepository(context);
+                }
+                return donateRepository;
             }
         }
 

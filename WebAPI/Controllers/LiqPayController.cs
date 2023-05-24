@@ -2,6 +2,7 @@
 using BLL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -53,8 +54,13 @@ namespace WebAPI.Controllers
         {
             try
             {
-                //LiqPayViewModel liqPayViewModel = await liqPayService.CreateParams(value);
-                return Ok();
+                var validationResults = await liqPayService.AddAsync(value);
+
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
             }
             catch (Exception e)
             {

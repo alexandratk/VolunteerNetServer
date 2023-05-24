@@ -30,6 +30,7 @@ namespace BLL.Services
             mapperApplication.Id = Guid.NewGuid();
             mapperApplication.UserId = userId;
             mapperApplication.Status = (int) ApplicationStatuses.Status.Processing;
+            mapperApplication.DateTimeStart = DateTime.Now;
 
             if (!ApplicationKinds.Kinds.Contains(model.Kind))
             {

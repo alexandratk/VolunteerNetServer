@@ -82,6 +82,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.UserId, b => b.Ignore())
                 .ForMember(a => a.User, b => b.Ignore())
                 .ForMember(a => a.Status, b => b.Ignore())
+                .ForMember(a => a.DateTimeEnd, b => b.MapFrom(c => c.DateTimeEnd))
+                .ForMember(a => a.DateTimeStart, b => b.Ignore())
                 .ForMember(a => a.City, b => b.Ignore())
                 .ForMember(a => a.CityId, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
@@ -103,6 +105,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.Status, b => b.Ignore())
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title))
                 .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
+                .ForMember(a => a.DateTimeEnd, b => b.MapFrom(c => c.DateTimeEnd))
+                .ForMember(a => a.DateTimeStart, b => b.MapFrom(c => c.DateTimeStart))
                 .ForMember(a => a.Phone, b => b.MapFrom(c => c.Phone))
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.Email))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.Type))
@@ -159,6 +163,30 @@ namespace BLL.Helpers
                 .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
                 .ForMember(a => a.CreationDateTime, b => b.MapFrom(c => c.CreationDateTime))
                 .ForMember(a => a.Status, b => b.Ignore());
+
+            CreateMap<LiqPayModel, Donate>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Status, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.Amount, b => b.MapFrom(c => c.Amount))
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
+                .ForMember(a => a.Action, b => b.MapFrom(c => c.Action))
+                .ForMember(a => a.SenderCardBank, b => b.MapFrom(c => c.SenderCardBank))
+                .ForMember(a => a.SenderCardCountry, b => b.MapFrom(c => c.SenderCardCountry))
+                .ForMember(a => a.SenderCardMask2, b => b.MapFrom(c => c.SenderCardMask2))
+                .ForMember(a => a.SenderCardType, b => b.MapFrom(c => c.SenderCardType))
+                .ForMember(a => a.SenderCommission, b => b.MapFrom(c => c.SenderCommission))
+                .ForMember(a => a.DateTimeCreation, b => b.Ignore());
+            CreateMap<Donate, LiqPayModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Status, b => b.MapFrom(c => c.Status))
+                .ForMember(a => a.Data, b => b.Ignore())
+                .ForMember(a => a.Signature, b => b.Ignore())
+                .ForMember(a => a.Amount, b => b.MapFrom(c => c.Amount))
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
+                .ForMember(a => a.Action, b => b.MapFrom(c => c.Action))
+                .ForMember(a => a.SenderCardBank, b => b.MapFrom(c => c.SenderCardBank))
+                .ForMember(a => a.SenderCardCountry, b => b.MapFrom(c => c.SenderCardCountry))
+                .ForMember(a => a.SenderCardMask2, b => b.MapFrom(c => c.SenderCardMask2))
+                .ForMember(a => a.SenderCardType, b => b.MapFrom(c => c.SenderCardType))
+                .ForMember(a => a.SenderCommission, b => b.MapFrom(c => c.SenderCommission));
         }
     }
 }

@@ -21,6 +21,7 @@ namespace DAL.Data
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
+        public DbSet<Donate> Donates { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }

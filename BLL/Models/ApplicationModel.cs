@@ -28,6 +28,10 @@ namespace BLL.Models
 
         public int NumberOfVolunteers { get; set; }
 
+        public DateTime DateTimeStart { get; set; }
+
+        public DateTime DateTimeEnd { get; set; }
+
         public Guid UserId { get; set; }
         public UserModel User { get; set; }
     }
