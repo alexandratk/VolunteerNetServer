@@ -41,6 +41,9 @@ namespace BLL.Models
 
         public List<Guid> SkillIds { get; set; } = new List<Guid>();
 
+        public List<IFormFile?> ApplicationPictures { get; set; } =
+            new List<IFormFile?>();
+
         public List<IFormFile?> ApplicationDocuments { get; set; } =
             new List<IFormFile?>();
     }

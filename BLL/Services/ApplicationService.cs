@@ -19,6 +19,9 @@ namespace BLL.Services
         private const int LimitationApplicationDocumentLength = 5000000;
         private const string LimitationFormatApplicationDocument = "application/pdf";
 
+        private const int LimitationNumberOfApplicationPicture = 10;
+        private const int LimitationApplicationPictureLength = 256000;
+
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
 
@@ -91,6 +94,32 @@ namespace BLL.Services
                 newApplicationDocument.Document = memoryStream.ToArray();
 
                 mapperApplication.ApplicationDocuments.Add(newApplicationDocument);
+            }
+
+            if (model.ApplicationPictures.Count > LimitationNumberOfApplicationPicture)
+            {
+                validationResults.Add(new ValidationResult("numberOfPictureIsWrong"));
+                return validationResults;
+            }
+            foreach (IFormFile applicationPicture in model.ApplicationPictures)
+            {
+                if (applicationPicture == null ||
+                    applicationPicture.Length > LimitationApplicationPictureLength)
+                {
+                    validationResults.Add(new ValidationResult("pictureIsIncorrect"));
+                    return validationResults;
+                }
+                ApplicationPicture newApplicationPicture = new ApplicationPicture();
+
+                newApplicationPicture.Id = Guid.NewGuid();
+                newApplicationPicture.ApplicationId = mapperApplication.Id;
+                newApplicationPicture.Format = applicationPicture.ContentType;
+
+                var memoryStream = new MemoryStream();
+                applicationPicture.CopyTo(memoryStream);
+                newApplicationPicture.Data = memoryStream.ToArray();
+
+                mapperApplication.ApplicationPictures.Add(newApplicationPicture);
             }
 
             await unitOfWork.ApplicationRepository.AddAsync(mapperApplication);

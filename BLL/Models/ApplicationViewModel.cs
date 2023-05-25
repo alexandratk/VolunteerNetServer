@@ -54,5 +54,8 @@ namespace BLL.Models
 
         public List<ApplicationDocumentViewModel> ApplicationDocuments { get; set; } =
             new List<ApplicationDocumentViewModel>();
+
+        public List<ApplicationPictureViewModel> ApplicationPictures { get; set; } =
+            new List<ApplicationPictureViewModel>();
     }
 }

@@ -99,7 +99,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.OwnerCardName, b => b.MapFrom(c => c.OwnerCardName))
                 .ForMember(a => a.CategoryId, b => b.MapFrom(c => c.CategoryId))
                 .ForMember(a => a.NumberOfVolunteers, b => b.Ignore())
-                .ForMember(a => a.ApplicationDocuments, b => b.Ignore());
+                .ForMember(a => a.ApplicationDocuments, b => b.Ignore())
+                .ForMember(a => a.ApplicationPictures, b => b.Ignore());
             CreateMap<Application, ApplicationViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
                 .ForMember(a => a.StatusNumber, b => b.MapFrom(c => c.Status))
@@ -122,11 +123,17 @@ namespace BLL.Helpers
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
                 .ForMember(a => a.CheckVolunteer, b => b.Ignore())
+                .ForMember(a => a.ApplicationPictures, b => b.Ignore())
                 .ForMember(a => a.ApplicationSkills, b => b.MapFrom(c => c.ApplicationSkills.Select(x => new SkillModel() { Id = x.SkillId }).ToList()));
 
             CreateMap<ApplicationDocument, ApplicationDocumentViewModel>()
                 .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.MapFrom(c => c.Title));
+
+            CreateMap<ApplicationPicture, ApplicationPictureViewModel>()
+                .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(um => um.Format, u => u.MapFrom(x => x.Format))
+                .ForMember(um => um.Picture, u => u.Ignore());
 
             CreateMap<ApplicationSkill, SkillModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForMember(a => a.Title, b => b.Ignore());

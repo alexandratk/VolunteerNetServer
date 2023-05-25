@@ -53,7 +53,7 @@ namespace DAL.Repositories
         {
             Application? application = _context.Applications.AsNoTracking()
                 .Where(r => r.Id == id).Include("User").Include("ApplicationSkills")
-                .Include("ApplicationDocuments").FirstOrDefault();
+                .Include("ApplicationDocuments").Include("ApplicationPictures").FirstOrDefault();
             return Task.FromResult(application);
         }
 

@@ -200,6 +200,16 @@ namespace BLL.Services
                     unmapperApplication.ApplicationDocuments);
             }
 
+            foreach (ApplicationPicture applicationPicture in unmapperApplication.ApplicationPictures)
+            {
+                ApplicationPictureViewModel applicationPictureViewModel = new ApplicationPictureViewModel();
+                applicationPictureViewModel.Id = applicationPicture.Id;
+                applicationPictureViewModel.Format = applicationPicture.Format;
+                applicationPictureViewModel.Picture = Convert.ToBase64String(applicationPicture.Data);
+
+                mapperApplication.ApplicationPictures.Add(applicationPictureViewModel);
+            }
+
             return mapperApplication;
         }
 
