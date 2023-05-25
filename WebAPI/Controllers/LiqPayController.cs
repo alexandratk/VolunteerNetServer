@@ -20,21 +20,6 @@ namespace WebAPI.Controllers
             this.liqPayService = liqPayService;
         }
 
-        //[Authorize(Roles = "user")]
-        //[HttpPost("pay")]
-        //public async Task<ActionResult> Add([FromForm] LiqPayCreationModel value)
-        //{
-        //    try
-        //    {
-        //        Debug.WriteLine("liq-pay data ==> " + value.Data + "\n signature ==> " + value.Signature);
-        //        return Ok();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return NotFound(e);
-        //    }
-        //}
-
         [HttpPost("createparams")]
         public async Task<ActionResult<LiqPayViewModel>> CreateParams([FromForm] LiqPayCreationModel value)
         {
@@ -61,6 +46,19 @@ namespace WebAPI.Controllers
                     return Ok();
                 }
                 return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [HttpPost("getlist/autodonate")]
+        public async Task<ActionResult> GetListAutoDonate([FromForm] AutoSelectionCreationModel value)
+        {
+            try
+            {
+                return Ok("YES");
             }
             catch (Exception e)
             {

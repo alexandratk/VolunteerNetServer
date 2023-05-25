@@ -11,7 +11,6 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class CategoryController : ControllerBase
     {
         private ICategoryService categoryService { get; set; }
@@ -21,7 +20,6 @@ namespace WebAPI.Controllers
             this.categoryService = categoryService;
         }
 
-        [Authorize(Roles = "user, admin")]
         [HttpGet("getlist")]
         public async Task<ActionResult<IEnumerable<CategoryModel>>> GetList(
             [FromHeader(Name = "Accept-Language")] string language)
