@@ -50,6 +50,8 @@ namespace DAL.Entities
         public Guid UserId { get; set; }
         public User User { get; set; }
 
+        public List<ApplicationDocument> ApplicationDocuments { get; set; } = new List<ApplicationDocument>();
+
         public List<ApplicationSkill> ApplicationSkills { get; set; } = new List<ApplicationSkill>();
         public List<Skill> Skills { get; set; } = new List<Skill>();
 

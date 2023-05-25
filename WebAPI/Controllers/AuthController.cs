@@ -69,5 +69,46 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [HttpGet("get/applications/{applicationId}")]
+        public async Task<ActionResult<ApplicationViewModel>> Get(
+            [FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+
+                if (userIdClaim != null)
+                {
+                    var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                        x.Type == ClaimsIdentity.DefaultRoleClaimType);
+                    if (userRoleClaim == null)
+                    {
+                        return BadRequest(new ValidationResult("Invalid token"));
+                    }
+
+                    var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+                    var userRole = userRoleClaim.ToString().Split(": ")[1];
+
+                    var applicationForAuth = await authService.GetApplicationByIdAuth(applicationId, userId, userRole, language);
+                    return Ok(applicationForAuth);
+                }
+
+                var applicationForUnauth = await authService.GetApplicationByIdUnauth(applicationId, language);
+                return Ok(applicationForUnauth);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [HttpGet("get/document/{id}")]
+        public ActionResult GetUserSkillDocument(Guid id)
+        {
+            var document = authService.GetApplicationDocument(id);
+            return File(document.Document, document.DocumentFormat, document.Title);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,5 +41,7 @@ namespace BLL.Models
 
         public List<Guid> SkillIds { get; set; } = new List<Guid>();
 
+        public List<IFormFile?> ApplicationDocuments { get; set; } =
+            new List<IFormFile?>();
     }
 }

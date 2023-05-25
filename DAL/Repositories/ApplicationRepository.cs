@@ -26,6 +26,12 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddDocumentAsync(ApplicationDocument entity)
+        {
+            _context.ApplicationDocuments.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public Task DeleteAsync(Application entity)
         {
             throw new NotImplementedException();
@@ -46,8 +52,16 @@ namespace DAL.Repositories
         public Task<Application?> GetByIdAsync(Guid id)
         {
             Application? application = _context.Applications.AsNoTracking()
-                .Where(r => r.Id == id).Include("User").Include("ApplicationSkills").FirstOrDefault();
+                .Where(r => r.Id == id).Include("User").Include("ApplicationSkills")
+                .Include("ApplicationDocuments").FirstOrDefault();
             return Task.FromResult(application);
+        }
+
+        public ApplicationDocument? GetDocumentById(Guid id)
+        {
+            ApplicationDocument? applicationDocument = _context.ApplicationDocuments.AsNoTracking()
+                .Where(r => r.Id == id).FirstOrDefault();
+            return applicationDocument;
         }
 
         public async Task<List<Application>> GetListForProcessingAsync()

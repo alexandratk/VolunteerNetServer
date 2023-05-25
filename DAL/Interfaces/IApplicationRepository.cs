@@ -9,6 +9,10 @@ namespace DAL.Interfaces
 {
     public interface IApplicationRepository : IRepository<Application>
     {
+        Task AddDocumentAsync(ApplicationDocument entity);
+
+        ApplicationDocument? GetDocumentById(Guid id);
+
         Task<List<Application>> GetListForProcessingAsync();
 
         Task<List<Application>> GetListForUserAsync(Guid userId);

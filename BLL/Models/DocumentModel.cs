@@ -12,5 +12,7 @@ namespace BLL.Models
         public byte[] Document { get; set; }
 
         public string DocumentFormat { get; set; }
+
+        public string? Title { get; set; }
     }
 }

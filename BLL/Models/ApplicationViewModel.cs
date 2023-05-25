@@ -51,5 +51,8 @@ namespace BLL.Models
         public bool CheckVolunteer { get; set; }
 
         public List<SkillModel> ApplicationSkills { get; set; } = new List<SkillModel>();
+
+        public List<ApplicationDocumentViewModel> ApplicationDocuments { get; set; } =
+            new List<ApplicationDocumentViewModel>();
     }
 }

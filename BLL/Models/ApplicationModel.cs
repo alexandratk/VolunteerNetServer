@@ -34,5 +34,8 @@ namespace BLL.Models
 
         public Guid UserId { get; set; }
         public UserModel User { get; set; }
+
+        public List<ApplicationDocumentModel> ApplicationDocuments { get; set; } =
+            new List<ApplicationDocumentModel>();
     }
 }

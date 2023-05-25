@@ -85,7 +85,6 @@ namespace BLL.Services
             };
         }
 
-
         string generateJWTToken(UserModel person)
         {
 
@@ -111,7 +110,6 @@ namespace BLL.Services
 
             return encodedJwt;
         }
-
 
         public async Task<List<ApplicationViewModel>> GetAllApplicationsAsync(string language)
         {
@@ -150,6 +148,104 @@ namespace BLL.Services
                 }
             }
             return mapperApplications;
+        }
+
+        public async Task<ApplicationViewModel> GetApplicationById(Guid applicationId, string language)
+        {
+            var unmapperApplication = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+            if (unmapperApplication == null)
+            {
+                return null;
+            }
+            var mapperApplication = mapper.Map<Application, ApplicationViewModel>(unmapperApplication);
+
+            var translation = ApplicationStatuses.StatusTranslation[mapperApplication.StatusNumber];
+            mapperApplication.Status = translation[language];
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository
+                    .GetCityTranslationById(mapperApplication.CityId, language);
+            if (cityTranslation != null)
+            {
+                mapperApplication.City = cityTranslation.Name;
+
+                CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
+                    .GetCountryTranslationById(cityTranslation.City.CountryId, language);
+                if (countryTranslation != null)
+                {
+                    mapperApplication.Country = countryTranslation.Name;
+                }
+            }
+
+            CategoryTranslation? categoryTranslation = await unitOfWork.CategoryRepository
+                .GetCategoryTranslationById(mapperApplication.CategoryId, language);
+            if (categoryTranslation != null)
+            {
+                mapperApplication.Category = categoryTranslation.Name;
+            }
+
+
+            foreach (SkillModel skillModel in mapperApplication.ApplicationSkills)
+            {
+                SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
+                    .GetSkillTranslationById(skillModel.Id, language);
+                if (skillTranslation != null)
+                {
+                    skillModel.Title = skillTranslation.Name;
+                }
+            }
+
+            if (unmapperApplication.ApplicationDocuments != null)
+            {
+                mapperApplication.ApplicationDocuments = mapper
+                    .Map<List<ApplicationDocument>, List<ApplicationDocumentViewModel>>(
+                    unmapperApplication.ApplicationDocuments);
+            }
+
+            return mapperApplication;
+        }
+
+        public async Task<ApplicationViewModel> GetApplicationByIdAuth(
+            Guid applicationId, Guid userId, string userRole, string language)
+        {
+            ApplicationViewModel mapperApplication = await GetApplicationById(applicationId, language);
+
+            mapperApplication.CheckVolunteer =
+                userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] &&
+                userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator];
+            if (mapperApplication.UserId == userId ||
+                mapperApplication.RequiredNumberOfVolunteers == mapperApplication.NumberOfVolunteers)
+            {
+                mapperApplication.CheckVolunteer = false;
+            }
+            if (mapperApplication.CheckVolunteer)
+            {
+                var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
+                mapperApplication.CheckVolunteer = volunteer == null;
+            }
+
+            return mapperApplication;
+        }
+
+        public async Task<ApplicationViewModel> GetApplicationByIdUnauth(
+            Guid applicationId, string language)
+        {
+            ApplicationViewModel mapperApplication = await GetApplicationById(applicationId, language);
+
+            mapperApplication.CheckVolunteer = false;
+
+            return mapperApplication;
+        }
+
+        public DocumentModel GetApplicationDocument(Guid id)
+        {
+            ApplicationDocument unmapperDocument = unitOfWork.ApplicationRepository.GetDocumentById(id);
+            DocumentModel documentModel = new DocumentModel();
+            if (unmapperDocument != null)
+            {
+                documentModel.DocumentFormat = unmapperDocument.DocumentFormat;
+                documentModel.Document = unmapperDocument.Document;
+                documentModel.Title = unmapperDocument.Title;
+            }
+            return documentModel;
         }
     }
 }

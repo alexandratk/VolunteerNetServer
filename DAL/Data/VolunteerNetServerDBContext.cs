@@ -14,6 +14,7 @@ namespace DAL.Data
     public class VolunteerNetServerDBContext : DbContext
     {
         public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationDocument> ApplicationDocuments { get; set; }
         public DbSet<ApplicationSkill> ApplicationSkills { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
