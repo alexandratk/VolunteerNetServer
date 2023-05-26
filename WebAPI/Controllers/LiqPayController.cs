@@ -54,11 +54,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("getlist/autodonate")]
-        public async Task<ActionResult> GetListAutoDonate([FromForm] AutoSelectionCreationModel value)
+        public async Task<ActionResult<IEnumerable<AutoSelectionViewModel>>> GetListAutoDonate(
+            [FromForm] AutoSelectionCreationModel value)
         {
             try
             {
-                return Ok("YES");
+                var applications = await liqPayService.GetApplicationsForAutoPayment(value);
+                return Ok(applications);
             }
             catch (Exception e)
             {

@@ -13,5 +13,8 @@ namespace BLL.Interfaces
         Task<List<ValidationResult>> AddAsync(LiqPayModel value);
 
         Task<LiqPayViewModel> CreateParams(LiqPayCreationModel liqPayCreationModel);
+
+        Task<List<AutoSelectionViewModel>> GetApplicationsForAutoPayment(
+            AutoSelectionCreationModel value);
     }
 }

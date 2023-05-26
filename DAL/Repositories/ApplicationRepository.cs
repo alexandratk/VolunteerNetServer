@@ -64,6 +64,17 @@ namespace DAL.Repositories
             return applicationDocument;
         }
 
+        public async Task<List<Application>> GetListForAutoPayment(List<Guid> categoryIds)
+        {
+            List<Application> applications = await _context.Applications
+                .Where(x => categoryIds.Contains(x.CategoryId) &&
+                x.Status == (int)ApplicationStatuses.Status.InProgress &&
+                (x.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary] ||
+                x.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed]))
+                .AsNoTracking().OrderBy(x => x.RequiredSum - x.CurrentSum).ToListAsync();
+            return applications;
+        }
+
         public async Task<List<Application>> GetListForProcessingAsync()
         {
             List<Application> applications = await _context.Applications

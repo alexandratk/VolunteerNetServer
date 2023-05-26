@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("get/applications/{applicationId}")]
+        [HttpGet("get/application/{applicationId}")]
         public async Task<ActionResult<ApplicationViewModel>> Get(
             [FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
         {

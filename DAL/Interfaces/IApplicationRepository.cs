@@ -13,6 +13,8 @@ namespace DAL.Interfaces
 
         ApplicationDocument? GetDocumentById(Guid id);
 
+        Task<List<Application>> GetListForAutoPayment(List<Guid> categoryIds);
+
         Task<List<Application>> GetListForProcessingAsync();
 
         Task<List<Application>> GetListForUserAsync(Guid userId);
