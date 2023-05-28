@@ -24,7 +24,10 @@ namespace BLL.Services
             public int Weight;
             public int Price;
         }
-        
+
+        private const string StringSeparatorForDescription = ", ";
+        public const int NumberOfDaysForAutoSelectAccordingEndDate = 7;
+
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
 
@@ -34,8 +37,6 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public const int NumberOfDaysForAutoSelectAccordingEndDate = 7;
-
         public async Task<List<ValidationResult>> AddAsync(LiqPayModel value)
         {
             var validationResults = new List<ValidationResult>();
@@ -44,34 +45,46 @@ namespace BLL.Services
                 validationResults.Add(new ValidationResult("dataIsEmpty"));
                 return validationResults;
             }
-
-            var applicationId = Guid.Parse(value.Description);
-            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
-
-            if (application == null)
+            var applicationIdsStr = value.Description.Split(StringSeparatorForDescription);
+            for (int i = 0; i < applicationIdsStr.Length; i++)
             {
-                validationResults.Add(new ValidationResult("applicationIdIsWrong"));
-                return validationResults;
+                var applicationId = Guid.Parse(applicationIdsStr[i]);
+                var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+
+                if (application == null)
+                {
+                    validationResults.Add(new ValidationResult("applicationIdIsWrong"));
+                    return validationResults;
+                }
+
+                var checkingDonate = CheckParams(value.Signature, value.Data);
+
+                if (!checkingDonate)
+                {
+                    validationResults.Add(new ValidationResult("dataIsIncorrect"));
+                    return validationResults;
+                }
+
+                var mapperDonate = mapper.Map<LiqPayModel, Donate>(value);
+                mapperDonate.Id = Guid.Parse(value.OrderId);
+                mapperDonate.DateTimeCreation = DateTime.Now;
+                mapperDonate.ApplicationId = applicationId;
+
+                decimal? currentAmount = application.RequiredSum - application.CurrentSum;
+
+                if (currentAmount > (decimal) value.Amount)
+                {
+                    currentAmount = (decimal)value.Amount;
+                }
+
+                value.Amount -= (double)currentAmount;
+
+                await unitOfWork.DonateRepository.AddAsync(mapperDonate);
+
+                application.CurrentSum += currentAmount;
+
+                await unitOfWork.ApplicationRepository.Update(application);
             }
-
-            var checkingDonate = CheckParams(value.Signature, value.Data);
-
-            if (!checkingDonate)
-            {
-                validationResults.Add(new ValidationResult("dataIsIncorrect"));
-                return validationResults;
-            }
-
-            var mapperDonate = mapper.Map<LiqPayModel, Donate>(value);
-            mapperDonate.Id = Guid.Parse(value.OrderId);
-            mapperDonate.DateTimeCreation = DateTime.Now;
-            mapperDonate.ApplicationId = applicationId;
-
-            await unitOfWork.DonateRepository.AddAsync(mapperDonate);
-
-            application.CurrentSum += (decimal)mapperDonate.Amount;
-
-            await unitOfWork.ApplicationRepository.Update(application);
 
             return validationResults;
         }
@@ -89,6 +102,34 @@ namespace BLL.Services
                 Amount = liqPayCreationModel.Sum,
                 Currency = LiqPayData.Currency,
                 Description = liqPayCreationModel.ApplicationId.ToString(),
+                OrderId = orderId.ToString()
+            });
+
+            liqPayViewModel.Data = data.Key;
+            liqPayViewModel.Signature = data.Value;
+
+            return Task.FromResult(liqPayViewModel);
+        }
+
+        public Task<LiqPayViewModel> CreateParamsAutoPayment(
+            LiqPayAutoPaymentCreationModel liqPayAutoPaymentCreationModel)
+        {
+            Guid orderId = Guid.NewGuid();
+            LiqPayViewModel liqPayViewModel = new LiqPayViewModel();
+            var liqPayClient = new LiqPayClient(LiqPayData.PublicKey, LiqPayData.PrivateKey);
+
+            List<string> applicationIdsStr = liqPayAutoPaymentCreationModel.ApplicationIds
+                .Select(x => x.ToString()).ToList();
+            string description = String.Join(StringSeparatorForDescription, applicationIdsStr);
+
+            var data = liqPayClient.GenerateDataAndSignature(new LiqPay.SDK.Dto.LiqPayRequest()
+            {
+                Version = LiqPayData.Version,
+                ActionPayment = LiqPay.SDK.Dto.Enums.LiqPayRequestActionPayment.Pay,
+                Action = LiqPay.SDK.Dto.Enums.LiqPayRequestAction.Pay,
+                Amount = liqPayAutoPaymentCreationModel.Sum,
+                Currency = LiqPayData.Currency,
+                Description = description,
                 OrderId = orderId.ToString()
             });
 
@@ -238,7 +279,7 @@ namespace BLL.Services
         {
             List<Application> unmapperApplications = await unitOfWork.ApplicationRepository
                 .GetListForAutoPayment(value.CategoryIds);
-            var mapperApplications = mapper
+            List<ApplicationViewModel> mapperApplications = mapper
                 .Map<List<Application>, List<ApplicationViewModel>>(unmapperApplications);
 
             List<AutoSelectionViewModel> result = new List<AutoSelectionViewModel>();

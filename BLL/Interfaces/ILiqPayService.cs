@@ -14,6 +14,9 @@ namespace BLL.Interfaces
 
         Task<LiqPayViewModel> CreateParams(LiqPayCreationModel liqPayCreationModel);
 
+        Task<LiqPayViewModel> CreateParamsAutoPayment(
+            LiqPayAutoPaymentCreationModel liqPayAutoPaymentCreationModel);
+
         Task<List<AutoSelectionViewModel>> GetApplicationsForAutoPayment(
             AutoSelectionCreationModel value);
     }

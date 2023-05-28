@@ -21,11 +21,27 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("createparams")]
-        public async Task<ActionResult<LiqPayViewModel>> CreateParams([FromForm] LiqPayCreationModel value)
+        public async Task<ActionResult<LiqPayViewModel>> CreateParams(
+            [FromForm] LiqPayCreationModel value)
         {
             try
             {
                 LiqPayViewModel liqPayViewModel = await liqPayService.CreateParams(value);
+                return Ok(liqPayViewModel);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
+
+        [HttpPost("createparams/auto")]
+        public async Task<ActionResult<LiqPayViewModel>> CreateParamsAutoPayment(
+            [FromForm] LiqPayAutoPaymentCreationModel value)
+        {
+            try
+            {
+                LiqPayViewModel liqPayViewModel = await liqPayService.CreateParamsAutoPayment(value);
                 return Ok(liqPayViewModel);
             }
             catch (Exception e)
