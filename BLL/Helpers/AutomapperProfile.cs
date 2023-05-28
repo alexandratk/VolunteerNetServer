@@ -123,6 +123,7 @@ namespace BLL.Helpers
                 .ForMember(a => a.RequiredNumberOfVolunteers, b => b.MapFrom(c => c.RequiredNumberOfVolunteers))
                 .ForMember(a => a.NumberOfVolunteers, b => b.MapFrom(c => c.NumberOfVolunteers))
                 .ForMember(a => a.CheckVolunteer, b => b.Ignore())
+                .ForMember(a => a.CheckDelete, b => b.Ignore())
                 .ForMember(a => a.ApplicationPictures, b => b.Ignore())
                 .ForMember(a => a.ApplicationSkills, b => b.MapFrom(c => c.ApplicationSkills.Select(x => new SkillModel() { Id = x.SkillId }).ToList()));
 

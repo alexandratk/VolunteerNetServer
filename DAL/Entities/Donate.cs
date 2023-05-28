@@ -28,8 +28,8 @@ namespace DAL.Entities
 
         public DateTime DateTimeCreation { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
 
-        public Application Application { get; set; }
+        public Application? Application { get; set; }
     }
 }

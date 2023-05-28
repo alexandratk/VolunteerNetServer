@@ -57,6 +57,7 @@ namespace DAL.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Application>().HasOne(x => x.User).WithMany(x => x.Applications).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Application>().HasOne(x => x.City).WithMany(x => x.Applications).HasForeignKey(x => x.CityId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Donate>().HasOne(x => x.Application).WithMany(x => x.Donates).HasForeignKey(x => x.ApplicationId).OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<Application>()
                 .HasMany(p => p.Skills)
                 .WithMany(p => p.Applications)

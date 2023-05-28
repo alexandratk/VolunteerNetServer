@@ -23,8 +23,6 @@ namespace WebAPI.Controllers
             this.applicationService = applicationService;
         }
 
-
-
         [Authorize(Roles = "user")]
         [HttpPost("add")]
         public async Task<ActionResult> Add([FromForm] ApplicationCreationModel value)
@@ -53,37 +51,36 @@ namespace WebAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "user, admin, moderator")]
-        //[HttpGet("get/{applicationId}")]
-        //public async Task<ActionResult<ApplicationViewModel>> Get([FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
-        //{
-        //    try
-        //    {
-        //        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
-        //            x.Type == ClaimsIdentity.DefaultNameClaimType);
-        //        if (userIdClaim == null)
-        //        {
-        //            return BadRequest(new ValidationResult("Invalid token"));
-        //        }
+        [Authorize(Roles = "user, admin, moderator")]
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
 
-        //        var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(x =>
-        //            x.Type == ClaimsIdentity.DefaultRoleClaimType);
-        //        if (userRoleClaim == null)
-        //        {
-        //            return BadRequest(new ValidationResult("Invalid token"));
-        //        }
+                var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                        x.Type == ClaimsIdentity.DefaultRoleClaimType);
+                if (userRoleClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
 
-        //        var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
-        //        var userRole = userRoleClaim.ToString().Split(": ")[1];
-
-        //        var application = await applicationService.GetByIdAsync(applicationId, userId, userRole, language);
-        //        return Ok(application);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return NotFound(e);
-        //    }
-        //}
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+                var userRole = userRoleClaim.ToString().Split(": ")[1];
+                await applicationService.DeleteAsync(id, userId, userRole);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
 
         [Authorize(Roles = "user, admin, moderator")]
         [HttpGet("getlist")]

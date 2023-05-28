@@ -32,6 +32,14 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteByApplicationId(Guid applicationId)
+        {
+            List<Volunteer> volunteers = await _context.Volunteers
+                .Where(x => x.ApplicationId == applicationId).AsNoTracking().ToListAsync();
+            _context.Volunteers.RemoveRange(volunteers);
+            await _context.SaveChangesAsync();
+        }
+
         public Task DeleteByIdAsync(Guid id)
         {
             throw new NotImplementedException();

@@ -32,9 +32,10 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Application entity)
+        public async Task DeleteAsync(Application entity)
         {
-            throw new NotImplementedException();
+            _context.Applications.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteByIdAsync(Guid id)

@@ -48,6 +48,8 @@ namespace BLL.Models
 
         public Guid UserId { get; set; }
 
+        public bool CheckDelete { get; set; }
+
         public bool CheckVolunteer { get; set; }
 
         public List<SkillModel> ApplicationSkills { get; set; } = new List<SkillModel>();

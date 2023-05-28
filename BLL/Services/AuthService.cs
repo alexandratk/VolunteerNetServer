@@ -231,7 +231,12 @@ namespace BLL.Services
                 var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
                 mapperApplication.CheckVolunteer = volunteer == null;
             }
-
+            if (mapperApplication != null && (mapperApplication.UserId == userId ||
+                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] ||
+                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator]))
+            {
+                mapperApplication.CheckDelete = true;
+            }
             return mapperApplication;
         }
 
@@ -241,7 +246,7 @@ namespace BLL.Services
             ApplicationViewModel mapperApplication = await GetApplicationById(applicationId, language);
 
             mapperApplication.CheckVolunteer = false;
-
+            mapperApplication.CheckDelete = false;
             return mapperApplication;
         }
 

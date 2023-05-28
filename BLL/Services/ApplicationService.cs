@@ -126,9 +126,16 @@ namespace BLL.Services
             return validationResults;
         }
 
-        public Task DeleteAsync(Guid modelId)
+        public async Task DeleteAsync(Guid modelId, Guid userId, string userRole)
         {
-            throw new NotImplementedException();
+            var unmapperApplication = await unitOfWork.ApplicationRepository.GetByIdAsync(modelId);
+            if (unmapperApplication != null && (unmapperApplication.UserId == userId ||
+                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] ||
+                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator]))
+            {
+                await unitOfWork.VolunteerRepository.DeleteByApplicationId(unmapperApplication.Id);
+                await unitOfWork.ApplicationRepository.DeleteAsync(unmapperApplication);
+            }
         }
 
         public async Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language)
@@ -371,6 +378,11 @@ namespace BLL.Services
         }
 
         public Task UpdateAsync(ApplicationModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(Guid modelId)
         {
             throw new NotImplementedException();
         }

@@ -9,6 +9,8 @@ namespace DAL.Interfaces
 {
     public interface IVolunteerRepository : IRepository<Volunteer>
     {
+        Task DeleteByApplicationId(Guid applicationId);
+
         Task<Volunteer?> GetByUserIdApplicationId(Guid userId, Guid applicationId);
 
         Task<Volunteer?> GetByIdWithoutForeignAsync(Guid id);
