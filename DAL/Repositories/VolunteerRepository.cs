@@ -73,6 +73,13 @@ namespace DAL.Repositories
             return Task.FromResult(volunteer);
         }
 
+        public Task<Volunteer?> GetByUserIdApplicationIdWithoutForeign(Guid userId, Guid applicationId)
+        {
+            Volunteer? volunteer = _context.Volunteers.AsNoTracking()
+                .Where(r => r.UserId == userId && r.ApplicationId == applicationId).FirstOrDefault();
+            return Task.FromResult(volunteer);
+        }
+
         public async Task<List<Volunteer>> GetListByUserId(Guid userId)
         {
             List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")

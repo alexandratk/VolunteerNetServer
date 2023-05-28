@@ -13,6 +13,8 @@ namespace DAL.Interfaces
 
         Task<Volunteer?> GetByUserIdApplicationId(Guid userId, Guid applicationId);
 
+        Task<Volunteer?> GetByUserIdApplicationIdWithoutForeign(Guid userId, Guid applicationId);
+
         Task<Volunteer?> GetByIdWithoutForeignAsync(Guid id);
 
         Task<List<Volunteer>> GetListByUserId(Guid userId);

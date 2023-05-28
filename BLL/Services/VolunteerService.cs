@@ -235,14 +235,17 @@ namespace BLL.Services
             }
 
             var volunteer = await unitOfWork.VolunteerRepository
-                .GetByUserIdApplicationId((Guid)model.UserRecipientId, model.ApplicationId);
+                .GetByUserIdApplicationIdWithoutForeign(
+                (Guid)model.UserRecipientId, model.ApplicationId);
 
             if (volunteer == null)
             {
                 validationResults.Add(new ValidationResult("incorrectVolunteerId"));
                 return validationResults;
             }
-            if (volunteer.Application.UserId != userId)
+            var application =
+                await unitOfWork.ApplicationRepository.GetByIdAsync(volunteer.ApplicationId);
+            if (application.UserId != userId)
             {
                 validationResults.Add(new ValidationResult("incorrectOwnerId"));
                 return validationResults;
@@ -271,6 +274,9 @@ namespace BLL.Services
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
 
+            application.NumberOfVolunteers--;
+            await unitOfWork.ApplicationRepository.Update(application);
+
             return validationResults;
         }
 
@@ -284,14 +290,16 @@ namespace BLL.Services
             }
 
             var volunteer = await unitOfWork.VolunteerRepository
-                .GetByUserIdApplicationId(userId, model.ApplicationId);
+                .GetByUserIdApplicationIdWithoutForeign(userId, model.ApplicationId);
 
             if (volunteer == null)
             {
                 validationResults.Add(new ValidationResult("incorrectVolunteerId"));
                 return validationResults;
             }
-            if (volunteer.Application.UserId == userId)
+            var application =
+                await unitOfWork.ApplicationRepository.GetByIdAsync(volunteer.ApplicationId);
+            if (application.UserId == userId)
             {
                 validationResults.Add(new ValidationResult("incorrectUserIsOwner"));
                 return validationResults;
@@ -306,12 +314,15 @@ namespace BLL.Services
 
             Notification notification = new Notification();
             notification.ApplictionId = volunteer.ApplicationId;
-            notification.UserRecipientId = volunteer.Application.UserId;
+            notification.UserRecipientId = application.UserId;
             notification.UserSenderId = userId;
             notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.ExitVolunteer];
             notification.CreationDateTime = DateTime.Now;
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
+
+            application.NumberOfVolunteers--;
+            await unitOfWork.ApplicationRepository.Update(application);
 
             return validationResults;
         }
