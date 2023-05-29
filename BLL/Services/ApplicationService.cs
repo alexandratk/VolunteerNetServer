@@ -133,6 +133,17 @@ namespace BLL.Services
                 userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] ||
                 userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator]))
             {
+                var volunteers = await unitOfWork.VolunteerRepository
+                    .GetListVolunteersInChatWithoutForeign(modelId);
+                for (int i = 0; i < volunteers.Count; i++)
+                {
+                    Notification notification = new Notification();
+                    notification.UserRecipientId = volunteers[i].UserId;
+                    notification.UserSenderId = userId;
+                    notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.DeleteApplication];
+                    notification.CreationDateTime = DateTime.Now;
+                    await unitOfWork.NotificationRepository.AddAsync(notification);
+                }
                 await unitOfWork.VolunteerRepository.DeleteByApplicationId(unmapperApplication.Id);
                 await unitOfWork.ApplicationRepository.DeleteAsync(unmapperApplication);
             }
@@ -179,74 +190,6 @@ namespace BLL.Services
             return mapperApplications;
         }
 
-        //public async Task<ApplicationViewModel> GetByIdAsync(
-        //    Guid applicationId, Guid userId, string userRole, string language)
-        //{
-        //    var unmapperApplication = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
-        //    if (unmapperApplication == null)
-        //    {
-        //        return null;
-        //    }
-        //    var mapperApplication = mapper.Map<Application, ApplicationViewModel>(unmapperApplication);
-
-        //    var translation = ApplicationStatuses.StatusTranslation[mapperApplication.StatusNumber];
-        //    mapperApplication.Status = translation[language];
-        //    CityTranslation? cityTranslation = await unitOfWork.CityRepository
-        //            .GetCityTranslationById(mapperApplication.CityId, language);
-        //    if (cityTranslation != null)
-        //    {
-        //        mapperApplication.City = cityTranslation.Name;
-
-        //        CountryTranslation? countryTranslation = await unitOfWork.CountryRepository
-        //            .GetCountryTranslationById(cityTranslation.City.CountryId, language);
-        //        if (countryTranslation != null)
-        //        {
-        //            mapperApplication.Country = countryTranslation.Name;
-        //        }
-        //    }
-
-        //    CategoryTranslation? categoryTranslation = await unitOfWork.CategoryRepository
-        //        .GetCategoryTranslationById(mapperApplication.CategoryId, language);
-        //    if (categoryTranslation != null)
-        //    {
-        //        mapperApplication.Category = categoryTranslation.Name;
-        //    }
-
-
-        //    foreach (SkillModel skillModel in mapperApplication.ApplicationSkills)
-        //    {
-        //        SkillTranslation? skillTranslation = await unitOfWork.SkillRepository
-        //            .GetSkillTranslationById(skillModel.Id, language);
-        //        if (skillTranslation != null)
-        //        {
-        //            skillModel.Title = skillTranslation.Name;
-        //        }
-        //    }
-
-        //    if (unmapperApplication.ApplicationDocuments != null)
-        //    {
-        //        mapperApplication.ApplicationDocuments = mapper
-        //            .Map<List<ApplicationDocument>, List<ApplicationDocumentViewModel>>(
-        //            unmapperApplication.ApplicationDocuments);
-        //    }
-
-        //    mapperApplication.CheckVolunteer = 
-        //        userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] && 
-        //        userRole != UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator];
-        //    if (mapperApplication.UserId == userId ||
-        //        mapperApplication.RequiredNumberOfVolunteers == mapperApplication.NumberOfVolunteers)
-        //    {
-        //        mapperApplication.CheckVolunteer = false;
-        //    }
-        //    if (mapperApplication.CheckVolunteer)
-        //    {
-        //        var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
-        //        mapperApplication.CheckVolunteer = volunteer == null;
-        //    }
-
-        //    return mapperApplication;
-        //}
-
         public async Task<IEnumerable<ApplicationViewModel>> GetListForProcessingAsync(string language)
         {
             var unmapperApplications = await unitOfWork.ApplicationRepository.GetListForProcessingAsync();
@@ -273,7 +216,8 @@ namespace BLL.Services
             return mapperApplications;
         }
 
-        public async Task<IEnumerable<ApplicationViewModel>> GetListForUserAsync(Guid userId, string language)
+        public async Task<IEnumerable<ApplicationViewModel>> GetListForUserAsync(
+            Guid userId, string language)
         {
             var unmapperApplications = await unitOfWork.ApplicationRepository.GetListForUserAsync(userId);
             var mapperApplications = mapper
@@ -314,7 +258,8 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<ValidationResult>> ApproveApplication(Guid applicationId, Guid moderatorId)
+        public async Task<List<ValidationResult>> ApproveApplication(
+            Guid applicationId, Guid moderatorId)
         {
             var validationResults = new List<ValidationResult>();
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
@@ -352,7 +297,8 @@ namespace BLL.Services
             return validationResults;
         }
 
-        public async Task<List<ValidationResult>> ForbidApplication(NotificationCreationModel model, Guid moderatorId)
+        public async Task<List<ValidationResult>> ForbidApplication(
+            NotificationCreationModel model, Guid moderatorId)
         {
             var validationResults = new List<ValidationResult>();
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(model.ApplicationId);
@@ -373,6 +319,46 @@ namespace BLL.Services
             notification.CreationDateTime = DateTime.Now;
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
+
+            return validationResults;
+        }
+
+        public async Task<List<ValidationResult>> CompleteApplication(
+            Guid applicationId, Guid userId)
+        {
+            var validationResults = new List<ValidationResult>();
+            var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+            if (application == null)
+            {
+                validationResults.Add(new ValidationResult("incorrectApplicationId"));
+                return validationResults;
+            }
+            if (application.Status != (int)ApplicationStatuses.Status.InProgress)
+            {
+                validationResults.Add(new ValidationResult("incorrectApplicationStatus"));
+                return validationResults;
+            }
+            application.Status = (int)ApplicationStatuses.Status.Сompleted;
+            await unitOfWork.ApplicationRepository.Update(application);
+
+            var volunteers = await unitOfWork.VolunteerRepository
+                .GetListVolunteersInChatWithoutForeign(applicationId);
+            for (int i = 0; i < volunteers.Count; i++)
+            {
+                if (volunteers[i].Status == (int)VolunteerStatuses.Status.Accepted)
+                {
+                    volunteers[i].Status = (int)VolunteerStatuses.Status.Completed;
+                    await unitOfWork.VolunteerRepository.Update(volunteers[i]);
+
+                    Notification notification = new Notification();
+                    notification.ApplictionId = application.Id;
+                    notification.UserRecipientId = volunteers[i].UserId;
+                    notification.UserSenderId = userId;
+                    notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.CompleteApplication];
+                    notification.CreationDateTime = DateTime.Now;
+                    await unitOfWork.NotificationRepository.AddAsync(notification);
+                }
+            }
 
             return validationResults;
         }

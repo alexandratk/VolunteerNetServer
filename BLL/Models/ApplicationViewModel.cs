@@ -50,6 +50,8 @@ namespace BLL.Models
 
         public bool CheckDelete { get; set; }
 
+        public bool CheckComplete { get; set; }
+
         public bool CheckVolunteer { get; set; }
 
         public List<SkillModel> ApplicationSkills { get; set; } = new List<SkillModel>();

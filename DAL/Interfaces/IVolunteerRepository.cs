@@ -23,6 +23,8 @@ namespace DAL.Interfaces
 
         Task<List<Volunteer>> GetListVolunteersInChat(Guid applicationId);
 
+        Task<List<Volunteer>> GetListVolunteersInChatWithoutForeign(Guid applicationId);
+
         Task<List<Volunteer>> GetListWithChatsByUserId(Guid userId);
     }
 }

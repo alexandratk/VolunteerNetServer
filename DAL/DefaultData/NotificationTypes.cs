@@ -15,7 +15,9 @@ namespace DAL.DefaultData
             AcceptVolunteer = 2,
             RejectVolunteer = 3,
             RemoveVolunteer = 4,
-            ExitVolunteer = 5
+            ExitVolunteer = 5,
+            CompleteApplication = 6,
+            DeleteApplication = 7
         }
 
         public static List<string> Types { get; set; }
@@ -25,7 +27,9 @@ namespace DAL.DefaultData
                 "acceptVolunteer",
                 "rejectVolunteer",
                 "removeVolunteer",
-                "exitVolunteer"
+                "exitVolunteer",
+                "completeVolunteer",
+                "deleteVolunteer"
             };
     }
 }

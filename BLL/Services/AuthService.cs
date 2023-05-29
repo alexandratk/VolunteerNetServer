@@ -232,10 +232,13 @@ namespace BLL.Services
                 mapperApplication.CheckVolunteer = volunteer == null;
             }
             if (mapperApplication != null && (mapperApplication.UserId == userId ||
-                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin] ||
-                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator]))
+                userRole == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin]))
             {
                 mapperApplication.CheckDelete = true;
+            }
+            if (mapperApplication.UserId == userId)
+            {
+                mapperApplication.CheckComplete = true;
             }
             return mapperApplication;
         }
@@ -247,6 +250,7 @@ namespace BLL.Services
 
             mapperApplication.CheckVolunteer = false;
             mapperApplication.CheckDelete = false;
+            mapperApplication.CheckComplete = false;
             return mapperApplication;
         }
 

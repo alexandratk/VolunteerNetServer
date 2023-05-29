@@ -30,6 +30,8 @@ namespace BLL.Models
 
         public string ProfilePictureFormat { get; set; }
 
+        public int NumberOfCompletedApplications { get; set; }
+
         public List<UserSkillViewModel> UserSkills { get; set; } = new List<UserSkillViewModel>();
     }
 }

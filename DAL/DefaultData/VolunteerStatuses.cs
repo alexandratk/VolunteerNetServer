@@ -33,6 +33,12 @@ namespace DAL.DefaultData
                     { "en", "owner" },
                     { "uk", "власник" }
                 }
+            },
+            {4, new Dictionary<string, string>()
+                {
+                    { "en", "completed" },
+                    { "uk", "закінчено" }
+                }
             }
         };
 
@@ -41,7 +47,8 @@ namespace DAL.DefaultData
             Processing = 0,
             Accepted = 1,
             Rejected = 2,
-            Owner = 3
+            Owner = 3,
+            Completed = 4
         }
     }
 }

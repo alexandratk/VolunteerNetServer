@@ -14,6 +14,8 @@ namespace BLL.Interfaces
 
         Task<List<ValidationResult>> ApproveApplication(Guid applicationId, Guid moderatorId);
 
+        Task<List<ValidationResult>> CompleteApplication(Guid applicationId, Guid moderatorId);
+
         Task DeleteAsync(Guid modelId, Guid userId, string userRole);
 
         Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language);

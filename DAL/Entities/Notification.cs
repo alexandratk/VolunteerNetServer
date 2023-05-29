@@ -14,8 +14,8 @@ namespace DAL.Entities
 
         public DateTime CreationDateTime { get; set; }
 
-        public Guid ApplictionId { get; set; }
-        public Application Application { get; set; }
+        public Guid? ApplictionId { get; set; }
+        public Application? Application { get; set; }
 
         public Guid UserSenderId { get; set; }
         public User UserSender { get; set; }

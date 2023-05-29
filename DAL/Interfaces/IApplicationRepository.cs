@@ -11,6 +11,8 @@ namespace DAL.Interfaces
     {
         Task AddDocumentAsync(ApplicationDocument entity);
 
+        Task<Application?> GetByIdWithVolunteersAsync(Guid id);
+
         ApplicationDocument? GetDocumentById(Guid id);
 
         Task<List<Application>> GetListForAutoPayment(List<Guid> categoryIds);

@@ -58,6 +58,13 @@ namespace DAL.Repositories
             return Task.FromResult(application);
         }
 
+        public Task<Application?> GetByIdWithVolunteersAsync(Guid id)
+        {
+            Application? application = _context.Applications.AsNoTracking()
+                .Where(r => r.Id == id).Include("Volunteers").FirstOrDefault();
+            return Task.FromResult(application);
+        }
+
         public ApplicationDocument? GetDocumentById(Guid id)
         {
             ApplicationDocument? applicationDocument = _context.ApplicationDocuments.AsNoTracking()

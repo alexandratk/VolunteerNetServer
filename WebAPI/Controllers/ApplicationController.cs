@@ -203,5 +203,33 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [Authorize(Roles = "user")]
+        [HttpGet("complete/{applicationId}")]
+        public async Task<ActionResult> CompleteApplication(Guid applicationId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+
+                var validationResults = await applicationService.CompleteApplication(applicationId, userId);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
     }
 }

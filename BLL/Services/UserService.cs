@@ -145,6 +145,8 @@ namespace BLL.Services
                         mapperUser.Country = countryTranslation.Name;
                     }
                 }
+                mapperUser.NumberOfCompletedApplications = unmapperUser.Volunteers
+                    .Where(x => x.Status == (int)VolunteerStatuses.Status.Completed).Count();
                 if (unmapperUser.ProfilePicture != null) 
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);

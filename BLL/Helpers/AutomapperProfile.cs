@@ -52,7 +52,8 @@ namespace BLL.Helpers
                 .ForMember(um => um.Phone, u => u.MapFrom(x => x.Phone))
                 .ForMember(um => um.Role, u => u.MapFrom(x => x.Role))
                 .ForMember(um => um.ProfilePictureFormat, u => u.MapFrom(x => x.ProfilePicture.Format))
-                .ForMember(um => um.ProfilePicture, u => u.Ignore());
+                .ForMember(um => um.ProfilePicture, u => u.Ignore())
+                .ForMember(um => um.NumberOfCompletedApplications, u => u.Ignore());
 
 
             CreateMap<SkillModel, Skill>().ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
