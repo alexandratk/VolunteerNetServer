@@ -26,9 +26,16 @@ namespace DAL.Repositories
             return Task.FromResult(categoryTranslation);
         }
 
-        public Task AddAsync(Category entity)
+        public async Task AddAsync(Category entity)
         {
-            throw new NotImplementedException();
+            _context.Categories.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddRangeCategoryTranslationsAsync(List<CategoryTranslation> entities)
+        {
+            _context.CategoryTranslations.AddRange(entities);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(Category entity)
