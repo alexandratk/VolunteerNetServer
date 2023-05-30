@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using BLL.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using WebAPI.Hubs;
+using BLL.BackgroundServices;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

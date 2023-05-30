@@ -363,6 +363,36 @@ namespace BLL.Services
             return validationResults;
         }
 
+        public async Task CompleteApplicationBackgroundService()
+        {
+
+            var applications = await unitOfWork.ApplicationRepository.GetListWithCurrentData();
+            for (int i = 0; i < applications.Count; i++)
+            {
+                applications[i].Status = (int)ApplicationStatuses.Status.Сompleted;
+                await unitOfWork.ApplicationRepository.Update(applications[i]);
+
+                var volunteers = await unitOfWork.VolunteerRepository
+                    .GetListVolunteersInChatWithoutForeign(applications[i].Id);
+                for (int j = 0; j < volunteers.Count; j++)
+                {
+                    if (volunteers[j].Status == (int)VolunteerStatuses.Status.Accepted)
+                    {
+                        volunteers[j].Status = (int)VolunteerStatuses.Status.Completed;
+                        await unitOfWork.VolunteerRepository.Update(volunteers[j]);
+
+                        Notification notification = new Notification();
+                        notification.ApplictionId = applications[i].Id;
+                        notification.UserRecipientId = volunteers[j].UserId;
+                        notification.UserSenderId = applications[i].UserId;
+                        notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.CompleteApplication];
+                        notification.CreationDateTime = DateTime.Now;
+                        await unitOfWork.NotificationRepository.AddAsync(notification);
+                    }
+                }
+            }
+        }
+
         public Task UpdateAsync(ApplicationModel model)
         {
             throw new NotImplementedException();
@@ -371,6 +401,11 @@ namespace BLL.Services
         public Task DeleteAsync(Guid modelId)
         {
             throw new NotImplementedException();
+        }
+
+        public int test()
+        {
+            return 3;
         }
     }
 }

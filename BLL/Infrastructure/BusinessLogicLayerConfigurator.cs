@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BLL.BackgroundServices;
 using BLL.Helpers;
 using BLL.Interfaces;
 using BLL.Services;
@@ -17,8 +18,10 @@ namespace BLL.Infrastructure
         public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             DataAccessLayerConfiguratior.ConfigureServices(serviceCollection);
-            
-            serviceCollection.AddTransient<IApplicationService, ApplicationService>();
+
+            serviceCollection.AddHostedService<ApplicationBackgroundService>();
+
+            serviceCollection.AddScoped<IApplicationService, ApplicationService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
             serviceCollection.AddTransient<ICategoryService, CategoryService>();
             serviceCollection.AddTransient<IChatService, ChatService>();

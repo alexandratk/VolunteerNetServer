@@ -172,6 +172,10 @@ namespace BLL.Services
             {
                 var translation = VolunteerStatuses.StatusTranslation[volunteer.StatusNumber];
                 volunteer.Status = translation[language];
+
+                var translationApplicationStatuses =
+                    ApplicationStatuses.StatusTranslation[volunteer.Application.StatusNumber];
+                volunteer.Application.Status = translationApplicationStatuses[language];
             }
             return mapperVolunteers;
         }

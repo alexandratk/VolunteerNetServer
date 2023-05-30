@@ -16,16 +16,18 @@ namespace BLL.Interfaces
 
         Task<List<ValidationResult>> CompleteApplication(Guid applicationId, Guid moderatorId);
 
+        Task CompleteApplicationBackgroundService();
+
         Task DeleteAsync(Guid modelId, Guid userId, string userRole);
 
         Task<List<ApplicationViewModel>> GetAllAsync(string userRole, string language);
-
-        //Task<ApplicationViewModel> GetByIdAsync(Guid applicationId, Guid userId, string userRole, string language);
 
         Task<IEnumerable<ApplicationViewModel>> GetListForProcessingAsync(string language);
 
         Task<IEnumerable<ApplicationViewModel>> GetListForUserAsync(Guid userId, string language);
 
         Task<List<ValidationResult>> ForbidApplication(NotificationCreationModel value, Guid moderatorId);
+
+        int test();
     }
 }

@@ -111,7 +111,8 @@ namespace DAL.Repositories
                 (x.Application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer] ||
                 x.Application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed]) &&
                 (x.Status == (int)VolunteerStatuses.Status.Accepted ||
-                x.Status == (int)VolunteerStatuses.Status.Owner))
+                x.Status == (int)VolunteerStatuses.Status.Owner ||
+                x.Status == (int)VolunteerStatuses.Status.Completed))
                 .AsNoTracking().ToListAsync();
             return volunteers;
         }

@@ -20,5 +20,7 @@ namespace DAL.Interfaces
         Task<List<Application>> GetListForProcessingAsync();
 
         Task<List<Application>> GetListForUserAsync(Guid userId);
+
+        Task<List<Application>> GetListWithCurrentData();
     }
 }
