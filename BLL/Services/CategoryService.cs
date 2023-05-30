@@ -49,21 +49,21 @@ namespace BLL.Services
             newCategoryTranslationEn.Id = Guid.NewGuid();
             newCategoryTranslationEn.Language = Languages.LanguagesEnum.en.ToString();
             newCategoryTranslationEn.Name = model.NameEn;
-            newCategoryTranslationEn.DescriptionCategory = model.DescriptionCategoryEn;
+            newCategoryTranslationEn.DescriptionCategory = model.NameEn;
             newCategoryTranslationEn.CategoryId = newCategory.Id;
 
             CategoryTranslation newCategoryTranslationUk = new CategoryTranslation();
             newCategoryTranslationUk.Id = Guid.NewGuid();
             newCategoryTranslationUk.Language = Languages.LanguagesEnum.uk.ToString();
             newCategoryTranslationUk.Name = model.NameUk;
-            newCategoryTranslationUk.DescriptionCategory = model.DescriptionCategoryUk;
+            newCategoryTranslationUk.DescriptionCategory = model.NameUk;
             newCategoryTranslationUk.CategoryId = newCategory.Id;
 
             CategoryTranslation newCategoryTranslationPl = new CategoryTranslation();
             newCategoryTranslationPl.Id = Guid.NewGuid();
             newCategoryTranslationPl.Language = Languages.LanguagesEnum.pl.ToString();
             newCategoryTranslationPl.Name = model.NamePl;
-            newCategoryTranslationPl.DescriptionCategory = model.DescriptionCategoryPl;
+            newCategoryTranslationPl.DescriptionCategory = model.NamePl;
             newCategoryTranslationPl.CategoryId = newCategory.Id;
 
             newCategoryTranslations.Add(newCategoryTranslationEn);

@@ -10,14 +10,8 @@ namespace BLL.Models
     {
         public string NameEn { get; set; }
 
-        public string DescriptionCategoryEn { get; set; }
-
         public string NameUk { get; set; }
 
-        public string DescriptionCategoryUk { get; set; }
-
         public string NamePl { get; set; }
-
-        public string DescriptionCategoryPl { get; set; }
     }
 }
