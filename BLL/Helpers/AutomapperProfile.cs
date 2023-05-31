@@ -75,7 +75,8 @@ namespace BLL.Helpers
                 .ForMember(a => a.Document, b => b.MapFrom(c => c.Document));
 
 
-            CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
+            CreateMap<CountryTranslation, CountryViewModel>().ForMember(a => a.Id, b => b.MapFrom(c => c.CountryId))
+                .ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
             CreateMap<CityTranslation, CityViewModel>().ForMember(a => a.Name, b => b.MapFrom(c => c.Name));
 
 
