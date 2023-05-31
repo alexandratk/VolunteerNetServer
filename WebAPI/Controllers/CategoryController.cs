@@ -28,15 +28,6 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
-                    x.Type == ClaimsIdentity.DefaultNameClaimType);
-                if (userIdClaim == null)
-                {
-                    return BadRequest(new ValidationResult("Invalid token"));
-                }
-
-                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
-
                 var validationResults = await categoryService.AddAsync(value);
                 if (validationResults.IsNullOrEmpty())
                 {

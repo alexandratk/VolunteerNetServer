@@ -9,6 +9,8 @@ namespace DAL.Interfaces
 {
     public interface ICountryRepository : IRepository<Country>
     {
+        Task AddRangeCountryTranslationsAsync(List<CountryTranslation> entities);
+
         Task<IEnumerable<CountryTranslation>> GetCountryNamesAsync(string language);
 
         Task<CountryTranslation?> GetCountryTranslationById(Guid id, string language);

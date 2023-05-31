@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
+using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -23,11 +25,48 @@ namespace BLL.Services
             this.mapper = mapper;
         }
 
-        public async Task AddAsync(SkillModel model)
+        public async Task<List<ValidationResult>> AddAsync(SkillCreationModel model)
         {
-            model.Id = Guid.NewGuid();
-            var mapperUser = mapper.Map<SkillModel, Skill>(model);
-            await unitOfWork.SkillRepository.AddAsync(mapperUser);
+            var validationResults = new List<ValidationResult>();
+            if (model == null)
+            {
+                validationResults.Add(new ValidationResult("invalidData"));
+                return validationResults;
+            }
+
+            Skill newSkill = new Skill();
+            newSkill.Id = Guid.NewGuid();
+            newSkill.Title = newSkill.Id.ToString();
+
+            await unitOfWork.SkillRepository.AddAsync(newSkill);
+
+            List<SkillTranslation> newSkillTranslations = new List<SkillTranslation>();
+
+            SkillTranslation newSkillTranslationEn = new SkillTranslation();
+            newSkillTranslationEn.Id = Guid.NewGuid();
+            newSkillTranslationEn.Language = Languages.LanguagesEnum.en.ToString();
+            newSkillTranslationEn.Name = model.NameEn;
+            newSkillTranslationEn.SkillId = newSkill.Id;
+
+            SkillTranslation newSkillTranslationUk = new SkillTranslation();
+            newSkillTranslationUk.Id = Guid.NewGuid();
+            newSkillTranslationUk.Language = Languages.LanguagesEnum.uk.ToString();
+            newSkillTranslationUk.Name = model.NameUk;
+            newSkillTranslationUk.SkillId = newSkill.Id;
+
+            SkillTranslation newSkillTranslationPl = new SkillTranslation();
+            newSkillTranslationPl.Id = Guid.NewGuid();
+            newSkillTranslationPl.Language = Languages.LanguagesEnum.pl.ToString();
+            newSkillTranslationPl.Name = model.NamePl;
+            newSkillTranslationPl.SkillId = newSkill.Id;
+
+            newSkillTranslations.Add(newSkillTranslationEn);
+            newSkillTranslations.Add(newSkillTranslationUk);
+            newSkillTranslations.Add(newSkillTranslationPl);
+
+            await unitOfWork.SkillRepository
+                .AddRangeSkillTranslationsAsync(newSkillTranslations);
+            return validationResults;
         }
 
         public async Task DeleteAsync(Guid modelId)

@@ -9,6 +9,8 @@ namespace DAL.Interfaces
 {
     public interface ISkillRepository : IRepository<Skill>
     {
+        Task AddRangeSkillTranslationsAsync(List<SkillTranslation> entities);
+
         Task<SkillTranslation?> GetSkillTranslationById(Guid id, string language);
     }
 }

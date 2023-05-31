@@ -1,6 +1,7 @@
 ﻿using BLL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace BLL.Interfaces
     {
         Task<SkillModel> GetByIdAsync(Guid id);
 
-        Task AddAsync(SkillModel model);
+        Task<List<ValidationResult>> AddAsync(SkillCreationModel model);
 
         Task<IEnumerable<SkillModel>> GetAllAsync(string language);
 

@@ -4,6 +4,7 @@ using BLL.Models;
 using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -21,13 +22,18 @@ namespace WebAPI.Controllers
             this.skillService = skillService;
         }
 
-        [HttpPost("add")]
-        public async Task<ActionResult> Add([FromBody] SkillModel value)
+        [Authorize(Roles = "admin")]
+        [HttpPost("add/skill")]
+        public async Task<ActionResult> Add([FromForm] SkillCreationModel value)
         {
             try
             {
-                await skillService.AddAsync(value);
-                return Ok();
+                var validationResults = await skillService.AddAsync(value);
+                if (validationResults.IsNullOrEmpty())
+                {
+                    return Ok();
+                }
+                return BadRequest(validationResults);
             }
             catch (Exception e)
             {

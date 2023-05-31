@@ -20,9 +20,16 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public Task AddAsync(City entity)
+        public async Task AddAsync(City entity)
         {
-            throw new NotImplementedException();
+            _context.Cities.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddRangeCityTranslationsAsync(List<CityTranslation> entities)
+        {
+            _context.CityTranslations.AddRange(entities);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(City entity)

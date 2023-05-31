@@ -24,7 +24,13 @@ namespace DAL.Repositories
             _context.Skills.Add(entity);
             await _context.SaveChangesAsync();
         }
-         
+
+        public async Task AddRangeSkillTranslationsAsync(List<SkillTranslation> entities)
+        {
+            _context.SkillTranslations.AddRange(entities);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(Skill entity)
         {
             _context.Skills.Remove(entity);

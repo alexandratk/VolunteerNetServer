@@ -19,9 +19,16 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Country entity)
+        public async Task AddAsync(Country entity)
         {
-            throw new NotImplementedException();
+            _context.Countries.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddRangeCountryTranslationsAsync(List<CountryTranslation> entities)
+        {
+            _context.CountryTranslations.AddRange(entities);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(Country entity)

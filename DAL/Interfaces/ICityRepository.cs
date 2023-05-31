@@ -9,6 +9,8 @@ namespace DAL.Interfaces
 {
     public interface ICityRepository : IRepository<City>
     {
+        Task AddRangeCityTranslationsAsync(List<CityTranslation> entities);
+
         Task<CityTranslation?> GetByNameAsync(string name);
 
         Task<CityTranslation?> GetCityTranslationById(Guid id, string language);
