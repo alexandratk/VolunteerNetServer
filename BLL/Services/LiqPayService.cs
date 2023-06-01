@@ -82,6 +82,19 @@ namespace BLL.Services
                 await unitOfWork.DonateRepository.AddAsync(mapperDonate);
 
                 application.CurrentSum += currentAmount;
+                
+                if (application.CurrentSum >= application.RequiredSum)
+                {
+                    application.Status = (int)ApplicationStatuses.Status.Сompleted;
+
+                    Notification notification = new Notification();
+                    notification.ApplictionId = application.Id;
+                    notification.UserRecipientId = application.UserId;
+                    notification.UserSenderId = application.UserId;
+                    notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.CompleteApplication];
+                    notification.CreationDateTime = DateTime.Now;
+                    await unitOfWork.NotificationRepository.AddAsync(notification);
+                }
 
                 await unitOfWork.ApplicationRepository.Update(application);
             }
@@ -243,9 +256,12 @@ namespace BLL.Services
             AutoSelectionViewModel autoSelect = new AutoSelectionViewModel();
             for (int i = 0; i < mapperApplications.Count && autoSelect.Sum < sum; i++)
             {
-                autoSelect.Sum += 
-                    (double)(mapperApplications[i].RequiredSum - mapperApplications[i].CurrentSum);
-                autoSelect.Applications.Add(mapperApplications[i]);
+                double t = (double)(mapperApplications[i].RequiredSum - mapperApplications[i].CurrentSum);
+                if (autoSelect.Sum + t < -sum) 
+                {
+                    autoSelect.Sum += t;
+                    autoSelect.Applications.Add(mapperApplications[i]);
+                }
             }
             return autoSelect;
         }

@@ -54,6 +54,16 @@ namespace BLL.Models
 
         public bool CheckVolunteer { get; set; }
 
+        public bool CheckExit { get; set; }
+
+        public bool CheckVolunteerIsReject { get; set; }
+
+        public bool CheckDonate { get; set; }
+
+        public bool CheckChat { get; set; }
+
+        public bool CheckVolunteerWait { get; set; }
+
         public List<SkillModel> ApplicationSkills { get; set; } = new List<SkillModel>();
 
         public List<ApplicationDocumentViewModel> ApplicationDocuments { get; set; } =

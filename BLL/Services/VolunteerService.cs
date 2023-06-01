@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BLL.Services
 {
@@ -144,20 +143,27 @@ namespace BLL.Services
             return mapperVolunteers;
         }
 
-        public async Task<IEnumerable<VolunteerViewModel>> GetListVolunteersInChat(
+        public async Task<ChatInformationViewModel> GetListVolunteersInChat(
             Guid applicationId, Guid userId, string language)
         {
-            IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
-                .GetListVolunteersInChat(applicationId);
-            var mapperVolunteers = mapper
-                .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
+            ChatInformationViewModel chatInfoViewModel = new ChatInformationViewModel();
 
-            foreach (var volunteer in mapperVolunteers)
+            var unmapperApplication = await unitOfWork.ApplicationRepository
+                .GetByIdAsync(applicationId);
+            chatInfoViewModel.Application = mapper
+                .Map<Application, ApplicationViewModel>(unmapperApplication);
+
+            List<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
+                .GetListVolunteersInChat(applicationId);
+            chatInfoViewModel.Volunteers = mapper
+                .Map<List<Volunteer>, List<VolunteerViewModel>>(unmapperVolunteers);
+
+            foreach (var volunteer in chatInfoViewModel.Volunteers)
             {
                 var translation = VolunteerStatuses.StatusTranslation[volunteer.StatusNumber];
                 volunteer.Status = translation[language];
             }
-            return mapperVolunteers;
+            return chatInfoViewModel;
         }
 
         public async Task<IEnumerable<VolunteerViewModel>> GetListWithChatsByUserId(
@@ -274,12 +280,11 @@ namespace BLL.Services
             if (model.Type == NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RemoveVolunteer])
             {
                 notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RemoveVolunteer];
+                application.NumberOfVolunteers--;
+                await unitOfWork.ApplicationRepository.Update(application);
             }
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
-
-            application.NumberOfVolunteers--;
-            await unitOfWork.ApplicationRepository.Update(application);
 
             return validationResults;
         }

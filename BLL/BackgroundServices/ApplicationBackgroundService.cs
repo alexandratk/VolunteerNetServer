@@ -23,7 +23,7 @@ namespace BLL.BackgroundServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            TimeSpan timeSpan = new TimeSpan(24, 0, 0);
+            TimeSpan timeSpan = new TimeSpan(12, 0, 0);
             while (!stoppingToken.IsCancellationRequested)
             {
                 using (var scope = Services.CreateScope())

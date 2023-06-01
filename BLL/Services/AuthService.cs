@@ -210,6 +210,11 @@ namespace BLL.Services
                 mapperApplication.ApplicationPictures.Add(applicationPictureViewModel);
             }
 
+            mapperApplication.CheckDonate = 
+                mapperApplication.RequiredSum - mapperApplication.CurrentSum > 0 && 
+                (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed] ||
+                mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary]);
+
             return mapperApplication;
         }
 
@@ -226,9 +231,10 @@ namespace BLL.Services
             {
                 mapperApplication.CheckVolunteer = false;
             }
+            var volunteer = await unitOfWork.VolunteerRepository
+                .GetByUserIdApplicationId(userId, applicationId);
             if (mapperApplication.CheckVolunteer)
             {
-                var volunteer = await unitOfWork.VolunteerRepository.GetByUserIdApplicationId(userId, applicationId);
                 mapperApplication.CheckVolunteer = volunteer == null;
             }
             if (mapperApplication != null && (mapperApplication.UserId == userId ||
@@ -239,6 +245,22 @@ namespace BLL.Services
             if (mapperApplication.UserId == userId)
             {
                 mapperApplication.CheckComplete = true;
+            }
+            if (volunteer != null && 
+                volunteer.Status == (int)VolunteerStatuses.Status.Accepted)
+            {
+                mapperApplication.CheckExit = true;
+                mapperApplication.CheckChat = true;
+            }
+            if (volunteer != null &&
+                volunteer.Status == (int)VolunteerStatuses.Status.Rejected)
+            {
+                mapperApplication.CheckVolunteerIsReject = true;
+            }
+            if (volunteer != null &&
+                volunteer.Status == (int)VolunteerStatuses.Status.Processing)
+            {
+                mapperApplication.CheckVolunteerWait = true;
             }
             return mapperApplication;
         }
@@ -251,6 +273,10 @@ namespace BLL.Services
             mapperApplication.CheckVolunteer = false;
             mapperApplication.CheckDelete = false;
             mapperApplication.CheckComplete = false;
+            mapperApplication.CheckChat = false;
+            mapperApplication.CheckExit = false;
+            mapperApplication.CheckVolunteerIsReject = false;
+            mapperApplication.CheckVolunteerWait = false;
             return mapperApplication;
         }
 
