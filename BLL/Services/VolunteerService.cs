@@ -131,7 +131,7 @@ namespace BLL.Services
             Guid userId, string language)
         {
             IEnumerable<Volunteer> unmapperVolunteers = await unitOfWork.VolunteerRepository
-                .GetListByUserId(userId);
+                .GetListByUserIdAceptedCompleted(userId);
             var mapperVolunteers = mapper
                 .Map<IEnumerable<Volunteer>, IEnumerable<VolunteerViewModel>>(unmapperVolunteers);
 

@@ -257,7 +257,7 @@ namespace BLL.Services
             for (int i = 0; i < mapperApplications.Count && autoSelect.Sum < sum; i++)
             {
                 double t = (double)(mapperApplications[i].RequiredSum - mapperApplications[i].CurrentSum);
-                if (autoSelect.Sum + t < -sum) 
+                if (autoSelect.Sum + t <= sum) 
                 {
                     autoSelect.Sum += t;
                     autoSelect.Applications.Add(mapperApplications[i]);

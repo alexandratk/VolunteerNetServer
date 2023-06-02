@@ -19,6 +19,8 @@ namespace DAL.Interfaces
 
         Task<List<Volunteer>> GetListByUserId(Guid userId);
 
+        Task<List<Volunteer>> GetListByUserIdAceptedCompleted(Guid userId);
+
         Task<List<Volunteer>> GetListInProcessingByOwnerId(Guid userId);
 
         Task<List<Volunteer>> GetListVolunteersInChat(Guid applicationId);

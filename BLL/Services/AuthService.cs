@@ -250,8 +250,14 @@ namespace BLL.Services
                 volunteer.Status == (int)VolunteerStatuses.Status.Accepted)
             {
                 mapperApplication.CheckExit = true;
-                mapperApplication.CheckChat = true;
             }
+            if (volunteer != null &&
+                (volunteer.Status == (int)VolunteerStatuses.Status.Accepted ||
+                volunteer.Status == (int)VolunteerStatuses.Status.Owner))
+            {
+                mapperApplication.CheckExit = true;
+            }
+
             if (volunteer != null &&
                 volunteer.Status == (int)VolunteerStatuses.Status.Rejected)
             {
