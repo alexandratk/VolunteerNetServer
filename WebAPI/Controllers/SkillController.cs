@@ -55,6 +55,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("getlist")]
         public async Task<ActionResult<IEnumerable<SkillModel>>> GetList([FromHeader(Name = "Accept-Language")] string language)
         {
