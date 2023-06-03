@@ -46,10 +46,13 @@ namespace BLL.Services
                 return validationResults;
             }
             var applicationIdsStr = value.Description.Split(StringSeparatorForDescription);
+            List<Donate> newDonates = new List<Donate>();
+            List<Application> updateApplications = new List<Application>();
             for (int i = 0; i < applicationIdsStr.Length; i++)
             {
                 var applicationId = Guid.Parse(applicationIdsStr[i]);
-                var application = await unitOfWork.ApplicationRepository.GetByIdAsync(applicationId);
+                var application = await unitOfWork.ApplicationRepository
+                    .GetByIdWithoutForeignAsync(applicationId);
 
                 if (application == null)
                 {
@@ -66,7 +69,7 @@ namespace BLL.Services
                 }
 
                 var mapperDonate = mapper.Map<LiqPayModel, Donate>(value);
-                mapperDonate.Id = Guid.Parse(value.OrderId);
+                mapperDonate.Id = Guid.NewGuid();
                 mapperDonate.DateTimeCreation = DateTime.Now;
                 mapperDonate.ApplicationId = applicationId;
 
@@ -78,8 +81,9 @@ namespace BLL.Services
                 }
 
                 value.Amount -= (double)currentAmount;
+                mapperDonate.Amount = (double)currentAmount;
+                newDonates.Add(mapperDonate);
 
-                await unitOfWork.DonateRepository.AddAsync(mapperDonate);
 
                 application.CurrentSum += currentAmount;
                 
@@ -96,9 +100,10 @@ namespace BLL.Services
                     await unitOfWork.NotificationRepository.AddAsync(notification);
                 }
 
-                await unitOfWork.ApplicationRepository.Update(application);
+                updateApplications.Add(application);
             }
-
+            await unitOfWork.DonateRepository.AddRangeAsync(newDonates);
+            await unitOfWork.ApplicationRepository.UpdateRange(updateApplications);
             return validationResults;
         }
 

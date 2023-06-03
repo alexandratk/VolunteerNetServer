@@ -25,6 +25,12 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddRangeAsync(List<Donate> entities)
+        {
+            _context.Donates.AddRange(entities);
+            await _context.SaveChangesAsync();
+        }
+
         public Task DeleteAsync(Donate entity)
         {
             throw new NotImplementedException();

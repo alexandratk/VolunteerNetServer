@@ -65,6 +65,13 @@ namespace DAL.Repositories
             return Task.FromResult(application);
         }
 
+        public Task<Application?> GetByIdWithoutForeignAsync(Guid id)
+        {
+            Application? application = _context.Applications.AsNoTracking()
+                .Where(r => r.Id == id).FirstOrDefault();
+            return Task.FromResult(application);
+        }
+
         public ApplicationDocument? GetDocumentById(Guid id)
         {
             ApplicationDocument? applicationDocument = _context.ApplicationDocuments.AsNoTracking()
@@ -110,6 +117,12 @@ namespace DAL.Repositories
         public async Task Update(Application entity)
         {
             _context.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRange(List<Application> entities)
+        {
+            _context.UpdateRange(entities);
             await _context.SaveChangesAsync();
         }
     }

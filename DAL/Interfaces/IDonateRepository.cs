@@ -9,6 +9,8 @@ namespace DAL.Interfaces
 {
     public interface IDonateRepository : IRepository<Donate>
     {
+        Task AddRangeAsync(List<Donate> entities);
+
         Task<List<Donate>> GetListDonatesWithTerm(int numberOfDays);
 
         Task<List<Donate>> GetListDonatesWithoutTerm();

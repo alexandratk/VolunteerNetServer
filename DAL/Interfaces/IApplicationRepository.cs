@@ -13,6 +13,8 @@ namespace DAL.Interfaces
 
         Task<Application?> GetByIdWithVolunteersAsync(Guid id);
 
+        Task<Application?> GetByIdWithoutForeignAsync(Guid id);
+
         ApplicationDocument? GetDocumentById(Guid id);
 
         Task<List<Application>> GetListForAutoPayment(List<Guid> categoryIds);
@@ -22,5 +24,7 @@ namespace DAL.Interfaces
         Task<List<Application>> GetListForUserAsync(Guid userId);
 
         Task<List<Application>> GetListWithCurrentData();
+
+        Task UpdateRange(List<Application> entities);
     }
 }
