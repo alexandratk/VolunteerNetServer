@@ -1,6 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,21 @@ namespace DAL.Repositories
         public Task<List<Donate>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Donate>> GetListDonatesWithTerm(int numberOfDays)
+        {
+            List<Donate> donates = await _context.Donates.Include("Application")
+                .Where(x => x.DateTimeCreation.AddDays(numberOfDays) >= DateTime.Now)
+                .AsNoTracking().ToListAsync();
+            return donates;
+        }
+
+        public async Task<List<Donate>> GetListDonatesWithoutTerm()
+        {
+            List<Donate> donates = await _context.Donates.Include("Application")
+                .AsNoTracking().ToListAsync();
+            return donates;
         }
 
         public Task<Donate?> GetByIdAsync(Guid id)

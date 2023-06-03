@@ -19,5 +19,7 @@ namespace BLL.Interfaces
 
         Task<List<AutoSelectionViewModel>> GetApplicationsForAutoPayment(
             AutoSelectionCreationModel value);
+
+        Task<List<LiqPayDonatesViewModel>> GetListDonates(int numberOfDays, string language);
     }
 }

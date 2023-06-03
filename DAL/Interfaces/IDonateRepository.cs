@@ -9,5 +9,8 @@ namespace DAL.Interfaces
 {
     public interface IDonateRepository : IRepository<Donate>
     {
+        Task<List<Donate>> GetListDonatesWithTerm(int numberOfDays);
+
+        Task<List<Donate>> GetListDonatesWithoutTerm();
     }
 }

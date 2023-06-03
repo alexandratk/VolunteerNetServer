@@ -83,5 +83,20 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [HttpGet("getlist/donates/{numberOfDays}")]
+        public async Task<ActionResult<IEnumerable<AutoSelectionViewModel>>> GetListDonates(
+            [FromHeader(Name = "Accept-Language")] string language, int numberOfDays)
+        {
+            try
+            {
+                var applications = await liqPayService.GetListDonates(numberOfDays, language);
+                return Ok(applications);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
     }
 }

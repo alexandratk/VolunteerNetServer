@@ -310,5 +310,33 @@ namespace BLL.Services
 
             return result;
         }
+
+        public async Task<List<LiqPayDonatesViewModel>> GetListDonates(int numberOfDays, string language)
+        {
+            List<Donate> unmapperList = new List<Donate>();
+            if (numberOfDays == 0)
+            {
+                unmapperList = await unitOfWork.DonateRepository.GetListDonatesWithoutTerm();
+            }
+            else
+            {
+                unmapperList = await unitOfWork.DonateRepository.GetListDonatesWithTerm(numberOfDays);
+            }
+
+            var result = unmapperList.GroupBy(x => x.ApplicationId).Select(y => new LiqPayDonatesViewModel()
+            {
+                Application = mapper.Map<Application, ApplicationViewModel>(y.First().Application),
+                Sum = y.Sum(z => z.Amount)
+            }).ToList();
+
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                var translation = ApplicationStatuses
+                    .StatusTranslation[result[i].Application.StatusNumber];
+                result[i].Application.Status = translation[language];
+            }
+            return result;
+        }
     }
 }
