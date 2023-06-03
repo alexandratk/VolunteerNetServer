@@ -14,6 +14,6 @@ namespace DAL.DefaultData
 
         public static int Version { get; } = 3;
 
-        public static string Currency { get; } = "USD";
+        public static string Currency { get; } = "UAH";
     }
 }
