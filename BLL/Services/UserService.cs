@@ -330,10 +330,10 @@ namespace BLL.Services
             return numberOfNotification;
         }
 
-        public async Task<List<ValidationResult>> UpdateAsync(UserCreationModel model)
+        public async Task<List<ValidationResult>> UpdateInfoAsync(UserCreationModel model, Guid userId)
         {
             var validationResults = new List<ValidationResult>();
-            var user = await unitOfWork.UserRepository.GetByIdAsync(model.Id);
+            var user = await unitOfWork.UserRepository.GetByIdAsync(userId);
             if (user == null)
             {
                 validationResults.Add(new ValidationResult("invalidUserId"));

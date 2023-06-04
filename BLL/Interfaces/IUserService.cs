@@ -35,6 +35,6 @@ namespace BLL.Interfaces
 
         Task<List<ValidationResult>> UpdateUserSkillsAsync(Guid userId, UserSkillCreationModel model);
 
-        Task<List<ValidationResult>> UpdateAsync(UserCreationModel model);
+        Task<List<ValidationResult>> UpdateInfoAsync(UserCreationModel model, Guid userId);
     }
 }

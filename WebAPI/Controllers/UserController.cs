@@ -49,12 +49,20 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("update/{id}")]
-        public async Task<ActionResult> Update(Guid Id, [FromBody] UserModel value)
+        [HttpPost("update")]
+        public async Task<ActionResult> Update(Guid Id, [FromForm] UserCreationModel value)
         {
             try
             {
-                await userService.UpdateAsync(value);
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimsIdentity.DefaultNameClaimType);
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new ValidationResult("Invalid token"));
+                }
+
+                var userId = Guid.Parse(userIdClaim.ToString().Split(": ")[1]);
+                await userService.UpdateInfoAsync(value, userId);
                 return Ok();
             }
             catch (Exception e)

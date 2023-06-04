@@ -283,7 +283,7 @@ namespace BLL.Services
             if (sortApplications.Count > 0)
             {
                 Random rnd = new Random();
-                int index = rnd.Next(0, sortApplications.Count - 1);
+                int index = rnd.Next(0, sortApplications.Count);
 
                 autoSelect.Applications.Add(sortApplications[index]);
                 if (sum < sortApplications[index].RequiredSum - sortApplications[index].CurrentSum)
