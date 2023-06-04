@@ -31,8 +31,8 @@ namespace DAL.DefaultData
         {
             User = new User();
             User.Id = Guid.NewGuid();
-            User.Login = "ourfirstadmin";
-            User.Password = ComputeSha256Hash("itissecret");
+            User.Login = "our1admin@gmail.com";
+            User.Password = ComputeSha256Hash("our1admin@gmail.com");
             User.FirstName = "the first";
             User.LastName = "admin";
             User.DateOfBirth = DateTime.Now;

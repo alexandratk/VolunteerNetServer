@@ -23,7 +23,7 @@ namespace BLL.Interfaces
 
         Task<List<LiqPayDonatesViewModel>> GetListDonates(int numberOfDays, string language);
 
-        Task<ActionResult<LiqPayApplicationViewModel>> GetApplicationDonations(
+        Task<LiqPayApplicationViewModel> GetApplicationDonations(
             Guid applicationId, string language);
     }
 }

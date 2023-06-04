@@ -347,7 +347,7 @@ namespace BLL.Services
             return result;
         }
 
-        public async Task<ActionResult<LiqPayApplicationViewModel>> GetApplicationDonations(
+        public async Task<LiqPayApplicationViewModel> GetApplicationDonations(
             Guid applicationId, string language)
         {
             LiqPayApplicationViewModel liqPayApplication = new LiqPayApplicationViewModel();

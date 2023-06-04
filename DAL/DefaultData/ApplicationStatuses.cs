@@ -13,25 +13,29 @@ namespace DAL.DefaultData
             {0, new Dictionary<string, string>()
                 {
                     { "en", "checking" },
-                    { "uk", "оброблюється" }
+                    { "uk", "оброблюється" },
+                    { "pl", "w toku" }
                 }
             },
             {1, new Dictionary<string, string>()
                 {
                     { "en", "in progress" },
-                    { "uk", "в процесі" }
+                    { "uk", "в процесі" },
+                    { "pl", "w procesie" }
                 }
             },
             {2, new Dictionary<string, string>()
                 {
                     { "en", "completed" },
-                    { "uk", "завершено" }
+                    { "uk", "завершено" },
+                    { "pl", "ukończony" }
                 }
             },
             {3, new Dictionary<string, string>()
                 {
                     { "en", "forbidden" },
-                    { "uk", "заборонено" }
+                    { "uk", "заборонено" },
+                    { "pl", "zabroniony" }
                 }
             }
         };
