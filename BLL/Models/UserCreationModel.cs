@@ -9,9 +9,11 @@ namespace BLL.Models
 {
     public class UserCreationModel
     {
-        public string Login { get; set; }
+        public Guid Id { get; set; }
 
-        public string Password { get; set; }
+        public string? Login { get; set; }
+
+        public string? Password { get; set; }
 
         public string FirstName { get; set; }
 

@@ -98,5 +98,20 @@ namespace WebAPI.Controllers
                 return NotFound(e);
             }
         }
+
+        [HttpGet("get/application/{applicationId}")]
+        public async Task<ActionResult<LiqPayApplicationViewModel>> GetApplicationDonations(
+            [FromHeader(Name = "Accept-Language")] string language, Guid applicationId)
+        {
+            try
+            {
+                var application = await liqPayService.GetApplicationDonations(applicationId, language);
+                return Ok(application);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+            }
+        }
     }
 }

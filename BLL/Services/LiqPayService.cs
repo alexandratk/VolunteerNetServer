@@ -6,6 +6,7 @@ using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
 using LiqPay.SDK;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -30,11 +31,13 @@ namespace BLL.Services
 
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+        private IAuthService authService;
 
-        public LiqPayService(IUnitOfWork unitOfWork, IMapper mapper)
+        public LiqPayService(IUnitOfWork unitOfWork, IMapper mapper, IAuthService authService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.authService = authService;
         }
 
         public async Task<List<ValidationResult>> AddAsync(LiqPayModel value)
@@ -342,6 +345,20 @@ namespace BLL.Services
                 result[i].Application.Status = translation[language];
             }
             return result;
+        }
+
+        public async Task<ActionResult<LiqPayApplicationViewModel>> GetApplicationDonations(
+            Guid applicationId, string language)
+        {
+            LiqPayApplicationViewModel liqPayApplication = new LiqPayApplicationViewModel();
+            liqPayApplication.Application = await authService
+                .GetApplicationByIdUnauth(applicationId, language);
+
+            List<Donate> donations = await unitOfWork.DonateRepository.GetListByApplicationId(applicationId);
+
+            liqPayApplication.Donations = mapper.Map<List<Donate>, List<LiqPayDonateModel>>(donations);
+
+            return liqPayApplication;
         }
     }
 }

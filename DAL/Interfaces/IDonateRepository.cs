@@ -11,6 +11,8 @@ namespace DAL.Interfaces
     {
         Task AddRangeAsync(List<Donate> entities);
 
+        Task<List<Donate>> GetListByApplicationId(Guid applicationId);
+
         Task<List<Donate>> GetListDonatesWithTerm(int numberOfDays);
 
         Task<List<Donate>> GetListDonatesWithoutTerm();

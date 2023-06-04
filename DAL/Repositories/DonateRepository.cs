@@ -1,4 +1,5 @@
 ﻿using DAL.Data;
+using DAL.DefaultData;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -46,10 +47,19 @@ namespace DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<List<Donate>> GetListByApplicationId(Guid applicationId)
+        {
+            List<Donate> donates = await _context.Donates.Include("Application")
+                .Where(x => x.ApplicationId == applicationId).OrderByDescending(x => x.DateTimeCreation)
+                .AsNoTracking().ToListAsync();
+            return donates;
+        }
+
         public async Task<List<Donate>> GetListDonatesWithTerm(int numberOfDays)
         {
             List<Donate> donates = await _context.Donates.Include("Application")
-                .Where(x => x.DateTimeCreation.AddDays(numberOfDays) >= DateTime.Now)
+                .Where(x => x.DateTimeCreation.AddDays(numberOfDays) >= DateTime.Now && 
+                x.Application.Status == (int)ApplicationStatuses.Status.Сompleted)
                 .AsNoTracking().ToListAsync();
             return donates;
         }
@@ -57,6 +67,7 @@ namespace DAL.Repositories
         public async Task<List<Donate>> GetListDonatesWithoutTerm()
         {
             List<Donate> donates = await _context.Donates.Include("Application")
+                .Where(x => x.Application.Status == (int)ApplicationStatuses.Status.Сompleted)
                 .AsNoTracking().ToListAsync();
             return donates;
         }

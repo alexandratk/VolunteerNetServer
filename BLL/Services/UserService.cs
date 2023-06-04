@@ -330,13 +330,38 @@ namespace BLL.Services
             return numberOfNotification;
         }
 
-        public async Task UpdateAsync(UserModel model)
+        public async Task<List<ValidationResult>> UpdateAsync(UserCreationModel model)
         {
-            var unmapperUser = mapper.Map<UserModel, User>(model);
-            await unitOfWork.UserRepository.Update(unmapperUser);
+            var validationResults = new List<ValidationResult>();
+            var user = await unitOfWork.UserRepository.GetByIdAsync(model.Id);
+            if (user == null)
+            {
+                validationResults.Add(new ValidationResult("invalidUserId"));
+                return validationResults;
+            }
+            user.Phone = model.Phone;
+            user.DateOfBirth = model.DateOfBirth;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+
+            CityTranslation? cityTranslation = await unitOfWork.CityRepository.GetByNameAsync(model.City);
+            if (cityTranslation == null)
+            {
+                validationResults.Add(new ValidationResult("invalidLocation"));
+                return validationResults;
+            }
+            user.CityId = cityTranslation.CityId;
+
+            await unitOfWork.UserRepository.Update(user);
+            return validationResults;
         }
 
         Task<IEnumerable<UserModel>> IService<UserModel>.GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(UserModel model)
         {
             throw new NotImplementedException();
         }

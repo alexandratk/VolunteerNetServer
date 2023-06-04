@@ -202,6 +202,10 @@ namespace BLL.Helpers
                 .ForMember(a => a.SenderCardMask2, b => b.MapFrom(c => c.SenderCardMask2))
                 .ForMember(a => a.SenderCardType, b => b.MapFrom(c => c.SenderCardType))
                 .ForMember(a => a.SenderCommission, b => b.MapFrom(c => c.SenderCommission));
+            CreateMap<Donate, LiqPayDonateModel>()
+                .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Sum, b => b.MapFrom(c => c.Amount))
+                .ForMember(a => a.DateTimeCreation, b => b.MapFrom(c => c.DateTimeCreation));
         }
     }
 }

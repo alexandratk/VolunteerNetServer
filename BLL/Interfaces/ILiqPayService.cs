@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,5 +22,8 @@ namespace BLL.Interfaces
             AutoSelectionCreationModel value);
 
         Task<List<LiqPayDonatesViewModel>> GetListDonates(int numberOfDays, string language);
+
+        Task<ActionResult<LiqPayApplicationViewModel>> GetApplicationDonations(
+            Guid applicationId, string language);
     }
 }
