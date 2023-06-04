@@ -271,6 +271,11 @@ namespace BLL.Services
                     autoSelect.Applications.Add(mapperApplications[i]);
                 }
             }
+            if (autoSelect.Sum != sum && autoSelect.Applications.Count < mapperApplications.Count)
+            {
+                autoSelect.Sum = sum;
+                autoSelect.Applications.Add(mapperApplications[autoSelect.Applications.Count]);
+            }
             return autoSelect;
         }
 

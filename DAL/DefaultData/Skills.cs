@@ -35,12 +35,19 @@ namespace DAL.DefaultData
                 {
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "en", SkillId = skillIds[0], Name = "medicine" },
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "uk", SkillId = skillIds[0], Name = "медицина" },
+                    new SkillTranslation() { Id = Guid.NewGuid(), Language = "pl", SkillId = skillIds[0], Name = "medycyna" },
+
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "en", SkillId = skillIds[1], Name = "cooking" },
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "uk", SkillId = skillIds[1], Name = "кулінарія" },
+                    new SkillTranslation() { Id = Guid.NewGuid(), Language = "pl", SkillId = skillIds[1], Name = "gotowanie" },
+
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "en", SkillId = skillIds[2], Name = "building" },
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "uk", SkillId = skillIds[2], Name = "будівництво" },
+                    new SkillTranslation() { Id = Guid.NewGuid(), Language = "pl", SkillId = skillIds[2], Name = "budowa" },
+
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "en", SkillId = skillIds[3], Name = "psychology" },
                     new SkillTranslation() { Id = Guid.NewGuid(), Language = "uk", SkillId = skillIds[3], Name = "психологія" },
+                    new SkillTranslation() { Id = Guid.NewGuid(), Language = "pl", SkillId = skillIds[3], Name = "psychologia" },
                 });
         }
     }
