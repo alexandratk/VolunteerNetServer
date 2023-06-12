@@ -121,9 +121,16 @@ namespace BLL.Services
             return mapperUsers;
         }
 
-        public Task<UserViewModel> GetByIdAsync(Guid id)
+        public async Task<UserViewModel> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var unmapperUser = await unitOfWork.UserRepository.GetByIdAsync(id);
+            if (unmapperUser != null)
+            {
+                var mapperUser = mapper.Map<User, UserViewModel>(unmapperUser);
+                mapperUser.NumberOfCompletedApplications = 0;
+                return mapperUser;
+            }
+            return null;
         }
 
         public async Task<UserViewModel> GetByIdAsync(Guid id, string language)

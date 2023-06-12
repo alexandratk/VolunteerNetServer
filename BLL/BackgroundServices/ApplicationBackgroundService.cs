@@ -33,9 +33,8 @@ namespace BLL.BackgroundServices
                             .GetRequiredService<IApplicationService>();
 
                     await applicationService.CompleteApplicationBackgroundService();
-                    Debug.WriteLine("background service\n =================================");
                 }
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(timeSpan, stoppingToken);
             }
         }
     }
