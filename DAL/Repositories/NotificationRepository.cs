@@ -52,7 +52,8 @@ namespace DAL.Repositories
         {
             List<Notification> notifications = await _context.Notifications
                 .Where(x => x.UserRecipientId== receiptUserId)
-                .Include("UserRecipient").Include("UserSender").Include("Application").AsNoTracking().ToListAsync();
+                .Include("UserRecipient").Include("UserSender").Include("Application")
+                .OrderByDescending(x => x.CreationDateTime).AsNoTracking().ToListAsync();
             return notifications;
         }
 

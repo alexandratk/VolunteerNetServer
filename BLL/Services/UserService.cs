@@ -117,6 +117,36 @@ namespace BLL.Services
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
                 }
+                if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.uk])
+                {
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.User])
+                    {
+                        mapperUser.Role = UserRoles.RolesUk[(int)UserRoles.RolesEnum.User];
+                    }
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin])
+                    {
+                        mapperUser.Role = UserRoles.RolesUk[(int)UserRoles.RolesEnum.Admin];
+                    }
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator])
+                    {
+                        mapperUser.Role = UserRoles.RolesUk[(int)UserRoles.RolesEnum.Moderator];
+                    }
+                }
+                if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.pl])
+                {
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.User])
+                    {
+                        mapperUser.Role = UserRoles.RolesPl[(int)UserRoles.RolesEnum.User];
+                    }
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.Admin])
+                    {
+                        mapperUser.Role = UserRoles.RolesPl[(int)UserRoles.RolesEnum.Admin];
+                    }
+                    if (mapperUser.Role == UserRoles.Roles[(int)UserRoles.RolesEnum.Moderator])
+                    {
+                        mapperUser.Role = UserRoles.RolesPl[(int)UserRoles.RolesEnum.Moderator];
+                    }
+                }
             }
             return mapperUsers;
         }

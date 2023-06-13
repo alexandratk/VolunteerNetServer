@@ -118,6 +118,7 @@ namespace BLL.Services
         {
             var countries = await unitOfWork.CountryRepository.GetCountryNamesAsync(language);
             var countryNames = mapper.Map<IEnumerable<CountryTranslation>, IEnumerable<CountryViewModel>>(countries);
+            countryNames = countryNames.OrderBy(x => x.Name);
             return countryNames;
         }
 
@@ -126,6 +127,7 @@ namespace BLL.Services
             var country = await unitOfWork.CountryRepository.getCountryIdByName(countryName);
             var cities = await unitOfWork.CityRepository.GetCityNamesByCountryNameAsync(country.CountryId, language);
             var cityNames = mapper.Map<IEnumerable<CityTranslation>, IEnumerable<CityViewModel>>(cities);
+            cityNames = cityNames.OrderBy(x => x.Name);
             return cityNames;
         }
     }

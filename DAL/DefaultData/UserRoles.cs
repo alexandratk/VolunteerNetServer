@@ -17,5 +17,11 @@ namespace DAL.DefaultData
 
         public static List<string> Roles { get; set; } 
             = new List<string>() { "user", "admin", "moderator"};
+
+        public static List<string> RolesUk { get; set; }
+            = new List<string>() { "користувач", "адміністратор", "модератор" };
+
+        public static List<string> RolesPl { get; set; }
+            = new List<string>() { "użytkownik", "administrator", "moderator" };
     }
 }

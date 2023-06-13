@@ -46,7 +46,7 @@ namespace DAL.Repositories
         public async Task<List<Application>> GetAllAsync()
         {
             List<Application> applications = await _context.Applications.Include("ApplicationSkills")
-                .OrderByDescending(x => x.DateTimeEnd).AsNoTracking().ToListAsync();
+                .OrderByDescending(x => x.DateTimeStart).ThenBy(x => x.Status).AsNoTracking().ToListAsync();
             return applications;
         }
 
@@ -94,7 +94,7 @@ namespace DAL.Repositories
         {
             List<Application> applications = await _context.Applications
                 .Where(x => x.Status == (int) ApplicationStatuses.Status.Processing)
-                .OrderByDescending(x => x.DateTimeEnd).AsNoTracking().ToListAsync();
+                .OrderByDescending(x => x.DateTimeStart).AsNoTracking().ToListAsync();
             return applications;
         }
 
@@ -102,7 +102,7 @@ namespace DAL.Repositories
         {
             List<Application> applications = await _context.Applications
                 .Where(x => x.UserId == userId).Include("ApplicationSkills")
-                .OrderByDescending(x => x.DateTimeEnd).AsNoTracking().ToListAsync();
+                .OrderByDescending(x => x.DateTimeStart).ThenBy(x => x.Status).AsNoTracking().ToListAsync();
             return applications;
         }
 

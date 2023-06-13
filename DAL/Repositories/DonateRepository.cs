@@ -60,6 +60,7 @@ namespace DAL.Repositories
             List<Donate> donates = await _context.Donates.Include("Application")
                 .Where(x => x.DateTimeCreation.AddDays(numberOfDays) >= DateTime.Now && 
                 x.Application.Status == (int)ApplicationStatuses.Status.Сompleted)
+                .OrderByDescending(x => x.DateTimeCreation)
                 .AsNoTracking().ToListAsync();
             return donates;
         }
@@ -68,6 +69,7 @@ namespace DAL.Repositories
         {
             List<Donate> donates = await _context.Donates.Include("Application")
                 .Where(x => x.Application.Status == (int)ApplicationStatuses.Status.Сompleted)
+                .OrderByDescending(x => x.DateTimeCreation)
                 .AsNoTracking().ToListAsync();
             return donates;
         }

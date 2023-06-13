@@ -47,7 +47,8 @@ namespace DAL.Repositories
 
         public async Task<List<Volunteer>> GetAllAsync()
         {
-            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application").AsNoTracking().ToListAsync();
+            List<Volunteer> volunteers = await _context.Volunteers.Include("User").Include("Application")
+                .OrderBy(x => x.CreationDateTime).ThenBy(x => x.User.Login).AsNoTracking().ToListAsync();
             return volunteers;
         }
 

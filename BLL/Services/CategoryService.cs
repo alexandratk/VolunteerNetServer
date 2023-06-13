@@ -95,6 +95,7 @@ namespace BLL.Services
                     category.DescriptionCategory = categoryTranslation.DescriptionCategory;
                 }
             }
+            mapperCategories = mapperCategories.OrderBy(x => x.Title);
             return mapperCategories;
         }
 

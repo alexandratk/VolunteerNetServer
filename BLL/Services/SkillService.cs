@@ -91,6 +91,7 @@ namespace BLL.Services
                     skill.Title = skillTranslation.Name;
                 }
             }
+            mapperSkills = mapperSkills.OrderBy(x => x.Title);
             return mapperSkills;
         }
 
@@ -124,6 +125,7 @@ namespace BLL.Services
                     skill.Title = skillTranslation.Name;
                 }
             }
+            mapperSkills = mapperSkills.OrderBy(x => x.Title).ToList();
             return mapperSkills;
         }
 
