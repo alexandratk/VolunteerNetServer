@@ -33,6 +33,8 @@ namespace BLL.Models
 
         public int? NumberOfCompletedApplications { get; set; }
 
+        public int? NumberOfOwnerCompletedApplications { get; set; }
+
         public List<UserSkillViewModel> UserSkills { get; set; } = new List<UserSkillViewModel>();
 
         //public override bool Equals(object p)

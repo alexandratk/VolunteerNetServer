@@ -184,6 +184,9 @@ namespace BLL.Services
                 }
                 mapperUser.NumberOfCompletedApplications = unmapperUser.Volunteers
                     .Where(x => x.Status == (int)VolunteerStatuses.Status.Completed).Count();
+                mapperUser.NumberOfOwnerCompletedApplications = unmapperUser.Volunteers
+                    .Where(x => x.Status == (int)VolunteerStatuses.Status.Owner).Count();
+
                 if (unmapperUser.ProfilePicture != null) 
                 {
                     mapperUser.ProfilePicture = Convert.ToBase64String(unmapperUser.ProfilePicture.Data);
