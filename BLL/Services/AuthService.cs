@@ -247,15 +247,20 @@ namespace BLL.Services
                 mapperApplication.CheckComplete = true;
             }
             if (volunteer != null && 
-                volunteer.Status == (int)VolunteerStatuses.Status.Accepted)
+                volunteer.Status == (int)VolunteerStatuses.Status.Accepted &&
+                (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer] ||
+                mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed]))
             {
                 mapperApplication.CheckExit = true;
             }
             if (volunteer != null &&
                 (volunteer.Status == (int)VolunteerStatuses.Status.Accepted ||
-                volunteer.Status == (int)VolunteerStatuses.Status.Owner))
+                volunteer.Status == (int)VolunteerStatuses.Status.Owner) &&
+                (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer] ||
+                mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                )
             {
-                mapperApplication.CheckExit = true;
+                mapperApplication.CheckChat = true;
             }
 
             if (volunteer != null &&
