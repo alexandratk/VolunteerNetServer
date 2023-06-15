@@ -186,6 +186,37 @@ namespace BLL.Services
                         skillModel.Title = skillTranslation.Name;
                     }
                 }
+
+                if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.uk])
+                {
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                    {
+                        application.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Mixed];
+                    }
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                    {
+                        application.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Monetary];
+                    }
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                    {
+                        application.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Volunteer];
+                    }
+                }
+                if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.pl])
+                {
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                    {
+                        application.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Mixed];
+                    }
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                    {
+                        application.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Monetary];
+                    }
+                    if (application.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                    {
+                        application.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Volunteer];
+                    }
+                }
             }
             return mapperApplications;
         }

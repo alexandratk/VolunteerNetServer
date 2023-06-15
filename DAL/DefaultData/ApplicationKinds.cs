@@ -17,5 +17,11 @@ namespace DAL.DefaultData
 
         public static List<string> Kinds { get; set; }
             = new List<string>() { "monetary", "volunteer", "mixed" };
+
+        public static List<string> KindsUk { get; set; }
+            = new List<string>() { "грошовий", "волонтерський", "змішаний" };
+
+        public static List<string> KindsPl { get; set; }
+            = new List<string>() { "pieniężny", "wolontariusz", "mieszany" };
     }
 }
