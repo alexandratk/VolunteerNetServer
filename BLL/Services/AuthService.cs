@@ -210,42 +210,11 @@ namespace BLL.Services
                 mapperApplication.ApplicationPictures.Add(applicationPictureViewModel);
             }
 
+            mapperApplication.CheckDonate =
+               mapperApplication.RequiredSum - mapperApplication.CurrentSum > 0 &&
+               (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed] ||
+               mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary]);
 
-            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.uk])
-            {
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Mixed];
-                }
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Monetary];
-                }
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Volunteer];
-                }
-            }
-            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.pl])
-            {
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Mixed];
-                }
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Monetary];
-                }
-                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
-                {
-                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Volunteer];
-                }
-            }
-
-            mapperApplication.CheckDonate = 
-                mapperApplication.RequiredSum - mapperApplication.CurrentSum > 0 && 
-                (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed] ||
-                mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary]);
 
             return mapperApplication;
         }
@@ -305,6 +274,37 @@ namespace BLL.Services
             {
                 mapperApplication.CheckVolunteerWait = true;
             }
+
+            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.uk])
+            {
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Mixed];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Monetary];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Volunteer];
+                }
+            }
+            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.pl])
+            {
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Mixed];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Monetary];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Volunteer];
+                }
+            }
             return mapperApplication;
         }
 
@@ -320,6 +320,37 @@ namespace BLL.Services
             mapperApplication.CheckExit = false;
             mapperApplication.CheckVolunteerIsReject = false;
             mapperApplication.CheckVolunteerWait = false;
+
+            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.uk])
+            {
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Mixed];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Monetary];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsUk[(int)ApplicationKinds.KindsEnum.Volunteer];
+                }
+            }
+            if (language == Languages.LanguagesList[(int)Languages.LanguagesEnum.pl])
+            {
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Mixed])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Mixed];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Monetary])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Monetary];
+                }
+                if (mapperApplication.Kind == ApplicationKinds.Kinds[(int)ApplicationKinds.KindsEnum.Volunteer])
+                {
+                    mapperApplication.Kind = ApplicationKinds.KindsPl[(int)ApplicationKinds.KindsEnum.Volunteer];
+                }
+            }
             return mapperApplication;
         }
 
