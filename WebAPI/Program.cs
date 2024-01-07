@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebAPI.Hubs;
 using BLL.BackgroundServices;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,15 +23,14 @@ var mapperConfig = new MapperConfiguration(mc =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<VolunteerNetServerDBContext>(options =>
-//options.UseSqlServer(@"Server=localhost,1435;Database=VolunteerNet;User Id=SA;Password=2Secure*Password2;"));
-//options.UseSqlServer(@"Server=localhost;Database=VolunteerNet;Trusted_Connection=True;"));
-options.UseSqlServer(@"Server=host.docker.internal,1435;Database=VolunteerNet;User Id=SA;Password=MySecurePassword*19*5;"));
+//options.UseSqlServer(@"Server=localhost,1435;Database=VolunteerNet;User Id=alex;Password=2Secure*Password2;"));
+options.UseSqlServer(builder.Configuration.GetConnectionString("SQLDb")));
+//options.UseSqlServer(@"Server=host.docker.internal,1435;Database=VolunteerNet;User Id=SA;Password=MySecurePassword*19*5;"));
 
 builder.Services.AddSignalR();
 
@@ -60,16 +60,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         });
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("ClientPermission", policy =>
-    {
-        policy.AllowAnyHeader()
-            .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000", "http://134.209.251.102:3000")
-            .AllowCredentials();
-    });
-});
 
 var app = builder.Build();
 
@@ -80,7 +70,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("ClientPermission");
 app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
@@ -94,8 +83,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => 
-{ 
+app.UseEndpoints(endpoints =>
+{
     endpoints.MapControllers();
     endpoints.MapHub<ChatHub>("/hubs/chat");
 });
