@@ -1,5 +1,5 @@
 name: "Build and Deploy"
-on: [workflow_dispatch]
+on: [push]
 env:
   AZURE_WEBAPP_NAME: volunteerNetAPI
   AZURE_WEBAPP_PACKAGE_NAME: "../published"
