@@ -72,7 +72,7 @@ namespace DAL.Repositories
             return Task.FromResult(countryTranslation);
         }
 
-        public Task Update(Country entity)
+        public Task UpdateAsync(Country entity)
         {
             throw new NotImplementedException();
         }

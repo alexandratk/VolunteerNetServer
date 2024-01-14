@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using BLL.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Diagnostics;
-using System.Net;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -67,6 +66,19 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 return NotFound(e);
+            }
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] EmailConfirmationModel emailConfirmationModel)
+        {
+            if (await authService.ValidateToken(emailConfirmationModel.Token))
+            {
+                return Ok();
+            }
+            else 
+            {
+                return BadRequest("Invalid verification token");
             }
         }
 

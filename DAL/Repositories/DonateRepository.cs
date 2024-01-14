@@ -79,7 +79,7 @@ namespace DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(Donate entity)
+        public Task UpdateAsync(Donate entity)
         {
             throw new NotImplementedException();
         }

@@ -4,22 +4,15 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Interfaces;
 using DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 using DAL.DefaultData;
+using DAL.Cache;
+using Microsoft.Extensions.Options;
+using BLL.Models.Options;
+using DAL.Entities.Cache;
 
 namespace BLL.Services
 {
@@ -27,19 +20,29 @@ namespace BLL.Services
     {
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
-
+        private readonly ICacheService cacheService;
+        private readonly IMailService mailService;
+        private readonly EmailOptions mailOptions;
         private const string RoleUser = "user";
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper)
+        public AuthService(
+            IUnitOfWork unitOfWork, 
+            IMapper mapper, 
+            ICacheService cacheService,
+            IMailService mailService, 
+            IOptions<EmailOptions> mailOptions)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.cacheService = cacheService;
+            this.mailService = mailService;
+            this.mailOptions = mailOptions.Value;
         }
 
         public async Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model)
         {
             var validationResults = new List<ValidationResult>();
-            if (unitOfWork.UserRepository.CheckLogin(model.Login))
+            if (await unitOfWork.UserRepository.CheckLogin(model.Login))
             {
                 validationResults.Add(new ValidationResult("invalidLogin"));
                 return validationResults;
@@ -47,7 +50,9 @@ namespace BLL.Services
             
             var mapperUser = mapper.Map<UserCreationModel, User>(model);
 
-            mapperUser.Id = Guid.NewGuid();
+            var userId = Guid.NewGuid();
+
+            mapperUser.Id = userId;
             mapperUser.Password = HashHelper.ComputeSha256Hash(model.Password);
             mapperUser.Role = RoleUser;
 
@@ -59,7 +64,45 @@ namespace BLL.Services
             }
             mapperUser.CityId = cityTranslation.CityId;
 
-            await unitOfWork.UserRepository.AddAsync(mapperUser);
+            using (var transaction = unitOfWork.Context.Database.BeginTransaction()) 
+            {
+                await unitOfWork.UserRepository.AddAsync(mapperUser);
+
+                string verificationGuidToken = Guid.NewGuid().ToString();
+                string confirmationUrl = mailOptions.ConfirmationUrl + verificationGuidToken;
+
+                bool isSuccess = await mailService.SendMail(
+                    destination: model.Login,
+                    topic: "Email confirmation",
+                    $"Click <a href='{confirmationUrl}'>here</a> to validate mail");
+
+                //TODO: rewrite on try-catch
+                if (isSuccess)
+                {
+                    bool cacheSetSuccess = cacheService.SetData(verificationGuidToken.ToString(), new PendingUserCache()
+                    {
+                        ConfirmationToken = verificationGuidToken,
+                        TokenType = TokenType.ConfirmEmail,
+                        UserId = userId
+                    }, DateTimeOffset.UtcNow.AddHours(mailOptions.MailVerificationHoursOffset));
+
+                    if (cacheSetSuccess)
+                    {
+                        transaction.Commit();
+                    }
+                    else
+                    {
+                        validationResults.Add(new ValidationResult("invalidConfirmation"));
+                        transaction.Rollback();
+                    }
+                }
+                else 
+                {
+                    validationResults.Add(new ValidationResult("invalidMail"));
+                    transaction.Rollback();
+                }
+            }
+
             return validationResults;
         }
 
@@ -365,6 +408,33 @@ namespace BLL.Services
                 documentModel.Title = unmapperDocument.Title;
             }
             return documentModel;
+        }
+
+        public async Task<bool> ValidateToken(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token)) { return false; }
+
+            var userPendingCache = await cacheService.GetDataAsync<PendingUserCache>(token);
+            if (userPendingCache == null || userPendingCache.TokenType != TokenType.ConfirmEmail) 
+            {
+                return false;
+            }
+
+            if (!Guid.TryParse(userPendingCache.UserId.ToString(), out var userIdGuid)) 
+            {
+                return false;
+            }
+
+            var user = await unitOfWork.UserRepository.GetByIdAsync(userIdGuid);
+            if (user == null) 
+            {
+                return false;
+            }
+
+            user.EmailConfirmed = true;
+            await unitOfWork.UserRepository.UpdateAsync(user);
+
+            return true;
         }
     }
 }

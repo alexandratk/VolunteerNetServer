@@ -65,7 +65,7 @@ namespace DAL.Repositories
             return userSkill;
         }
 
-        public async Task Update(UserSkill entity)
+        public async Task UpdateAsync(UserSkill entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();

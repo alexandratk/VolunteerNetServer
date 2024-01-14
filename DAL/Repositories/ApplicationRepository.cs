@@ -114,7 +114,7 @@ namespace DAL.Repositories
             return applications;
         }
 
-        public async Task Update(Application entity)
+        public async Task UpdateAsync(Application entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();

@@ -139,7 +139,7 @@ namespace BLL.Services
         public async Task UpdateAsync(SkillModel model)
         {
             var mapperSkill = mapper.Map<SkillModel, Skill>(model);
-            await unitOfWork.SkillRepository.Update(mapperSkill);
+            await unitOfWork.SkillRepository.UpdateAsync(mapperSkill);
         }
 
         public Task<IEnumerable<SkillModel>> GetAllAsync()

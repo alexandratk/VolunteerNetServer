@@ -57,16 +57,15 @@ namespace DAL.Repositories
             return Task.FromResult(user);
         }
 
-        public async Task Update(User entity)
+        public async Task UpdateAsync(User entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
         }
 
-        public bool CheckLogin(string login)
+        public async Task<bool> CheckLogin(string? login)
         {
-            User? user = _context.Users.AsNoTracking().Where(r => r.Login.Equals(login)).FirstOrDefault();
-            return user != null;
+            return await _context.Users.AsNoTracking().AnyAsync(r => r.Login.Equals(login));
         }
     }
 }

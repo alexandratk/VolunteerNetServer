@@ -61,7 +61,7 @@ namespace DAL.Repositories
             return Task.FromResult(skillTranslation);
         }
 
-        public async Task Update(Skill entity)
+        public async Task UpdateAsync(Skill entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();

@@ -135,7 +135,7 @@ namespace DAL.Repositories
             return volunteers;
         }
 
-        public async Task Update(Volunteer entity)
+        public async Task UpdateAsync(Volunteer entity)
         {
             _context.Entry(entity).State = EntityState.Detached;
             _context.Update(entity);

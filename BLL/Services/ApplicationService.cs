@@ -305,7 +305,7 @@ namespace BLL.Services
                 return validationResults;
             }
             application.Status = (int) ApplicationStatuses.Status.InProgress;
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.UpdateAsync(application);
 
             Volunteer volunteer = new Volunteer();
             volunteer.Id = Guid.NewGuid();
@@ -339,7 +339,7 @@ namespace BLL.Services
                 return validationResults;
             }
             application.Status = (int)ApplicationStatuses.Status.Forbidden;
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.UpdateAsync(application);
 
             Notification notification = new Notification();
             notification.ApplictionId = application.Id;
@@ -370,7 +370,7 @@ namespace BLL.Services
                 return validationResults;
             }
             application.Status = (int)ApplicationStatuses.Status.Сompleted;
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.UpdateAsync(application);
 
             var volunteers = await unitOfWork.VolunteerRepository
                 .GetListVolunteersInChatWithoutForeign(applicationId);
@@ -379,7 +379,7 @@ namespace BLL.Services
                 if (volunteers[i].Status == (int)VolunteerStatuses.Status.Accepted)
                 {
                     volunteers[i].Status = (int)VolunteerStatuses.Status.Completed;
-                    await unitOfWork.VolunteerRepository.Update(volunteers[i]);
+                    await unitOfWork.VolunteerRepository.UpdateAsync(volunteers[i]);
 
                     Notification notification = new Notification();
                     notification.ApplictionId = application.Id;
@@ -401,7 +401,7 @@ namespace BLL.Services
             for (int i = 0; i < applications.Count; i++)
             {
                 applications[i].Status = (int)ApplicationStatuses.Status.Сompleted;
-                await unitOfWork.ApplicationRepository.Update(applications[i]);
+                await unitOfWork.ApplicationRepository.UpdateAsync(applications[i]);
 
                 var volunteers = await unitOfWork.VolunteerRepository
                     .GetListVolunteersInChatWithoutForeign(applications[i].Id);
@@ -410,7 +410,7 @@ namespace BLL.Services
                     if (volunteers[j].Status == (int)VolunteerStatuses.Status.Accepted)
                     {
                         volunteers[j].Status = (int)VolunteerStatuses.Status.Completed;
-                        await unitOfWork.VolunteerRepository.Update(volunteers[j]);
+                        await unitOfWork.VolunteerRepository.UpdateAsync(volunteers[j]);
 
                         Notification notification = new Notification();
                         notification.ApplictionId = applications[i].Id;

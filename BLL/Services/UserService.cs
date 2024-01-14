@@ -46,7 +46,7 @@ namespace BLL.Services
         public async Task<List<ValidationResult>> AddUserAsync(UserModel model)
         {
             var validationResults = new List<ValidationResult>();
-            if (unitOfWork.UserRepository.CheckLogin(model.Login))
+            if (!(await unitOfWork.UserRepository.CheckLogin(model.Login)))
             {
                 validationResults.Add(new ValidationResult("invalidLogin"));
                 return validationResults;
@@ -247,7 +247,7 @@ namespace BLL.Services
             } else
             {
                 newProfilePicture.Id = currentProfilePicture.Id;
-                await unitOfWork.ProfilePictureRepository.Update(newProfilePicture);
+                await unitOfWork.ProfilePictureRepository.UpdateAsync(newProfilePicture);
             }
                 
             return validationResults;
@@ -309,7 +309,7 @@ namespace BLL.Services
                 model.Document.CopyTo(memoryStream);
                 userSkill.Document = memoryStream.ToArray();
 
-                await unitOfWork.UserSkillRepository.Update(userSkill);
+                await unitOfWork.UserSkillRepository.UpdateAsync(userSkill);
             }
 
             return validationResults;
@@ -392,7 +392,7 @@ namespace BLL.Services
             }
             user.CityId = cityTranslation.CityId;
 
-            await unitOfWork.UserRepository.Update(user);
+            await unitOfWork.UserRepository.UpdateAsync(user);
             return validationResults;
         }
 

@@ -1,25 +1,20 @@
 using AutoMapper;
-using BLL;
 using BLL.Infrastructure;
-using BLL.Interfaces;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BLL.Helpers;
-using Microsoft.Extensions.DependencyInjection;
 using WebAPI.Hubs;
-using BLL.BackgroundServices;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-BusinessLogicLayerConfigurator.ConfigureServices(builder.Services);
+BusinessLogicLayerConfigurator.ConfigureServices(builder.Services, builder.Configuration);
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new BLL.Helpers.AutomapperProfile());
+    mc.AddProfile(new AutomapperProfile());
 });
 
 // Add services to the container.
@@ -28,9 +23,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<VolunteerNetServerDBContext>(options =>
-//options.UseSqlServer(@"Server=localhost,1435;Database=VolunteerNet;User Id=alex;Password=2Secure*Password2;"));
-options.UseSqlServer(builder.Configuration.GetConnectionString("SQLDb")));
-//options.UseSqlServer(@"Server=host.docker.internal,1435;Database=VolunteerNet;User Id=SA;Password=MySecurePassword*19*5;"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLDb")));
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<VolunteerNetServerDBContext>();
 
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
         builder =>
@@ -97,10 +93,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 
-//app.UseHttpsRedirection();
-
 app.UseRouting();
-
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -110,7 +103,5 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHub<ChatHub>("/hubs/chat");
 });
-
-app.MapControllers();
 
 app.Run();
