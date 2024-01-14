@@ -6,11 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using BLL.Helpers;
 using WebAPI.Hubs;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +14,7 @@ BusinessLogicLayerConfigurator.ConfigureServices(builder.Services, builder.Confi
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new BLL.Helpers.AutomapperProfile());
+    mc.AddProfile(new AutomapperProfile());
 });
 
 // Add services to the container.

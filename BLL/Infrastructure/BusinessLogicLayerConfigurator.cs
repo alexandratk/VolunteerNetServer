@@ -36,7 +36,7 @@ namespace BLL.Infrastructure
                 return new EmailClient(emailClientConnectionString);
             });
 
-            serviceCollection.AddOptions<EmailOptions>("EmailOptions");
+            serviceCollection.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

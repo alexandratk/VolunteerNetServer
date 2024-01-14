@@ -2,7 +2,6 @@
 using Azure.Communication.Email;
 using BLL.Interfaces;
 using BLL.Models.Options;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
