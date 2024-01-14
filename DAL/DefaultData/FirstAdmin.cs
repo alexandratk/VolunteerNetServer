@@ -38,6 +38,7 @@ namespace DAL.DefaultData
             User.DateOfBirth = DateTime.Now;
             User.Phone = "+11111111111";
             User.Role = "admin";
+            User.EmailConfirmed = true;
         }
     }
 }

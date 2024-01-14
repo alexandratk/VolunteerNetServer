@@ -4,12 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>0d06d159-b091-4013-9a25-08e901b399fd</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -20,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />

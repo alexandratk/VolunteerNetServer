@@ -57,7 +57,7 @@ namespace DAL.Repositories
             return notifications;
         }
 
-        public Task Update(Notification entity)
+        public Task UpdateAsync(Notification entity)
         {
             throw new NotImplementedException();
         }

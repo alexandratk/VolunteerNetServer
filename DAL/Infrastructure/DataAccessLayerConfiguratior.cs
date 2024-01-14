@@ -1,4 +1,5 @@
-﻿using DAL.Data;
+﻿using DAL.Cache;
+using DAL.Data;
 using DAL.Interfaces;
 using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace DAL.Infrastructure
             serviceCollection.AddTransient<IUserSkillRepository, UserSkillRepository>();
             serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            serviceCollection.AddSingleton<RedisConnection>();
+            serviceCollection.AddTransient<ICacheService, CacheService>();
         }
     }
 }

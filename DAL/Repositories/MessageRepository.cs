@@ -53,7 +53,7 @@ namespace DAL.Repositories
             return messages;
         }
 
-        public Task Update(Message entity)
+        public Task UpdateAsync(Message entity)
         {
             throw new NotImplementedException();
         }

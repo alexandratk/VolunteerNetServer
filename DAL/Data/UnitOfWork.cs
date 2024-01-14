@@ -1,16 +1,11 @@
 ﻿using DAL.Interfaces;
 using DAL.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public VolunteerNetServerDBContext context { get; set; }
+        public VolunteerNetServerDBContext Context { get; }
 
         private ApplicationRepository applicationRepository;
         private CategoryRepository categoryRepository;
@@ -31,7 +26,7 @@ namespace DAL.Data
             {
                 if (applicationRepository == null)
                 {
-                    applicationRepository = new ApplicationRepository(context);
+                    applicationRepository = new ApplicationRepository(Context);
                 }
                 return applicationRepository;
             }
@@ -43,7 +38,7 @@ namespace DAL.Data
             {
                 if (categoryRepository == null)
                 {
-                    categoryRepository = new CategoryRepository(context);
+                    categoryRepository = new CategoryRepository(Context);
                 }
                 return categoryRepository;
             }
@@ -55,7 +50,7 @@ namespace DAL.Data
             {
                 if (cityRepository == null)
                 {
-                    cityRepository = new CityRepository(context);
+                    cityRepository = new CityRepository(Context);
                 }
                 return cityRepository;
             }
@@ -67,7 +62,7 @@ namespace DAL.Data
             {
                 if (countryRepository == null)
                 {
-                    countryRepository = new CountryRepository(context);
+                    countryRepository = new CountryRepository(Context);
                 }
                 return countryRepository;
             }
@@ -79,7 +74,7 @@ namespace DAL.Data
             {
                 if (donateRepository == null)
                 {
-                    donateRepository = new DonateRepository(context);
+                    donateRepository = new DonateRepository(Context);
                 }
                 return donateRepository;
             }
@@ -91,7 +86,7 @@ namespace DAL.Data
             {
                 if (messageRepository == null)
                 {
-                    messageRepository = new MessageRepository(context);
+                    messageRepository = new MessageRepository(Context);
                 }
                 return messageRepository;
             }
@@ -103,7 +98,7 @@ namespace DAL.Data
             {
                 if (notificationRepository == null)
                 {
-                    notificationRepository = new NotificationRepository(context);
+                    notificationRepository = new NotificationRepository(Context);
                 }
                 return notificationRepository;
             }
@@ -115,7 +110,7 @@ namespace DAL.Data
             {
                 if (profilePictureRepository == null)
                 {
-                    profilePictureRepository = new ProfilePictureRepository(context);
+                    profilePictureRepository = new ProfilePictureRepository(Context);
                 }
                 return profilePictureRepository;
             }
@@ -127,7 +122,7 @@ namespace DAL.Data
             {
                 if (skillRepository == null)
                 {
-                    skillRepository = new SkillRepository(context);
+                    skillRepository = new SkillRepository(Context);
                 }
                 return skillRepository;
             }
@@ -139,7 +134,7 @@ namespace DAL.Data
             {
                 if (userRepository == null)
                 {
-                    userRepository = new UserRepository(context);
+                    userRepository = new UserRepository(Context);
                 }
                 return userRepository;
             }
@@ -151,7 +146,7 @@ namespace DAL.Data
             {
                 if (userSkillRepository == null)
                 {
-                    userSkillRepository = new UserSkillRepository(context);
+                    userSkillRepository = new UserSkillRepository(Context);
                 }
                 return userSkillRepository;
             }
@@ -163,7 +158,7 @@ namespace DAL.Data
             {
                 if (volunteerRepository == null)
                 {
-                    volunteerRepository = new VolunteerRepository(context);
+                    volunteerRepository = new VolunteerRepository(Context);
                 }
                 return volunteerRepository;
             }
@@ -171,12 +166,12 @@ namespace DAL.Data
 
         public UnitOfWork(VolunteerNetServerDBContext context)
         {
-            this.context = context;
+            this.Context = context;
         }
 
         public async Task SaveAsync()
         {
-            await context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

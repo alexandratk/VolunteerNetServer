@@ -2,12 +2,6 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace DAL.Repositories
 {
@@ -75,7 +69,7 @@ namespace DAL.Repositories
             return Task.FromResult(cityTranslation);
         }
 
-        public Task Update(City entity)
+        public Task UpdateAsync(City entity)
         {
             throw new NotImplementedException();
         }

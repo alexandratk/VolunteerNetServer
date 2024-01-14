@@ -25,5 +25,6 @@ namespace BLL.Interfaces
         DocumentModel GetApplicationDocument(Guid id);
 
         Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model);
+        Task<bool> ValidateToken(string token);
     }
 }
