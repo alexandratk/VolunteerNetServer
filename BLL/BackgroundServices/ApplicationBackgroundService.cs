@@ -24,18 +24,18 @@ namespace BLL.BackgroundServices
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             TimeSpan timeSpan = new TimeSpan(12, 0, 0);
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                using (var scope = Services.CreateScope())
-                {
-                    var applicationService =
-                        scope.ServiceProvider
-                            .GetRequiredService<IApplicationService>();
+            //while (!stoppingToken.IsCancellationRequested)
+            //{
+            //    using (var scope = Services.CreateScope())
+            //    {
+            //        var applicationService =
+            //            scope.ServiceProvider
+            //                .GetRequiredService<IApplicationService>();
 
-                    await applicationService.CompleteApplicationBackgroundService();
-                }
-                await Task.Delay(timeSpan, stoppingToken);
-            }
+            //        await applicationService.CompleteApplicationBackgroundService();
+            //    }
+            //    await Task.Delay(timeSpan, stoppingToken);
+            //}
         }
     }
 }
