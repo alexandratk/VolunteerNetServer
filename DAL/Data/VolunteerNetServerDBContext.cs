@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.DefaultData;
 using DAL.Entities;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace DAL.Data
 {
-    public class VolunteerNetServerDBContext : DbContext
+    public class VolunteerNetServerDBContext : DbContext, IDataProtectionKeyContext
     {
         public DbSet<Application> Applications { get; set; }
         public DbSet<ApplicationDocument> ApplicationDocuments { get; set; }
@@ -32,6 +33,8 @@ namespace DAL.Data
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
+
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
         public VolunteerNetServerDBContext(DbContextOptions<VolunteerNetServerDBContext> options) : base (options)
         {

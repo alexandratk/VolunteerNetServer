@@ -25,6 +25,8 @@ namespace DAL.Entities
 
         public string Role { get; set; }
 
+        public bool EmailConfirmed { get; set; } = false;
+
         public ProfilePicture? ProfilePicture { get; set; }
 
         public List<Skill> Skills { get; set; } = new List<Skill>();

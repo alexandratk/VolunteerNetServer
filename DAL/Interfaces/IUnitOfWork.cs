@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.Data;
 
 namespace DAL.Interfaces
 {
@@ -31,5 +27,7 @@ namespace DAL.Interfaces
         IUserSkillRepository UserSkillRepository { get; }
 
         IVolunteerRepository VolunteerRepository { get; }
+
+        VolunteerNetServerDBContext Context { get; }
     }
 }

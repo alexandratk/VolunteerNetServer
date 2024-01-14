@@ -1,21 +1,19 @@
 ﻿using AutoMapper;
+using Azure.Communication.Email;
 using BLL.BackgroundServices;
 using BLL.Helpers;
 using BLL.Interfaces;
+using BLL.Models.Options;
 using BLL.Services;
 using DAL.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Infrastructure
 {
     public class BusinessLogicLayerConfigurator
     {
-        public static void ConfigureServices(IServiceCollection serviceCollection)
+        public static void ConfigureServices(IServiceCollection serviceCollection, IConfiguration configuration)
         {
             DataAccessLayerConfiguratior.ConfigureServices(serviceCollection);
 
@@ -30,6 +28,15 @@ namespace BLL.Infrastructure
             serviceCollection.AddTransient<ISkillService, SkillService>();
             serviceCollection.AddTransient<IUserService, UserService>();
             serviceCollection.AddTransient<IVolunteerService, VolunteerService>();
+            serviceCollection.AddTransient<IMailService, MailService>();
+
+            serviceCollection.AddTransient<EmailClient>((_) =>
+            {
+                string emailClientConnectionString = configuration.GetConnectionString("Mail");
+                return new EmailClient(emailClientConnectionString);
+            });
+
+            serviceCollection.AddOptions<EmailOptions>("EmailOptions");
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -37,7 +44,6 @@ namespace BLL.Infrastructure
             });
             IMapper mapper = mapperConfig.CreateMapper();
             serviceCollection.AddSingleton(mapper);
-
         }
     }
 }

@@ -52,7 +52,7 @@ namespace DAL.Repositories
             return Task.FromResult(profilePicture);
         }
 
-        public async Task Update(ProfilePicture entity)
+        public async Task UpdateAsync(ProfilePicture entity)
         {
             _context.ProfilePictures.Update(entity);
             await _context.SaveChangesAsync();

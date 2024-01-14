@@ -201,7 +201,7 @@ namespace BLL.Services
                 return validationResults;
             }
             volunteer.Status = (int)VolunteerStatuses.Status.Accepted;
-            await unitOfWork.VolunteerRepository.Update(volunteer);
+            await unitOfWork.VolunteerRepository.UpdateAsync(volunteer);
 
             var application = await unitOfWork.ApplicationRepository.GetByIdAsync(volunteer.ApplicationId);
             if (application == null)
@@ -221,7 +221,7 @@ namespace BLL.Services
             }
 
             application.NumberOfVolunteers++;
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.UpdateAsync(application);
 
             Notification notification = new Notification();
             notification.ApplictionId = application.Id;
@@ -267,7 +267,7 @@ namespace BLL.Services
                 return validationResults;
             }
             volunteer.Status = (int)VolunteerStatuses.Status.Rejected;
-            await unitOfWork.VolunteerRepository.Update(volunteer);
+            await unitOfWork.VolunteerRepository.UpdateAsync(volunteer);
 
             Notification notification = new Notification();
             notification.ApplictionId = volunteer.ApplicationId;
@@ -281,7 +281,7 @@ namespace BLL.Services
             {
                 notification.Type = NotificationTypes.Types[(int)NotificationTypes.TypesEnum.RemoveVolunteer];
                 application.NumberOfVolunteers--;
-                await unitOfWork.ApplicationRepository.Update(application);
+                await unitOfWork.ApplicationRepository.UpdateAsync(application);
             }
 
             await unitOfWork.NotificationRepository.AddAsync(notification);
@@ -319,7 +319,7 @@ namespace BLL.Services
                 return validationResults;
             }
             volunteer.Status = (int)VolunteerStatuses.Status.Rejected;
-            await unitOfWork.VolunteerRepository.Update(volunteer);
+            await unitOfWork.VolunteerRepository.UpdateAsync(volunteer);
 
             Notification notification = new Notification();
             notification.ApplictionId = volunteer.ApplicationId;
@@ -331,7 +331,7 @@ namespace BLL.Services
             await unitOfWork.NotificationRepository.AddAsync(notification);
 
             application.NumberOfVolunteers--;
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.UpdateAsync(application);
 
             return validationResults;
         }

@@ -59,7 +59,7 @@ namespace DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(Category entity)
+        public Task UpdateAsync(Category entity)
         {
             throw new NotImplementedException();
         }
