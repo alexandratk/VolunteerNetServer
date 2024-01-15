@@ -1,11 +1,5 @@
 ﻿using BLL.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
@@ -25,6 +19,11 @@ namespace BLL.Interfaces
         DocumentModel GetApplicationDocument(Guid id);
 
         Task<List<ValidationResult>> RegisterUserAsync(UserCreationModel model);
-        Task<bool> ValidateToken(string token);
+
+        Task<bool> SendResetPasswordLink(string email);
+
+        Task<bool> ResetPassword(ResetPasswordModel resetPasswordModel);
+
+        Task<bool> ValidateEmailConfirmationToken(string token);
     }
 }

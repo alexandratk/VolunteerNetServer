@@ -22,6 +22,7 @@ namespace BLL.Services
         private IMapper mapper;
         private readonly ICacheService cacheService;
         private readonly IMailService mailService;
+        private readonly ResetPasswordOptions resetPasswordOptions;
         private readonly EmailOptions mailOptions;
         private const string RoleUser = "user";
 
@@ -30,12 +31,14 @@ namespace BLL.Services
             IMapper mapper, 
             ICacheService cacheService,
             IMailService mailService, 
-            IOptions<EmailOptions> mailOptions)
+            IOptions<EmailOptions> mailOptions,
+            IOptions<ResetPasswordOptions> resetPasswordOptions)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.cacheService = cacheService;
             this.mailService = mailService;
+            this.resetPasswordOptions = resetPasswordOptions.Value;
             this.mailOptions = mailOptions.Value;
         }
 
@@ -116,10 +119,6 @@ namespace BLL.Services
             }
             var mapperUser = mapper.Map<User, UserModel>(unmapperUser);
 
-            var user = unitOfWork.UserRepository.GetByLoginAndPass(authRequestModel.Login, HashHelper.ComputeSha256Hash(authRequestModel.Password));
-            //if (user == null)
-            //    throw new Exception("User not found");
-            //Console.WriteLine("2222");
             var token = generateJWTToken(mapperUser);
             return new AuthResponseModel()
             {
@@ -130,7 +129,6 @@ namespace BLL.Services
 
         string generateJWTToken(UserModel person)
         {
-
             var now = DateTime.UtcNow;
 
             var claims = new List<Claim>
@@ -410,7 +408,7 @@ namespace BLL.Services
             return documentModel;
         }
 
-        public async Task<bool> ValidateToken(string token)
+        public async Task<bool> ValidateEmailConfirmationToken(string token)
         {
             if (string.IsNullOrWhiteSpace(token)) { return false; }
 
@@ -435,6 +433,78 @@ namespace BLL.Services
             await unitOfWork.UserRepository.UpdateAsync(user);
 
             return true;
+        }
+
+        public async Task<bool> SendResetPasswordLink(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) 
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+
+            if (await unitOfWork.UserRepository.CheckLogin(email)) 
+            {
+                string resetPasswordToken = Guid.NewGuid().ToString();
+                DateTimeOffset cacheExpirationTime = DateTimeOffset.UtcNow.AddHours(resetPasswordOptions.ResetTokenExpirationHoursOffset);
+                string emailTokenKey = email + "-reset-password";
+
+                if (!string.IsNullOrWhiteSpace(cacheService.GetData<string>(emailTokenKey))) 
+                {
+                    ClearResetPasswordTokens(resetPasswordToken, emailTokenKey);
+                }
+
+                bool tokenSet = cacheService.SetData(resetPasswordToken, new ResetPasswordCache()
+                {
+                    ConfirmationToken = resetPasswordToken,
+                    TokenType = TokenType.ResetPassword,
+                    UserId = Guid.Empty,
+                    UserEmail = email
+                }, cacheExpirationTime) && 
+                cacheService.SetData(emailTokenKey, resetPasswordToken, cacheExpirationTime);
+
+                if (!tokenSet)
+                {
+                    ClearResetPasswordTokens(resetPasswordToken, emailTokenKey);
+
+                    throw new Exception("Error while generating reset token");
+                }
+
+                string resetPasswsordUrl = resetPasswordOptions.PasswordResetUrl + resetPasswordToken;
+
+                bool isMessageSent = await mailService.SendMail(email, "Password reset", $"To reset password go <a href='{resetPasswsordUrl}'>here</a>");
+                if (!isMessageSent)
+                {
+                    ClearResetPasswordTokens(resetPasswordToken, emailTokenKey);
+
+                    throw new Exception("Error while sending email");
+                }
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            ResetPasswordCache resetPasswordToken = await cacheService.GetDataAsync<ResetPasswordCache>(resetPasswordModel.Token);
+            if (resetPasswordToken == null) { throw new Exception("Invalid reset password token"); }
+
+            var user = await unitOfWork.UserRepository.GetUserByLoginAsync(resetPasswordToken.UserEmail);
+            if (user == null) { throw new Exception("User for provided token is not found"); }
+
+            user.Password = HashHelper.ComputeSha256Hash(resetPasswordModel.NewPassword);
+            await unitOfWork.UserRepository.UpdateAsync(user);
+
+            string emailTokenKey = resetPasswordToken.UserEmail + "-reset-password";
+
+            ClearResetPasswordTokens(resetPasswordModel.Token, emailTokenKey);
+
+            return true;
+        }
+
+        private void ClearResetPasswordTokens(string resetPasswordToken, string emailTokenKey)
+        {
+            cacheService.RemoveData(resetPasswordToken);
+            cacheService.RemoveData(emailTokenKey);
         }
     }
 }
