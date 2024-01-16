@@ -18,11 +18,13 @@ namespace WebAPI.Controllers
     {
         private readonly IAuthService authService;
         private readonly IMapper mapper;
+        private readonly ILogger<AuthController> logger;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(IAuthService authService, IMapper mapper, ILogger<AuthController> logger)
         {
             this.authService = authService;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpPost("register")]
@@ -47,7 +49,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AuthUser([FromBody] AuthRequestModel authRequestModel)
         {
             var authResponse = await authService.AuthUser(authRequestModel);
-            if (!authResponse.jwtToken.Equals(""))
+            if (!string.IsNullOrWhiteSpace(authResponse.jwtToken))
             {
                 return Ok(authResponse);
             }
@@ -72,13 +74,44 @@ namespace WebAPI.Controllers
         [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromBody] EmailConfirmationModel emailConfirmationModel)
         {
-            if (await authService.ValidateToken(emailConfirmationModel.Token))
+            if (await authService.ValidateEmailConfirmationToken(emailConfirmationModel.Token))
             {
                 return Ok();
             }
-            else 
+            else
             {
                 return BadRequest("Invalid verification token");
+            }
+        }
+
+        [HttpPost("forget-email")]
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetEmailModel model) 
+        {
+            try
+            {
+                bool isResetEmailSend = await authService.SendResetPasswordLink(model.Email);
+                if (isResetEmailSend) { return Ok(); }
+                else { return BadRequest("failed to send reset password token"); }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error while forget-email api: " + ex.Message);
+                return BadRequest("Request email failed");
+            }
+        }
+
+        [HttpPost("reset-email")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model) 
+        {
+            try
+            {
+                if (await authService.ResetPassword(model)) { return Ok(); }
+                else { return BadRequest("Unable to reset password"); }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error while reset-email api: " + ex.Message);
+                return BadRequest("Reset password failed");
             }
         }
 

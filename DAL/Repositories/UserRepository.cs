@@ -2,11 +2,6 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -61,6 +56,11 @@ namespace DAL.Repositories
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetUserByLoginAsync(string? login) 
+        {
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(r => r.Login.Equals(login));
         }
 
         public async Task<bool> CheckLogin(string? login)

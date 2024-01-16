@@ -37,11 +37,13 @@ namespace BLL.Infrastructure
             });
 
             serviceCollection.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
+            serviceCollection.Configure<ResetPasswordOptions>(configuration.GetSection("ResetPasswordOptions"));
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AutomapperProfile());
             });
+
             IMapper mapper = mapperConfig.CreateMapper();
             serviceCollection.AddSingleton(mapper);
         }

@@ -9,7 +9,7 @@ namespace DAL.Cache
 
         public CacheService(RedisConnection redisConnection)
         {
-            this.redisDb = redisConnection.Connection.GetDatabase(); ;
+            this.redisDb = redisConnection.Connection.GetDatabase();
         }
 
         public T GetData<T>(string key)

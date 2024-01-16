@@ -12,5 +12,6 @@ namespace DAL.Interfaces
     {
         public Task<User?> GetByLoginAndPass(string login, string password);
         public Task<bool> CheckLogin(string login);
+        public Task<User?> GetUserByLoginAsync(string? login);
     }
 }
