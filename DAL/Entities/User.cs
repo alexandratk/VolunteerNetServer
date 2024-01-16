@@ -17,6 +17,7 @@ namespace DAL.Entities
         public string LastName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
+        public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
 
         public Guid CityId { get; set; }
         public City City { get; set; }
